@@ -17,11 +17,7 @@ const LandingPage = () => (
         <NavMenu />
       </Container>
     </Row>
-    <Row className='carousel-row'>
-      <Container className='carousel-container' id='section-1'>
-        <Carousel />
-      </Container>
-    </Row>
+    <Carousel />
     <Row className='call-to-action-row'>
       <Container className='call-to-action-container'>
         <CallToAction />

@@ -5,30 +5,3 @@
 @import 'config/parameters';
 
 @import './components/LandingPage/LandingPage';
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  scroll-behavior: smooth;
-  font-size: $font-size-standard;
-}
-
-body {
-  margin: 0;
-  font-family: $Open-Sans;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
-}
-
-a {
-  color: inherit;
-  text-decoration: none !important;
-}
