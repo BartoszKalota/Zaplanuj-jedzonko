@@ -1,0 +1,40 @@
+.nav-menu-row {
+  background-color: $header-color;
+}
+
+.nav-menu-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+
+  p {
+    font-family: $Charmonman;
+    font-size: $logo-size-standard;
+    color: $white;
+    margin: 0;
+
+    span {
+      color: $accent-color1;
+      font-weight: bold;
+    }
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    font-size: $menu-item-size-standard;
+    text-transform: uppercase;
+    color: $white;
+
+    li {
+      display: inline-block;
+      margin-left: 75px;
+
+      a:hover {
+        color: $accent-color1;
+        transition: 0.2s;
+      }
+    }
+  }
+}

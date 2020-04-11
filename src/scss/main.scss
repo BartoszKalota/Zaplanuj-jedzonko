@@ -2,28 +2,6 @@
 
 @import 'config/colors';
 @import 'config/fonts';
+@import 'config/parameters';
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  font-size: $font-size-standard;
-}
-
-body {
-  margin: 0;
-  font-family: $Open-Sans;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
-}
-
-.active {
-  color: pink;
-}
+@import './components/LandingPage/LandingPage';
