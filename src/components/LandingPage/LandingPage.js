@@ -1,4 +1,5 @@
 import React from 'react';
+import { Container, Row } from 'react-bootstrap';
 
 import NavMenu from './NavMenu';
 import Carousel from './Carousel';
@@ -10,16 +11,48 @@ import Contact from './Contact';
 import Footer from './Footer';
 
 const LandingPage = () => (
-  <div>
-    <NavMenu />
-    <Carousel />
-    <CallToAction />
-    <WhyUs />
-    <Newsletter />
-    <AboutMe />
-    <Contact />
-    <Footer />
-  </div>
+  <>
+    <Row>
+      <Container>
+        <NavMenu />
+      </Container>
+    </Row>
+    <Row>
+      <Container>
+        <Carousel />
+      </Container>
+    </Row>
+    <Row>
+      <Container>
+        <CallToAction />
+      </Container>
+    </Row>
+    <Row>
+      <Container>
+        <WhyUs />
+      </Container>
+    </Row>
+    <Row>
+      <Container>
+        <Newsletter />
+      </Container>
+    </Row>
+    <Row>
+      <Container>
+        <AboutMe />
+      </Container>
+    </Row>
+    <Row>
+      <Container>
+        <Contact />
+      </Container>
+    </Row>
+    <Row>
+      <Container>
+        <Footer />
+      </Container>
+    </Row>
+  </>
 );
 
 export default LandingPage;
