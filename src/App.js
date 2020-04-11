@@ -5,18 +5,18 @@ import {
   Route
 } from 'react-router-dom';
 
-import Home from './components/Home';
-import Navigation from './components/Navigation';
+import LandingPage from './components/LandingPage';
+import AppMain from './components/AppMain';
+import NotFound from './components/NotFound';
 
 const App = () => (
   <div className='App'>
     <Router>
-      <>
-        <Navigation />
-        <Switch>
-          <Route exact path='/' component={Home} />
-        </Switch>
-      </>
+      <Switch>
+        <Route exact path='/' component={LandingPage} />
+        <Route path='/app' component={AppMain} />
+        <Route component={NotFound} />
+      </Switch>
     </Router>
   </div>
 );
