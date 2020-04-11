@@ -5,7 +5,9 @@ import {
 
 const NavMenu = () => (
   <>
-    <p>Zaplanuj <span>Jedzonko</span></p>
+    <Link exact to='/'>
+      <p>Zaplanuj <span>Jedzonko</span></p>
+    </Link>
     <ul>
       <li>
         <Link to='/app'>Zaplanuj posiłki!</Link>
