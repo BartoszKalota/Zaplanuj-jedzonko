@@ -12,43 +12,43 @@ import Footer from './Footer';
 
 const LandingPage = () => (
   <>
-    <Row>
-      <Container>
+    <Row className='nav-menu-row'>
+      <Container className='nav-menu-container'>
         <NavMenu />
       </Container>
     </Row>
-    <Row>
-      <Container>
+    <Row className='carousel-row'>
+      <Container className='carousel-container' id='section-1'>
         <Carousel />
       </Container>
     </Row>
-    <Row>
-      <Container>
+    <Row className='call-to-action-row'>
+      <Container className='call-to-action-container'>
         <CallToAction />
       </Container>
     </Row>
-    <Row>
-      <Container>
+    <Row className='why-us-row'>
+      <Container className='why-us-container'>
         <WhyUs />
       </Container>
     </Row>
-    <Row>
-      <Container>
+    <Row className='newsletter-row'>
+      <Container className='newsletter-container'>
         <Newsletter />
       </Container>
     </Row>
-    <Row>
-      <Container>
+    <Row className='about-me-row'>
+      <Container className='about-me-container' id='section-2'>
         <AboutMe />
       </Container>
     </Row>
-    <Row>
-      <Container>
+    <Row className='contact-row'>
+      <Container className='contact-container' id='section-3'>
         <Contact />
       </Container>
     </Row>
-    <Row>
-      <Container>
+    <Row className='footer-row'>
+      <Container className='footer-container'>
         <Footer />
       </Container>
     </Row>

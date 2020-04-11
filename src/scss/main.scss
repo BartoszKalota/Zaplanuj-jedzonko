@@ -2,6 +2,9 @@
 
 @import 'config/colors';
 @import 'config/fonts';
+@import 'config/parameters';
+
+@import './components/LandingPage/LandingPage';
 
 * {
   box-sizing: border-box;
@@ -10,6 +13,7 @@
 }
 
 html {
+  scroll-behavior: smooth;
   font-size: $font-size-standard;
 }
 
@@ -24,6 +28,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-.active {
-  color: pink;
+a {
+  color: inherit;
+  text-decoration: none !important;
 }
