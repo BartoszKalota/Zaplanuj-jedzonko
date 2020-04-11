@@ -24,6 +24,22 @@
   z-index: 2;
 }
 
+.text-container {
+  width: 70%;
+  text-align: center;
+
+  h3 {
+    font-size: 3.3rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+  }
+
+  p {
+    font-size: 1.8rem;
+    line-height: 2.2rem;
+  }
+}
+
 .arrow {
   font-size: 4rem;
   cursor: pointer;
