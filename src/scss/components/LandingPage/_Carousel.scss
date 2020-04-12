@@ -48,4 +48,11 @@
     text-shadow: 0px 6px 5px $white;
     transition: 0.3s;
   }
+
+  &:active {
+    position: relative;
+    top: 2px;
+    color: $arrow-active-color;
+    transition: 0s;
+  }
 }
