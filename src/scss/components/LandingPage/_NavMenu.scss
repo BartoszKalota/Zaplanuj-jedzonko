@@ -23,20 +23,20 @@
       font-weight: bold;
     }
   }
-  
-  ul {
-    width: 60%;
-    list-style: none;
-    margin: 0;
-    font-size: $menu-item-size-standard;
-    text-transform: uppercase;
-    color: $white;
-    display: flex;
-    justify-content: space-between;
-  
-    a:hover {
-      color: $accent-color1;
-      transition: 0.2s;
-    }
+}
+
+.nav-menu {
+  width: 60%;
+  list-style: none;
+  margin: 0;
+  font-size: $menu-item-size-standard;
+  text-transform: uppercase;
+  color: $white;
+  display: flex;
+  justify-content: space-between;
+
+  a:hover {
+    color: $accent-color1;
+    transition: 0.2s;
   }
 }
