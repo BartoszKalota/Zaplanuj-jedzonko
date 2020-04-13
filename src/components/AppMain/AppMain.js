@@ -4,17 +4,29 @@ import {
   Switch
 } from 'react-router-dom';
 
-import Navigation from './Navigation';
+import HeaderBar from './HeaderBar';
+import Navigation from './Navigation'
 import Welcome from './Welcome';
 import Test from './Test';
 
 const AppMain = () => (
   <>
-    <Navigation />  
-    <Switch>
-      <Route exact path='/app' component={Welcome} />
-      <Route path='/app/test' component={Test} />
-    </Switch>
+    <section className='app-scaffold'>
+      <section className='app-header'>
+        <HeaderBar />
+      </section>
+      <section className='app-main'>
+        <div className='nav'>
+          <Navigation />
+        </div>
+        <div className='presentation'>
+          <Switch>
+            <Route exact path='/app' component={Welcome} />
+            <Route path='/app/test' component={Test} />
+          </Switch>
+        </div>
+      </section>
+    </section>
   </>
 );
 

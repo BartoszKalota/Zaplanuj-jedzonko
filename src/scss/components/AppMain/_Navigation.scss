@@ -1,0 +1,17 @@
+.nav-item {
+  color: $white;
+  display: block;
+  padding: 1.7rem 1rem;
+  font-size: 1.4rem;
+  border-left: 5px solid $side-panel-color;
+
+  &:hover {
+    color: $white;
+    font-weight: bold;
+  }
+}
+
+.nav-item-active {
+  font-weight: bold;
+  border-left: 5px solid $accent-color1;
+}
