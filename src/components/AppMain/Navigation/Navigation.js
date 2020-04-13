@@ -24,7 +24,7 @@ const Navigation = () => {
       {menuItems.map(({id, name, link}) => (
         <li key={id}>
           <NavLink
-            to={link}
+            exact to={link}
             className='nav-item'
             activeClassName='nav-item-active'
           >
