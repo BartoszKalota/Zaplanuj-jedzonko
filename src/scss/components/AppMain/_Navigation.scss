@@ -4,14 +4,34 @@
   padding: 1.7rem 1rem;
   font-size: 1.4rem;
   border-left: 5px solid $side-panel-color;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
   &:hover {
     color: $white;
     font-weight: bold;
+  }
+
+  &:hover::after {
+    font-family: 'Font Awesome 5 Free';
+    font-size: 1.2rem;
+    content: '\f054';
+    color: $white;
   }
 }
 
 .nav-item-active {
   font-weight: bold;
   border-left: 5px solid $accent-color1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &::after {
+    font-family: 'Font Awesome 5 Free';
+    font-size: 1.2rem;
+    content: '\f054';
+    color: $accent-color1;
+  }
 }

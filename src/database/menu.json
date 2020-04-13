@@ -1,0 +1,19 @@
+{
+  "menu": [
+    {
+      "id": 1,
+      "name": "Pulpit",
+      "link": "/app"
+    },
+    {
+      "id": 2,
+      "name": "Przepisy",
+      "link": "/app/recipes"
+    },
+    {
+      "id": 3,
+      "name": "Plany",
+      "link": "/app/schedules"
+    }
+  ]
+}
