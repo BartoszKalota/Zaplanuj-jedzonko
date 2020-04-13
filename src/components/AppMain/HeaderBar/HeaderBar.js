@@ -8,7 +8,7 @@ const HeaderBar = () => (
     </Link>
     <div className='user-section'>
       Imię
-      <i class="fas fa-user-circle"></i>
+      <i className="fas fa-user-circle"></i>
     </div>
   </>
 );

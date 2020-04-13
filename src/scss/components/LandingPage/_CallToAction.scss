@@ -4,22 +4,42 @@
 
 .call-to-action-container {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   color: $white;
+  padding: 60px 0;
+
+  @include lg {
+    flex-direction: row;
+  }
 
   div {
-    width: 75%;
-    padding: 60px 0;
+    text-align: center;
+    margin-bottom: 50px;
+
+    @include lg {
+      width: 75%;
+      text-align: unset;
+      margin-bottom: 0;
+    }
   
     h4 {
-      font-size: 2.5rem;
+      font-size: 3rem;
       margin-bottom: 20px;
+
+      @include lg {
+        font-size: 2.5rem;
+      }
     }
   
     p {
-      font-size: 1.4rem;
+      font-size: 1.6rem;
       margin: 0;
+
+      @include lg {
+        font-size: 1.4rem;
+      }
     }
   }
 

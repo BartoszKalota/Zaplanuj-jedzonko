@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row } from 'react-bootstrap';
+import {Container, Row} from 'react-bootstrap';
 
 import NavMenu from './NavMenu';
 import Carousel from './Carousel';
@@ -14,11 +14,7 @@ const LandingPage = () => (
   <>
     <NavMenu />
     <Carousel />
-    <Row className='call-to-action-row'>
-      <Container className='call-to-action-container'>
-        <CallToAction />
-      </Container>
-    </Row>
+    <CallToAction />
     <Row className='why-us-row'>
       <Container className='why-us-container'>
         <WhyUs />

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Row } from 'react-bootstrap';
+import React, {useState, useEffect} from 'react';
+import {Container, Row} from 'react-bootstrap';
 
 /* Korzystając z react-bootstrapowej karuzeli nie mogłem znaleźć 
 *  sposobu (w rozsądnym czasie) na rozciągnięcie obrazków z karuzeli

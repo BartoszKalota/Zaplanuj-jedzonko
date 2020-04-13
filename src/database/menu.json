@@ -1,4 +1,26 @@
 {
+  "landingpageMenu": [
+    {
+      "id": 1,
+      "name": "Zaplanuj posiłki",
+      "link": "/app"
+    },
+    {
+      "id": 2,
+      "name": "Dlaczego warto?",
+      "link": "/#section-1"
+    },
+    {
+      "id": 3,
+      "name": "O mnie",
+      "link": "/#section-2"
+    },
+    {
+      "id": 4,
+      "name": "Kontakt",
+      "link": "/#section-3"
+    }
+  ],
   "menu": [
     {
       "id": 1,

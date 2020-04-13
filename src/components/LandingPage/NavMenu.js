@@ -1,39 +1,41 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import {
-  Container,
-  Row,
-  Col
-} from 'react-bootstrap';
+import React, {useState, useEffect} from 'react';
+import {Link} from 'react-router-dom';
+import {Container, Row} from 'react-bootstrap';
 
-const NavMenu = () => (
-  <>
-    <Row className='nav-menu-row'>
-      <Container className='nav-menu-container'>
-        <Col sm={5}>
-          <Link exact to='/'>
+const LANDING_PAGE_MENU_URL = 'http://localhost:3005/landingpageMenu';
+
+const NavMenu = () => {
+  const [menuItems, setMenuItems] = useState([]);
+
+  useEffect(() => {
+    fetch(LANDING_PAGE_MENU_URL)
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        throw new Error('Błąd');
+      })
+      .then(menuItems => setMenuItems(menuItems));
+  }, []);
+
+  return (
+    <>
+      <Row className='nav-menu-row'>
+        <Container className='nav-menu-container'>
+          <Link exact to='/' className='nav-menu-logo'>
             <p>Zaplanuj <span>Jedzonko</span></p>
           </Link>
-        </Col>
-        <Col sm={7}>
-          <ul id='menu'>
-            <li>
-              <Link to='/app'>Zaplanuj posiłki!</Link>
-            </li>
-            <li>
-              <Link to='/#section-1'>Dlaczego warto?</Link>
-            </li>
-            <li>
-              <Link to='/#section-2'>O mnie</Link>
-            </li>
-            <li>
-              <Link to='/#section-3'>Kontakt</Link>
-            </li>
+          <ul className='nav-menu-menu'>
+            {menuItems.map(({id, name, link}) => (
+              <li key={id}>
+                <Link to={link}>{name}</Link>
+              </li>
+            ))}
           </ul>
-        </Col>
-      </Container>
-    </Row>
-  </>
-);
+        </Container>
+      </Row>
+    </>
+  );
+}
 
 export default NavMenu;

@@ -1,7 +1,7 @@
-$desktop-start-width: 992px;
+$lg: 992px;
 
-@mixin desktop {
-  @media (min-width: #{$desktop-start-width}) {
+@mixin lg {
+  @media (min-width: #{$lg}) {
     @content;
   }
 }
