@@ -12,11 +12,7 @@ import Footer from './Footer';
 
 const LandingPage = () => (
   <>
-    <Row className='nav-menu-row'>
-      <Container className='nav-menu-container'>
-        <NavMenu />
-      </Container>
-    </Row>
+    <NavMenu />
     <Carousel />
     <Row className='call-to-action-row'>
       <Container className='call-to-action-container'>

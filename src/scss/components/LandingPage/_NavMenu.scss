@@ -10,9 +10,13 @@
 
   p {
     font-family: $Charmonman;
-    font-size: $logo-size-standard;
     color: $white;
     margin: 0;
+    font-size: $logo-size-small;
+
+    @include desktop {
+      font-size: $logo-size-standard;
+    }
 
     span {
       color: $accent-color1;
@@ -26,15 +30,12 @@
     font-size: $menu-item-size-standard;
     text-transform: uppercase;
     color: $white;
+    display: flex;
+    justify-content: space-between;
 
-    li {
-      display: inline-block;
-      margin-left: 75px;
-
-      a:hover {
-        color: $accent-color1;
-        transition: 0.2s;
-      }
+    a:hover {
+      color: $accent-color1;
+      transition: 0.2s;
     }
   }
 }

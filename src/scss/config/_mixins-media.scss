@@ -1,0 +1,7 @@
+$desktop-start-width: 992px;
+
+@mixin desktop {
+  @media (min-width: #{$desktop-start-width}) {
+    @content;
+  }
+}
