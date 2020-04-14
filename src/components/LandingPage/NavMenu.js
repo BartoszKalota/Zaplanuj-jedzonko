@@ -3,11 +3,12 @@ import {Link} from 'react-router-dom';
 import {Container, Row} from 'react-bootstrap';
 
 const LANDING_PAGE_MENU_URL = 'http://localhost:3005/landingpageMenu';
-const MOBILEMAX = 992 + 15; // +15px szerokości za pasek przewijania
+const MOBILEMAX = 992 + 15; // +15px szerokości (pasek przewijania)
 
 const NavMenu = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [mobileMode, setMobileMode] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Pobranie elementów menu
   useEffect(() => {
@@ -21,16 +22,20 @@ const NavMenu = () => {
       .then(menuItems => {
         setMenuItems(menuItems);
         // Nasłuchiwanie na przejście granicy trybu mobilnego
-        window.addEventListener('resize', () => checkWindowWidth());
+        checkWindowWidth(); // po otwarciu strony
+        window.addEventListener('resize', () => checkWindowWidth()); // po zmianie szerokości okna
       });
   }, []);
   
-  // Zmiana trybu (state'u) w zależności od szerokości okna
+  // Zmiana trybu (mobilny lub nie) w zależności od szerokości okna
   const checkWindowWidth = () => setMobileMode(window.innerWidth < MOBILEMAX);
 
-  // Warunkowe renderowanie wyglądu menu
-  let navMenu = (                            // zwykłe menu
-    <ul className='nav-menu'>
+  // Otwarcie/Zamknięcie mobilnego menu (hamburgera)
+  const handleOnHamburger = () => setIsMenuOpen(prevState => !prevState);
+
+  // Menu
+  const navMenu = (                     // w trybie mobilnym lub standardowym
+    <ul className={mobileMode ? 'nav-menu mobile-menu' : 'nav-menu'}>
       {menuItems.map(({id, name, link}) => (
         <li key={id}>
           <Link to={link}>{name}</Link>
@@ -38,11 +43,22 @@ const NavMenu = () => {
       ))}
     </ul>
   );
-  if (mobileMode) {
-    navMenu = (                              // hamburger
-      <p>hamburger</p>
-    );
-  }
+
+  // Hamburger
+  const hamburger = (
+    <button className='hamburger' onClick={handleOnHamburger}>
+      {isMenuOpen
+        ? <i class="fas fa-times"></i>  // otwarty lub zamknięty
+        : <i class="fas fa-bars"></i>}
+    </button>
+  );
+
+  // Menu jest domyślnie ukrywane w trybie mobilnym, 
+  // a widoczne w trybie standardowym
+  useEffect(() => {
+    const isMenuOpen = mobileMode ? false : true;
+    setIsMenuOpen(isMenuOpen);
+  }, [mobileMode]);
 
   return (
     <>
@@ -51,11 +67,12 @@ const NavMenu = () => {
           <Link exact to='/' className='nav-menu-logo'>
             <p>Zaplanuj <span>Jedzonko</span></p>
           </Link>
-          {navMenu}
+          {isMenuOpen && navMenu}
+          {mobileMode && hamburger}
         </Container>
       </Row>
     </>
   );
-}
+};
 
 export default NavMenu;
