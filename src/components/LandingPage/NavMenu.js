@@ -30,15 +30,18 @@ const NavMenu = () => {
   // Zmiana trybu (mobilny lub nie) w zależności od szerokości okna
   const checkWindowWidth = () => setMobileMode(window.innerWidth < MOBILEMAX);
 
-  // Otwarcie/Zamknięcie mobilnego menu (hamburgera)
+  // Otwarcie/Zamknięcie mobilnego menu (po kliknięciu w hamburgera)
   const handleOnHamburger = () => setIsMenuOpen(prevState => !prevState);
+
+  // Kliknięcie w dowolny przycisk mobilnego menu chowa menu
+  const handleOnMobileMenuItem = () => setIsMenuOpen(false);
 
   // Menu
   const navMenu = (                     // w trybie mobilnym lub standardowym
     <ul className={mobileMode ? 'nav-menu mobile-menu' : 'nav-menu'}>
       {menuItems.map(({id, name, link}) => (
         <li key={id}>
-          <Link to={link}>{name}</Link>
+          <Link to={link} onClick={handleOnMobileMenuItem}>{name}</Link>
         </li>
       ))}
     </ul>
