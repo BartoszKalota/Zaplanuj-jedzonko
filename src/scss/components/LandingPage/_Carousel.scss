@@ -1,8 +1,13 @@
 .carousel-row {
   height: 450px;
+  margin-top: 4.93rem;
   position: relative;
   z-index: 0;
   background-size: cover;
+
+  @include lg {
+    margin-top: 6.5rem;
+  }
 
   &::before {
     content: '';

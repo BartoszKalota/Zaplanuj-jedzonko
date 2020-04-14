@@ -1,5 +1,10 @@
 .nav-menu-row {
+  width: 100%;
   background-color: $header-color;
+  position: fixed;
+  top: 0;
+  z-index: 3;
+  box-shadow: $shadow-nav;
 }
 
 .nav-menu-container {
@@ -45,9 +50,10 @@
   width: 101%;
   position: absolute;
   z-index: 3;
-  background-color: $header-color;
+  background-color: lighten($header-color, 5%);
+  box-shadow: $shadow-nav;
   display: block;
-  top: 69px;
+  top: 4.93rem;
   left: 50%;
   transform: translateX(-50%);
 

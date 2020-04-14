@@ -48,8 +48,8 @@ const NavMenu = () => {
   const hamburger = (
     <button className='hamburger' onClick={handleOnHamburger}>
       {isMenuOpen
-        ? <i class="fas fa-times"></i>  // otwarty lub zamknięty
-        : <i class="fas fa-bars"></i>}
+        ? <i className="fas fa-times"></i>  // otwarty lub zamknięty
+        : <i className="fas fa-bars"></i>}
     </button>
   );
 
