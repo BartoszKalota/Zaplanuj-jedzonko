@@ -1,0 +1,60 @@
+.why-us-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: unset;
+  padding: 80px 0;
+
+  @include lg {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 100px 0;
+  }
+
+  .column {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding: 0 0;
+
+    @include lg {
+      width: 310px;
+    }
+
+    &:nth-of-type(2) {
+      margin: 70px 0;
+
+      @include lg {
+        margin: 0 45px;
+      }
+    }
+
+    i {
+      font-size: 7rem;
+      color: $rows-and-functions-color;
+
+      @include lg {
+        font-size: 5rem;
+      }
+    }
+
+    h3 {
+      font-size: 2.8rem;
+      color: $side-panel-color;
+      margin: 25px 0 35px 0;
+
+      @include lg {
+        font-size: 2.1rem;
+        margin: 25px 0 15px 0;
+      }
+    }
+
+    p {
+      font-size: 1.6rem;
+      color: $side-panel-color;
+
+      @include lg {
+        font-size: 1.4rem;
+      }
+    }
+  }
+}

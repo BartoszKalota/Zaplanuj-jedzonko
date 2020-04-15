@@ -1,5 +1,26 @@
 import React from 'react';
+import {Container, Row} from 'react-bootstrap';
 
-const WhyUs = () => <h1>WhyUs</h1>;
+const WhyUs = () => (
+  <Row className='why-us-row'>
+    <Container className='why-us-container'>
+      <div className='column'>
+        <i class="fas fa-check"></i>
+        <h3>Lorem ipsum dolor sit amet</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliqaum at porttitor sem. Aliquam erat volutpat. Donec placerat nisl magna, et faucibus arcu condimentum sed.</p>
+      </div>
+      <div className='column'>
+        <i class="far fa-clock"></i>
+        <h3>Lorem ipsum dolor sit amet</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliqaum at porttitor sem. Aliquam erat volutpat. Donec placerat nisl magna, et faucibus arcu condimentum sed.</p>
+      </div>
+      <div className='column'>
+        <i class="fas fa-list"></i>
+        <h3>Lorem ipsum dolor sit amet</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliqaum at porttitor sem. Aliquam erat volutpat. Donec placerat nisl magna, et faucibus arcu condimentum sed.</p>
+      </div>
+    </Container>
+  </Row>
+);
 
 export default WhyUs;

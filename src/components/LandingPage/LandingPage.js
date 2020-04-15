@@ -15,11 +15,7 @@ const LandingPage = () => (
     <NavMenu />
     <Carousel />
     <CallToAction />
-    <Row className='why-us-row'>
-      <Container className='why-us-container'>
-        <WhyUs />
-      </Container>
-    </Row>
+    <WhyUs />
     <Row className='newsletter-row'>
       <Container className='newsletter-container'>
         <Newsletter />
