@@ -3,6 +3,7 @@
   background-color: $header-color;
   position: fixed;
   top: 0;
+  left: 15px;           // na pasek przewijania
   z-index: 3;
   box-shadow: $shadow-nav;
 }
