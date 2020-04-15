@@ -64,17 +64,15 @@ const NavMenu = () => {
   }, [mobileMode]);
 
   return (
-    <>
-      <Row className='nav-menu-row'>
-        <Container className='nav-menu-container'>
-          <Link exact to='/' className='nav-menu-logo'>
-            <p>Zaplanuj <span>Jedzonko</span></p>
-          </Link>
-          {isMenuOpen && navMenu}
-          {mobileMode && hamburger}
-        </Container>
-      </Row>
-    </>
+    <Row className='nav-menu-row'>
+      <Container className='nav-menu-container'>
+        <Link exact to='/' className='nav-menu-logo'>
+          <p>Zaplanuj <span>Jedzonko</span></p>
+        </Link>
+        {isMenuOpen && navMenu}
+        {mobileMode && hamburger}
+      </Container>
+    </Row>
   );
 };
 

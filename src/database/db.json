@@ -21,6 +21,14 @@
       "link": "/#section-3"
     }
   ],
+
+  "emailsForNewsletter": [
+    {
+      "id": 1,
+      "email": "test@test"
+    }
+  ],
+  
   "menu": [
     {
       "id": 1,

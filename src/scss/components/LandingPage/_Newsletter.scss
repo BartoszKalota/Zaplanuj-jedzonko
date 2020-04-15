@@ -1,0 +1,50 @@
+.newsletter-row {
+  background-color: $header-color;
+}
+
+.newsletter-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: $white;
+  padding: 50px 0;
+
+  @include lg {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  h4 {
+    font-size: 2.8rem;
+    margin-bottom: 50px;
+    
+    @include lg {
+      font-size: 2.3rem;
+      margin: 0;
+    }
+  }
+
+  form {
+    min-width: 480px;
+  }
+
+  input {
+    @include input-standard;
+    border-radius: 15px 0 0 15px;
+
+    &:focus {
+      border-right: unset;
+    }
+  }
+  
+  button {
+    @include button-standard;
+    border-radius: 0 15px 15px 0;
+    border-left: unset;
+
+    &:hover, &:active {
+      border: 4px solid lighten($accent-color1, 15%);
+      border-left: unset;
+    }
+  }
+}

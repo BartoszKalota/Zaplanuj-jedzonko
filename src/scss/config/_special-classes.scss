@@ -1,0 +1,11 @@
+.added-to-newsletter {
+  &:hover, &:active {
+    border: 4px solid $header-color !important;
+    border-left: unset !important;
+  }
+
+  &:hover {
+    color: $white !important;
+    background-color: $accent-color1 !important;
+  }
+}
