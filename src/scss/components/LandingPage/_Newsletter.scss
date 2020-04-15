@@ -1,0 +1,24 @@
+.newsletter-row {
+  background-color: $header-color;
+}
+
+.newsletter-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: $white;
+  padding: 50px 0;
+
+  h4 {
+    font-size: 2.3rem;
+    margin: 0;
+  }
+
+  input {
+    @include input-newsletter
+  }
+  
+  button {
+    @include button-newsletter;
+  }
+}

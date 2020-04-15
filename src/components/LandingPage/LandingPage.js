@@ -16,11 +16,7 @@ const LandingPage = () => (
     <Carousel />
     <CallToAction />
     <WhyUs />
-    <Row className='newsletter-row'>
-      <Container className='newsletter-container'>
-        <Newsletter />
-      </Container>
-    </Row>
+    <Newsletter />
     <Row className='about-me-row'>
       <Container className='about-me-container' id='section-2'>
         <AboutMe />

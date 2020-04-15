@@ -21,6 +21,14 @@
       "link": "/#section-3"
     }
   ],
+
+  "emailsForNewsletters": [
+    {
+      "id": 1,
+      "email": "abc@abc.pl"
+    }
+  ],
+
   "menu": [
     {
       "id": 1,
