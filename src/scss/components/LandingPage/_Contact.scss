@@ -1,0 +1,108 @@
+.contact-row {
+  background-color: $side-panel-color;
+}
+
+.contact-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: unset;
+  align-items: center;
+  padding: 80px 0 50px;
+
+  @include lg {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: unset;
+    padding: 100px 0 50px;
+  }
+
+  .column-reversed-color {
+    color: $white;
+    text-align: left;
+  
+    h6 {
+      font-size: $header-size-large;
+      text-align: center;
+      margin-bottom: 50px;
+
+      @include lg {
+        font-size: $header-size-standard;
+        text-align: left;
+        margin-bottom: 20px;
+      }
+    }
+  
+    p, ul {
+      font-size: $descr-size-large;
+      color: $white;
+      margin-bottom: 0;
+      
+      @include lg {
+        font-size: $descr-size-standard;
+      }
+    }
+
+    .socials {
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+
+      @include lg {
+        display: block;
+      }
+
+      a:nth-of-type(2) {
+        i {
+          margin: 0 50px;
+        }
+      }
+
+      i {
+        font-size: 2.8rem;
+        color: $white;
+
+        &:hover {
+          color: $accent-color1;
+          transition: 0.3s;
+        }
+
+        &:active {
+          color: $accent-color1;
+        }
+      }
+    }
+  }
+}
+
+.contact-section-form {
+  min-width: 310px;
+
+  input {
+    width: 60%;
+    font-size: 1.6rem;
+    padding: 10px 40px;
+    border: 4px solid $side-panel-color;
+    border-right: unset;
+    border-radius: 15px 0 0 15px;
+
+    @include lg {
+      font-size: 1rem;
+      padding: 5px 20px;
+      border-radius: 10px 0 0 10px;
+    }
+  }
+
+  button {
+    width: 40%;
+    font-size: 1.6rem;
+    padding: 10px 40px;
+    border-radius: 0 15px 15px 0;
+    border-left: unset;
+
+    @include lg {
+      font-size: 1rem;
+      padding: 5px 20px;
+      border-radius: 0 10px 10px 0;
+    }
+  }
+}
