@@ -1,6 +1,7 @@
 // Kolejność alfabetyczna
 
 $accent-color1: #FF6600;
+$accent-lighten-color1: lighten($accent-color1, 15%);
 
 $arrow-active-color: rgb(128, 128, 128);
 
@@ -11,6 +12,7 @@ $bg-color: #FFFFFA;
 $carousel-img-overlay: #EBEBEB;
 
 $header-color: #4a4a49;
+$header-darken-color: darken($header-color, 10%);
 
 $msg-info-color: #3498DB;
 $msg-succ-color: #468966;

@@ -9,52 +9,52 @@
     justify-content: space-between;
     padding: 100px 0;
   }
+}
 
-  .column {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    padding: 0 0;
+.column {         // klasa niezagnieżdżona, aby była dostępna w sekcji Contact
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding: 0 0;
+
+  @include lg {
+    width: 310px;
+  }
+
+  &:nth-of-type(2) {
+    margin: 70px 0;
 
     @include lg {
-      width: 310px;
+      margin: 0 45px;
     }
+  }
 
-    &:nth-of-type(2) {
-      margin: 70px 0;
+  i {
+    font-size: 7rem;
+    color: $rows-and-functions-color;
 
-      @include lg {
-        margin: 0 45px;
-      }
+    @include lg {
+      font-size: 5rem;
     }
+  }
 
-    i {
-      font-size: 7rem;
-      color: $rows-and-functions-color;
+  h3 {
+    font-size: $header-size-large;
+    color: $side-panel-color;
+    margin: 25px 0 35px 0;
 
-      @include lg {
-        font-size: 5rem;
-      }
+    @include lg {
+      font-size: $header-size-standard * 0.913;
+      margin: 25px 0 15px 0;
     }
+  }
 
-    h3 {
-      font-size: $header-size-large;
-      color: $side-panel-color;
-      margin: 25px 0 35px 0;
+  p {
+    font-size: $descr-size-large;
+    color: $side-panel-color;
 
-      @include lg {
-        font-size: $header-size-standard * 0.913;
-        margin: 25px 0 15px 0;
-      }
-    }
-
-    p {
-      font-size: $descr-size-large;
-      color: $side-panel-color;
-
-      @include lg {
-        font-size: $descr-size-standard;
-      }
+    @include lg {
+      font-size: $descr-size-standard;
     }
   }
 }
