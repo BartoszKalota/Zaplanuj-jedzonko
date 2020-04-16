@@ -1,5 +1,4 @@
 import React from 'react';
-import {Container, Row} from 'react-bootstrap';
 
 import NavMenu from './NavMenu';
 import Carousel from './Carousel';
@@ -35,11 +34,7 @@ const LandingPage = () => {
       <Newsletter onAddToNewsletter={handleOnAddToNewsletter} />
       <AboutMe />
       <Contact />
-      <Row className='footer-row'>
-        <Container className='footer-container'>
-          <Footer />
-        </Container>
-      </Row>
+      <Footer />
     </>
   );
 }

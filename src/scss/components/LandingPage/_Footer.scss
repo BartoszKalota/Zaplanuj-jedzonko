@@ -1,0 +1,23 @@
+.footer-row {
+  background-color: $header-color;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: center;
+  font-size: 1.7rem;
+  color: $white;
+  padding: 20px 0;
+
+  @include lg {
+    font-size: 1.5rem;
+  }
+
+  a {
+    color: $accent-color1;
+
+    &:hover {
+      color: $accent-lighten-color1;
+    }
+  }
+}
