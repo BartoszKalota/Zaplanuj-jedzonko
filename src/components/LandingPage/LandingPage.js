@@ -33,11 +33,7 @@ const LandingPage = () => {
       <CallToAction />
       <WhyUs />
       <Newsletter onAddToNewsletter={handleOnAddToNewsletter} />
-      <Row className='about-me-row'>
-        <Container className='about-me-container' id='section-2'>
-          <AboutMe />
-        </Container>
-      </Row>
+      <AboutMe />
       <Row className='contact-row'>
         <Container className='contact-container' id='section-3'>
           <Contact />
