@@ -25,20 +25,20 @@
     }
   
     h2 {
-      font-size: 3rem;
+      font-size: $header-size-large * 1.072;
       margin-bottom: 20px;
 
       @include lg {
-        font-size: 2.5rem;
+        font-size: $header-size-standard * 1.087;
       }
     }
   
     p {
-      font-size: 1.6rem;
+      font-size: $descr-size-large;
       margin: 0;
 
       @include lg {
-        font-size: 1.4rem;
+        font-size: $descr-size-standard;
       }
     }
   }
