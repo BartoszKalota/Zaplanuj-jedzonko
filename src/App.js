@@ -1,24 +1,11 @@
-import React from 'react';
-import {
-  HashRouter as Router,
-  Switch,
-  Route
-} from 'react-router-dom';
-
-import Home from './components/Home';
-import Navigation from './components/Navigation';
+import React from 'react'
+import AppContainer from './navigation'
+import Firebase, { FirebaseProvider } from './config/Firebase'
 
 const App = () => (
-  <div className='App'>
-    <Router>
-      <>
-        <Navigation />
-        <Switch>
-          <Route exact path='/' component={Home} />
-        </Switch>
-      </>
-    </Router>
-  </div>
+  <FirebaseProvider value={Firebase}>
+    <AppContainer />
+  </FirebaseProvider>
 );
 
 export default App;
