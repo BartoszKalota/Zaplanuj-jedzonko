@@ -1,4 +1,4 @@
-export const firebaseConfig = {
+export default {
   apiKey: "AIzaSyC3jmuIqis1-bubBm15hpQC0vV7BwTo-SA",
   authDomain: "zaplanuj-jedzonko.firebaseapp.com",
   databaseURL: "https://zaplanuj-jedzonko.firebaseio.com",
