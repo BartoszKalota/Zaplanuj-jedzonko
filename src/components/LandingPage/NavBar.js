@@ -14,7 +14,7 @@ import {
 import MenuIcon from '@material-ui/icons/Menu';
 
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   navBar: {
     minHeight: 75,
     '@media (min-width:1252px)': {
