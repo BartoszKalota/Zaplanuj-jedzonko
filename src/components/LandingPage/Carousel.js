@@ -42,7 +42,7 @@ const CarouselSection = () => {
         />
         <Carousel.Caption className={classes.caption}>
           <h3 className={classes.captionHeader}>First slide label</h3>
-          <p className={classes.captionDescr}>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+          <p className={classes.captionDescr}>Nulla vitae elit libero, a pharetra augue mollis interdum</p>
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
@@ -53,7 +53,7 @@ const CarouselSection = () => {
 
         <Carousel.Caption className={classes.caption}>
           <h3 className={classes.captionHeader}>Second slide label</h3>
-          <p className={classes.captionDescr}>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          <p className={classes.captionDescr}>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
@@ -63,7 +63,7 @@ const CarouselSection = () => {
         />
         <Carousel.Caption className={classes.caption}>
           <h3 className={classes.captionHeader}>Third slide label</h3>
-          <p className={classes.captionDescr}>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+          <p className={classes.captionDescr}>Praesent commodo cursus magna, vel scelerisque nisl consectetur</p>
         </Carousel.Caption>
       </Carousel.Item>
     </Carousel>

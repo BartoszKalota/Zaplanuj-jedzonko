@@ -3,13 +3,13 @@ import { createMuiTheme } from '@material-ui/core/styles';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#5B605F'       // panel boczny, nawigacja
+      main: '#4a4a49'       // nagłówek, , kolor tekstu w kolumnach
     },
     secondary: {
       main: '#FF6600'       // przyciski, wyróżnienia, nagłówki ekranów
     },
     text: {
-      primary: '#4a4a49',   // nagłówek, , kolor tekstu w kolumnach
+      primary: '#5B605F',   // panel boczny, nawigacja
       secondary: '#A1A194'  // kolor tekstu z wierszy w tabelach, ikony rozszerzonych funkcji
     },
     background: {
