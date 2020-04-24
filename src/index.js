@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-// import './scss/main.scss';
+import './scss/main.scss';  // głównie do przerobienia wybranych styli z zewnętrznych bibliotek
 import App from './App';
 
 ReactDOM.render(
