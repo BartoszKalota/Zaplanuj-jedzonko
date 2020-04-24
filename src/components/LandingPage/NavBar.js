@@ -17,16 +17,18 @@ import MenuIcon from '@material-ui/icons/Menu';
 const useStyles = makeStyles((theme) => ({
   navBar: {
     minHeight: 75,
-    '@media (min-width:1240px)': {
+    '@media (min-width:1252px)': {
       minHeight: 90
     }
   },
   title: {
+    width: 255,   // przy domyślnej (mniejszej) szerokości, końcowe 'o' było przycięte 
     fontFamily: '"Charmonman", cursive',
     fontSize: '2rem',
     display: 'flex',
     alignItems: 'center',
-    '@media (min-width:1240px)': {
+    '@media (min-width:1252px)': {
+      width: 320,   // przy domyślnej (mniejszej) szerokości, końcowe 'o' było przycięte
       fontSize: '2.5rem'
     }
   },
@@ -50,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
       fontSize: '0.9rem',
       marginLeft: 30
     },
-    '@media (min-width:1240px)': {
+    '@media (min-width:1252px)': {
       fontSize: '1.05rem',
       marginLeft: 40
     }
