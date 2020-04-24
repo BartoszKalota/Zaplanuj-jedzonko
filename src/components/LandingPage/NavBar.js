@@ -114,7 +114,7 @@ const NavBar = () => {
 
   return (
     <>
-      <AppBar position="static">
+      <AppBar>
         <Toolbar>
           <Grid item container xs={12} className={classes.navBar}>
             <Grid item xs={false} sm={1} xl={2} />

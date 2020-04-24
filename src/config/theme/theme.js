@@ -3,7 +3,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#4a4a49'       // nagłówek, , kolor tekstu w kolumnach
+      main: '#4a4a49'       // nagłówek, kolor tekstu w kolumnach
     },
     secondary: {
       main: '#FF6600'       // przyciski, wyróżnienia, nagłówki ekranów

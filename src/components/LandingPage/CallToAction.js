@@ -20,13 +20,6 @@ const useStyles = makeStyles(theme => ({
       marginBottom: 0
     }
   },
-  header: {
-    fontSize: '2.8rem',
-    marginBottom: 25
-  },
-  descr: {
-    fontSize: '1.3rem'
-  },
   btnSection: {
     display: 'flex',
     justifyContent: 'center',
@@ -38,7 +31,7 @@ const useStyles = makeStyles(theme => ({
   btn: {
     color: '#FFFFFA',
     padding: '10px 50px',
-    fontSize: '1.3rem',
+    fontSize: '1.2rem',
     fontWeight: 'bold'
   }
 }));
@@ -50,10 +43,10 @@ const CallToAction = () => {
       <Grid item xs={false} sm={1} xl={2} />
       <Grid item container xs={12} sm={10} xl={8}>
         <Grid item xs={12} md={8} className={classes.textSection}>
-          <Typography variant="h2" className={classes.header}>
+          <Typography variant="h4" component="h2" gutterBottom>
             Lorem ipsum dolor sit amet
           </Typography>
-          <Typography variant="body1" className={classes.descr}>
+          <Typography variant="h6" component="p">
             consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
           </Typography>
         </Grid>
