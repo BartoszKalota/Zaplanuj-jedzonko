@@ -8,6 +8,12 @@ import img3 from '../../assets/carousel-bg3.jpg';
  
 
 const useStyles = makeStyles({
+  carouselSection: {
+    marginTop: 75,
+    '@media (min-width:1252px)': {
+      marginTop: 90
+    }
+  },
   carouselItem: {
     height: 500,
     backgroundRepeat: 'no-repeat',
@@ -34,7 +40,7 @@ const useStyles = makeStyles({
 const CarouselSection = () => {
   const classes = useStyles();
   return (
-    <Carousel>
+    <Carousel className={classes.carouselSection}>
       <Carousel.Item>
         <div
           className={`${classes.carouselItem} d-block w-100`}

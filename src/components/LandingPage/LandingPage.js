@@ -4,6 +4,7 @@ import { Grid } from '@material-ui/core';
 import NavBar from './NavBar';
 import CarouselSection from './Carousel';
 import CallToAction from './CallToAction';
+import WhyUs from './WhyUs';
 
 const LandingPage = () => {
   return (
@@ -11,6 +12,7 @@ const LandingPage = () => {
       <NavBar />
       <CarouselSection />
       <CallToAction />
+      <WhyUs />
     </Grid>
   );
 };
