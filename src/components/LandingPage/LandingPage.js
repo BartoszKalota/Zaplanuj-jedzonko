@@ -6,6 +6,7 @@ import CarouselSection from './Carousel';
 import CallToAction from './CallToAction';
 import WhyUs from './WhyUs';
 import Newsletter from './Newsletter';
+import AboutMe from './AboutMe';
 
 const LandingPage = () => {
   return (
@@ -15,6 +16,7 @@ const LandingPage = () => {
       <CallToAction />
       <WhyUs />
       <Newsletter />
+      <AboutMe />
     </Grid>
   );
 };
