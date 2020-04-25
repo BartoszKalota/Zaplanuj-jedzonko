@@ -40,7 +40,7 @@ const useStyles = makeStyles({
 const CarouselSection = () => {
   const classes = useStyles();
   return (
-    <Carousel className={classes.carouselSection}>
+    <Carousel className={classes.carouselSection} id="section1">
       <Carousel.Item>
         <div
           className={`${classes.carouselItem} d-block w-100`}

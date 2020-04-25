@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Link as LinkScroll } from 'react-scroll';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Grid,
@@ -39,7 +40,8 @@ const useStyles = makeStyles(theme => ({
   sectionDesktop: {
     display: 'none',
     [theme.breakpoints.up('md')]: {
-      display: 'flex'
+      display: 'flex',
+      color: 'inherit'
     },
   },
   desktopBtn: {
@@ -90,24 +92,56 @@ const NavBar = () => {
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        <Button color="inherit">
-          ZAPLANUJ POSIŁKI!
-        </Button>
+        <Link 
+          to="/app"
+          style={{ width: '100%' }}
+        >
+          <Button color="inherit" fullWidth>
+            ZAPLANUJ POSIŁKI!
+          </Button>
+        </Link>
       </MenuItem>
       <MenuItem>
-        <Button color="inherit">
-          DLACZEGO WARTO?
-        </Button>
+        <LinkScroll
+          to="section2"
+          spy={true}
+          smooth={true}
+          offset={-75}
+          duration={500}
+          style={{ width: '100%' }}
+        >
+          <Button color="inherit" fullWidth>
+            DLACZEGO WARTO?
+          </Button>
+        </LinkScroll>
       </MenuItem>
       <MenuItem>
-        <Button color="inherit">
-          O MNIE
-        </Button>
+        <LinkScroll
+          to="section3"
+          spy={true}
+          smooth={true}
+          offset={-75}
+          duration={500}
+          style={{ width: '100%' }}
+        >
+          <Button color="inherit" fullWidth>
+            O MNIE
+          </Button>
+        </LinkScroll>
       </MenuItem>
       <MenuItem>
-        <Button color="inherit">
-          KONTAKT
-        </Button>
+        <LinkScroll
+          to="section4"
+          spy={true}
+          smooth={true}
+          offset={-75}
+          duration={500}
+          style={{ width: '100%' }}
+        >
+          <Button color="inherit" fullWidth>
+            KONTAKT
+          </Button>
+        </LinkScroll>
       </MenuItem>
     </Menu>
   );
@@ -120,23 +154,62 @@ const NavBar = () => {
             <Grid item xs={false} sm={1} xl={2} />
             <Grid item container xs={12} sm={10} xl={8} justify="space-between" alignItems="stretch">
               <Typography variant="h1" className={classes.title} noWrap>
-                <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <LinkScroll
+                  to="section1"
+                  spy={true}
+                  smooth={true}
+                  offset={-90}
+                  duration={500}
+                  style={{ cursor: 'pointer' }}
+                >
                   Zaplanuj <span className={classes.titleColor}>Jedzonko</span>
-                </Link>
+                </LinkScroll>
               </Typography>
               <div className={classes.sectionDesktop}>
-                <Button color="inherit" className={classes.desktopBtn}>
-                  ZAPLANUJ POSIŁKI!
-                </Button>
-                <Button color="inherit" className={classes.desktopBtn}>
-                  DLACZEGO WARTO?
-                </Button>
-                <Button color="inherit" className={classes.desktopBtn}>
-                  O MNIE
-                </Button>
-                <Button color="inherit" className={classes.desktopBtn}>
-                  KONTAKT
-                </Button>
+                <Link
+                  to="/app"
+                  style={{ display: 'flex' }}
+                >
+                  <Button color="inherit" className={classes.desktopBtn}>
+                    ZAPLANUJ POSIŁKI!
+                  </Button>
+                </Link>
+                <LinkScroll
+                  to="section2"
+                  spy={true}
+                  smooth={true}
+                  offset={-90}
+                  duration={500}
+                  style={{ display: 'flex' }}
+                >
+                  <Button color="inherit" className={classes.desktopBtn}>
+                    DLACZEGO WARTO?
+                  </Button>
+                </LinkScroll>
+                <LinkScroll
+                  to="section3"
+                  spy={true}
+                  smooth={true}
+                  offset={-90}
+                  duration={500}
+                  style={{ display: 'flex' }}
+                >
+                  <Button color="inherit" className={classes.desktopBtn}>
+                    O MNIE
+                  </Button>
+                </LinkScroll>
+                <LinkScroll
+                  to="section4"
+                  spy={true}
+                  smooth={true}
+                  offset={-90}
+                  duration={500}
+                  style={{ display: 'flex' }}
+                >
+                  <Button color="inherit" className={classes.desktopBtn}>
+                    KONTAKT
+                  </Button>
+                </LinkScroll>
               </div>
               <div className={classes.sectionMobile}>
                 <IconButton

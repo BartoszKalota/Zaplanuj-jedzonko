@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
 const AboutMe = () => {
   const classes = useStyles();
   return (
-    <Grid item container xs={12} className={classes.aboutSection}>
+    <Grid item container xs={12} className={classes.aboutSection} id="section3">
       <Grid item xs={false} sm={1} xl={2} />
       <Grid item container xs={12} sm={10} xl={8} wrap="wrap-reverse">
         <Grid item xs={12} md={5}>

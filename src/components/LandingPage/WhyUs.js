@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 const WhyUs = () => {
   const classes = useStyles();
   return (
-    <Grid item container xs={12} className={classes.whyUsSection}>
+    <Grid item container xs={12} className={classes.whyUsSection} id="section2">
       <Grid item xs={false} sm={1} xl={2} />
       <Grid item container xs={12} sm={10} xl={8} justify="space-between">
         <Grid item container direction="column" alignItems="center" className={classes.tile}>

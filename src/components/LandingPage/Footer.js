@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link as LinkScroll } from 'react-scroll';
 import {
   Grid,
   Typography
@@ -12,9 +12,16 @@ const Footer = () => (
       <Typography component="small" style={{ color: '#FFF', padding: '20px 0' }}>
         Copyright
         <Typography component="span" color="secondary">
-          <Link to="/" style={{ textDecoration: 'none', color: 'inherit', marginLeft: 5 }}>
+          <LinkScroll
+            to="section1"
+            spy={true}
+            smooth={true}
+            offset={-90}
+            duration={500}
+            style={{ marginLeft: 5, cursor: 'pointer' }}
+          >
             ZaplanujJedzonko.pl
-           </Link>
+           </LinkScroll>
         </Typography>
       </Typography>
     </Grid>

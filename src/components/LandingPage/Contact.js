@@ -67,7 +67,7 @@ const Contact = () => {
 
   const bull = <span className={classes.bullet}>•</span>;
   return (
-    <Grid item container xs={12} className={classes.contactSection}>
+    <Grid item container xs={12} className={classes.contactSection} id="section4">
       <Grid item xs={false} sm={1} xl={2} />
       <Grid item container xs={12} sm={10} xl={8} justify="space-between">
         <Grid item container direction="column" className={classes.column}>
