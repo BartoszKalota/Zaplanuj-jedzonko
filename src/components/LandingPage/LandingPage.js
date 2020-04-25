@@ -8,6 +8,7 @@ import WhyUs from './WhyUs';
 import Newsletter from './Newsletter';
 import AboutMe from './AboutMe';
 import Contact from './Contact';
+import Footer from './Footer';
 
 const LandingPage = () => {
   return (
@@ -19,6 +20,7 @@ const LandingPage = () => {
       <Newsletter />
       <AboutMe />
       <Contact />
+      <Footer />
     </Grid>
   );
 };
