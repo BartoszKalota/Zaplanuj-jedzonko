@@ -14,10 +14,6 @@ const useStyles = makeStyles(theme => ({
     color: '#5B605F',
     padding: '50px 0'
   },
-  tileContainer: {
-    display: 'flex',
-    justifyContent: 'space-between'
-  },
   tile: {
     width: '100%',
     marginBottom: 15,
@@ -37,7 +33,7 @@ const WhyUs = () => {
   return (
     <Grid item container xs={12} className={classes.whyUsSection}>
       <Grid item xs={false} sm={1} xl={2} />
-      <Grid item container xs={12} sm={10} xl={8} className={classes.tileContainer}>
+      <Grid item container xs={12} sm={10} xl={8} justify="space-between">
         <Grid item container direction="column" alignItems="center" className={classes.tile}>
           <CheckIcon className={classes.icone} />
           <Typography variant="h5" component="h3" align="center" gutterBottom>
