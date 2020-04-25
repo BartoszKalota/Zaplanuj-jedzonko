@@ -7,6 +7,7 @@ import CallToAction from './CallToAction';
 import WhyUs from './WhyUs';
 import Newsletter from './Newsletter';
 import AboutMe from './AboutMe';
+import Contact from './Contact';
 
 const LandingPage = () => {
   return (
@@ -17,6 +18,7 @@ const LandingPage = () => {
       <WhyUs />
       <Newsletter />
       <AboutMe />
+      <Contact />
     </Grid>
   );
 };
