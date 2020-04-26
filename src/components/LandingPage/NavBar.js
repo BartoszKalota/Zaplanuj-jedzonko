@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   titleColor: {
-    color: '#FF6600',
+    color: theme.palette.secondary.main,
     fontWeight: 'bold'
   },
   sectionDesktop: {
@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
     fontSize: '0.86rem',
     marginLeft: 15,
     '&:hover': {
-      color: '#FF6600'
+      color: theme.palette.secondary.main
     },
     '@media (min-width:1050px)': {
       fontSize: '0.9rem',

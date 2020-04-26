@@ -9,8 +9,8 @@ import {
 
 const useStyles = makeStyles(theme => ({
   newsletterSection: {
-    backgroundColor: '#4a4a49',
-    color: '#FFFFFA',
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.background.paper,
     padding: '40px 0'
   },
   textSection: {
@@ -58,7 +58,7 @@ const useStyles = makeStyles(theme => ({
   },
   btn: {
     width: '40%',
-    color: '#FFFFFA',
+    color: theme.palette.background.paper,
     padding: '14px 30px',
     fontSize: '1rem',
     '@media (max-width:690px)': {

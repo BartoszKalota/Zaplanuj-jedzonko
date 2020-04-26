@@ -10,8 +10,8 @@ import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 
 const useStyles = makeStyles(theme => ({
   whyUsSection: {
-    backgroundColor: '#FFFFFA',
-    color: '#5B605F',
+    backgroundColor: theme.palette.background.paper,
+    color: theme.palette.text.primary,
     padding: '50px 0'
   },
   tile: {
@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   icone: {
-    color: '#A1A194',
+    color: theme.palette.text.secondary,
     fontSize: '5.5rem'
   }
 }));

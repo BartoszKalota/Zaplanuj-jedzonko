@@ -12,8 +12,8 @@ import InstagramIcon from '@material-ui/icons/Instagram';
 
 const useStyles = makeStyles(theme => ({
   contactSection: {
-    backgroundColor: '#4a4a49',
-    color: '#FFFFFA',
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.background.paper,
     padding: '40px 0'
   },
   column: {
@@ -41,14 +41,14 @@ const useStyles = makeStyles(theme => ({
   },
   btn: {
     minWidth: 109,
-    color: '#FFFFFA',
+    color: theme.palette.background.paper,
     padding: '14px 15px',
   },
   icon: {
     fontSize: '2.5rem',
     color: '#FFF',
     '&:hover': {
-      color: '#FF6600',
+      color: theme.palette.secondary.main,
       transition: '0.3s'
     }
   }

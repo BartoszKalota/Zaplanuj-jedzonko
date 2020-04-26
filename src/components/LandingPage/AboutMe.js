@@ -9,8 +9,8 @@ import imgAbout from '../../assets/about-me.jpg';
 
 const useStyles = makeStyles(theme => ({
   aboutSection: {
-    backgroundColor: '#FFFFFA',
-    color: '#5B605F',
+    backgroundColor: theme.palette.background.paper,
+    color: theme.palette.text.primary,
     padding: '50px 0'
   },
   textContainer: {

@@ -8,8 +8,8 @@ import {
 
 const useStyles = makeStyles(theme => ({
   ctaSection: {
-    backgroundColor: '#4a4a49',
-    color: '#FFFFFA',
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.background.paper,
     padding: '40px 0'
   },
   textSection: {
@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   btn: {
-    color: '#FFFFFA',
+    color: theme.palette.background.paper,
     padding: '10px 50px',
     fontSize: '1.2rem',
     fontWeight: 'bold'
