@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Grid,
@@ -6,6 +6,7 @@ import {
   TextField,
   Button
 } from '@material-ui/core';
+import { NewsletterContext } from '../../config/contexts/NewsletterContext';
 
 const useStyles = makeStyles(theme => ({
   newsletterSection: {
@@ -73,10 +74,11 @@ const useStyles = makeStyles(theme => ({
 const Newsletter = () => {
   const classes = useStyles();
   const [inputValue, setInputValue] = useState('');
+  const { isSubmitted, sendToFirebase } = useContext(NewsletterContext);
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    console.log(inputValue);  // tymczasowo
+    inputValue && sendToFirebase(inputValue);
     setInputValue('');
   };
   const handleOnChange = ({target: {value}}) => setInputValue(value);
@@ -100,16 +102,18 @@ const Newsletter = () => {
               type="email"
               value={inputValue}
               onChange={handleOnChange}
+              disabled={isSubmitted}
               className={classes.input}
             />
             <Button
               variant="contained"
               color="secondary"
               type="submit"
+              disabled={isSubmitted}
               className={classes.btn}
             >
               <Typography style={{fontWeight: 'bold'}} noWrap>
-                Zapisuję się!
+                {isSubmitted ? 'Wysłano' : 'Zapisuję się!'}
               </Typography>
             </Button>
           </form>
@@ -119,5 +123,5 @@ const Newsletter = () => {
     </Grid>
   );
 }
- 
+
 export default Newsletter;
