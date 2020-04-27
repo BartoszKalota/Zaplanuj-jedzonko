@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Grid,
@@ -9,6 +9,7 @@ import {
 import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import InstagramIcon from '@material-ui/icons/Instagram';
+import { NewsletterContext } from '../../config/contexts/NewsletterContext';
 
 const useStyles = makeStyles(theme => ({
   contactSection: {
@@ -57,10 +58,11 @@ const useStyles = makeStyles(theme => ({
 const Contact = () => {
   const classes = useStyles();
   const [inputValue, setInputValue] = useState('');
+  const { isSubmitted, sendToFirebase } = useContext(NewsletterContext);
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    console.log(inputValue);  // tymczasowo
+    inputValue && sendToFirebase(inputValue);
     setInputValue('');
   };
   const handleOnChange = ({target: {value}}) => setInputValue(value);
@@ -109,16 +111,18 @@ const Contact = () => {
               size="small"
               value={inputValue}
               onChange={handleOnChange}
+              disabled={isSubmitted}
               className={classes.input}
             />
             <Button
               variant="contained"
               color="secondary"
               type="submit"
+              disabled={isSubmitted}
               className={classes.btn}
             >
               <Typography style={{ fontWeight: 'bold', fontSize: '0.8rem' }} noWrap>
-                Zapisuję się!
+                {isSubmitted ? 'Wysłano' : 'Zapisuję się!'}
               </Typography>
             </Button>
           </form>
