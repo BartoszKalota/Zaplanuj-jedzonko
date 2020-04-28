@@ -64,7 +64,10 @@ const useStyles = makeStyles(theme => ({
     fontFamily: '"Charmonman", cursive',
     fontSize: '2rem',
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
+    '& a': {
+      color: '#FFF'
+    }
   },
   titleColor: {
     color: theme.palette.secondary.main,
