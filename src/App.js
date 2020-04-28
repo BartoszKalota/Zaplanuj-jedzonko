@@ -9,7 +9,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import theme from './config/theme';
 
 import LandingPage from './components/LandingPage';
-import AppContainer from './components/AppMain/Signup';
+import AppContainer from './components/AppMain/AppContainer';
 import NotFound from './components/NotFound';
 
 const App = () => (
