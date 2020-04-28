@@ -115,7 +115,14 @@ const useStyles = makeStyles(theme => ({
   activeNavButton: {
     '& div': {
       color: theme.palette.secondary.main,
-      transition: '0.1s'
+      transition: '0.1s',
+      '& div': {
+        '& span': {
+          color: '#FFF',
+          fontWeight: 'bold',
+          transition: '0.1s'
+        }
+      }
     }
   },
   listItem: {
@@ -213,10 +220,10 @@ const AppContainer = () => {
               <ListItemIcon style={{ color: 'inherit' }}>
                 <DesktopWindowsIcon />
               </ListItemIcon>
-              <span style={{ position: 'relative' }}>
-                Pulpit
+              <div style={{ position: 'relative' }}>
+                <span>Pulpit</span>
                 <ChevronRightIcon className={classes.listItemChevron} />
-              </span>
+              </div>
             </ListItem>
           </NavLink>
           <Divider />
@@ -228,10 +235,10 @@ const AppContainer = () => {
               <ListItemIcon style={{ color: 'inherit' }}>
                 <ReceiptIcon />
               </ListItemIcon>
-              <span style={{ position: 'relative' }}>
-                Przepisy
+              <div style={{ position: 'relative' }}>
+                <span>Przepisy</span>
                 <ChevronRightIcon className={classes.listItemChevron} />
-              </span>
+              </div>
             </ListItem>
           </NavLink>
           <Divider />
@@ -243,10 +250,10 @@ const AppContainer = () => {
               <ListItemIcon style={{ color: 'inherit' }}>
                 <TodayIcon />
               </ListItemIcon>
-              <span style={{ position: 'relative' }}>
-                Plany
+              <div style={{ position: 'relative' }}>
+                <span>Plany</span>
                 <ChevronRightIcon className={classes.listItemChevron} />
-              </span>
+              </div>
             </ListItem>
           </NavLink>
         </List>
