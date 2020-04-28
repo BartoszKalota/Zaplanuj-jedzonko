@@ -1,5 +1,5 @@
 a {
-  color: inherit !important;
+  color: inherit; // !important zaburzało działanie activeClassName w navbarze aplikacji
   text-decoration: none !important;
 }
 

@@ -113,20 +113,23 @@ const useStyles = makeStyles(theme => ({
     ...theme.mixins.toolbar // niezbędne, aby AppBar był na górze
   },
   activeNavButton: {
-    fontWeight: 'bold',
-    color: theme.palette.secondary.main
+    '& div': {
+      color: theme.palette.secondary.main,
+      transition: '0.1s'
+    }
   },
   listItem: {
     height: 90,
     padding: theme.spacing(0, 3),
-    color: '#FFF',  // zmień na inherit, gdy wstawisz <Link>
+    color: '#FFF',
     fontSize: '1.3rem'
   },
   listItemChevron: {
     position: 'absolute',
     top: 4,
     left: 115,
-    fontSize: '1.5rem'
+    fontSize: '1.5rem',
+    fontWeight: 'bold'
   },
   main: {
     height: '100vh',
