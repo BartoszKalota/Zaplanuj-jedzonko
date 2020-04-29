@@ -32,17 +32,32 @@ const useStyles = makeStyles(theme => ({
     position: 'relative'
   },
   arrowBackLink: {
-    position: 'absolute'
+    display: 'inline-block',
+    position: 'relative',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    backgroundColor: '#8080802b',
+    borderRadius: '50%',
+    [theme.breakpoints.up('sm')]: {
+      position: 'absolute',
+      left: 'unset',
+      transform: 'translateX(0)',
+    }
   },
   title: {
     fontFamily: '"Charmonman", cursive',
     padding: '1.3rem',
-    color: theme.palette.primary.main,
-    curosor: 'pointer'
+    color: theme.palette.primary.main
   },
   titleColor: {
     color: theme.palette.secondary.main,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    display: 'block',
+    marginTop: theme.spacing(1),
+    [theme.breakpoints.up('sm')]: {
+      display: 'inline',
+      marginTop: 0
+    }
   }
 }));
 
@@ -57,16 +72,22 @@ const AuthContainer = () => {
           </IconButton>
         </Link>
         <Grid container xs={12} justify="center" alignItems="center">
-          <Typography variant="h3" component="h1" className={classes.title} noWrap>
+          <Typography variant="h3" component="h1" align="center" className={classes.title}>
             Zaplanuj <span className={classes.titleColor}>Jedzonko</span>
           </Typography>
         </Grid>
-        <Switch>
-          <Route exact path="/app" component={LogIn} />
-          <Route path="/app/signup" component={SignUp} />
-          <Route path="/app/forgotpwd" component={ForgotPwd} />
-          <Route component={NotFound} />
-        </Switch>
+        <Grid container xs={12}>
+          <Grid item xs={false} sm={2} md={3} />
+          <Grid item container xs={12} sm={8} md={6}>
+            <Switch>
+              <Route exact path="/app" component={LogIn} />
+              <Route path="/app/signup" component={SignUp} />
+              <Route path="/app/forgotpwd" component={ForgotPwd} />
+              <Route component={NotFound} />
+            </Switch>
+          </Grid>
+          <Grid item xs={false} sm={2} md={3} />
+        </Grid>
       </Paper>
     </main>
   );
