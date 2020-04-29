@@ -38,8 +38,8 @@ const useStyles = makeStyles(theme => ({
     transform: 'translateX(-50%)',
     backgroundColor: '#8080802b',
     borderRadius: '50%',
+    marginBottom: theme.spacing(1),
     [theme.breakpoints.up('sm')]: {
-      position: 'absolute',
       left: 'unset',
       transform: 'translateX(0)',
     }
@@ -66,17 +66,22 @@ const AuthContainer = () => {
   return (
     <main className={classes.background}>
       <Paper elevation={10} className={classes.content}>
-        <Link to="/" title="Powrót do strony głównej" className={classes.arrowBackLink}>
-          <IconButton variant="outlined">
-            <ArrowBackIcon style={{ fontSize: '2rem' }}/>
-          </IconButton>
-        </Link>
-        <Grid container xs={12} justify="center" alignItems="center">
-          <Typography variant="h3" component="h1" align="center" className={classes.title}>
-            Zaplanuj <span className={classes.titleColor}>Jedzonko</span>
-          </Typography>
-        </Grid>
-        <Grid container xs={12}>
+        <Grid container>
+          <Grid item container xs={12} sm={1} alignItems="flex-start">
+            <Link to="/" title="Powrót do strony głównej" className={classes.arrowBackLink}>
+              <IconButton variant="outlined">
+                <ArrowBackIcon style={{ fontSize: '2rem' }}/>
+              </IconButton>
+            </Link>
+          </Grid>
+          <Grid container xs={12} sm={10} justify="center" alignItems="center">
+            <Typography variant="h3" component="h1" align="center" className={classes.title}>
+              Zaplanuj <span className={classes.titleColor}>Jedzonko</span>
+            </Typography>
+          </Grid>
+          <Grid xs={false} sm={1} />
+        </Grid>          
+        <Grid container>
           <Grid item xs={false} sm={2} md={3} />
           <Grid item container xs={12} sm={8} md={6}>
             <Switch>
