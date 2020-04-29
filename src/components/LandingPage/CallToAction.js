@@ -52,7 +52,7 @@ const CallToAction = () => {
           </Typography>
         </Grid>
         <Grid item container xs={12} md={4} className={classes.btnSection}>
-          <Link to="/app-login">
+          <Link to="/app">
             <Button variant="contained" color="secondary" className={classes.btn}>
               Lorem ipsum
             </Button>
