@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
     background: `url(${bgImg}) repeat`
   },
   content: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(2, 2, 5, 2),
     position: 'relative'
   },
   arrowBackLink: {
@@ -70,16 +70,16 @@ const AuthContainer = () => {
           <Grid item container xs={12} sm={1} alignItems="flex-start">
             <Link to="/" title="Powrót do strony głównej" className={classes.arrowBackLink}>
               <IconButton variant="outlined">
-                <ArrowBackIcon style={{ fontSize: '2rem' }}/>
+                <ArrowBackIcon style={{ fontSize: '1.3rem' }}/>
               </IconButton>
             </Link>
           </Grid>
-          <Grid container xs={12} sm={10} justify="center" alignItems="center">
+          <Grid item container xs={12} sm={10} justify="center" alignItems="center" style={{ marginBottom: 40 }}>
             <Typography variant="h3" component="h1" align="center" className={classes.title}>
               Zaplanuj <span className={classes.titleColor}>Jedzonko</span>
             </Typography>
           </Grid>
-          <Grid xs={false} sm={1} />
+          <Grid item xs={false} sm={1} />
         </Grid>          
         <Grid container>
           <Grid item xs={false} sm={2} md={3} />
