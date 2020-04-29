@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Grid,
@@ -51,9 +52,11 @@ const CallToAction = () => {
           </Typography>
         </Grid>
         <Grid item container xs={12} md={4} className={classes.btnSection}>
-          <Button variant="contained" color="secondary" className={classes.btn}>
-            Lorem ipsum
-          </Button>
+          <Link to="/app-login">
+            <Button variant="contained" color="secondary" className={classes.btn}>
+              Lorem ipsum
+            </Button>
+          </Link>
         </Grid>
       </Grid>
       <Grid item xs={false} sm={1} xl={2} />

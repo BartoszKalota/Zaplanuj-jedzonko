@@ -93,7 +93,7 @@ const NavBar = () => {
     >
       <MenuItem>
         <Link 
-          to="/app"
+          to="/app-login"
           style={{ width: '100%' }}
         >
           <Button color="inherit" fullWidth>
@@ -167,7 +167,7 @@ const NavBar = () => {
               </Typography>
               <div className={classes.sectionDesktop}>
                 <Link
-                  to="/app"
+                  to="/app-login"
                   style={{ display: 'flex' }}
                 >
                   <Button color="inherit" className={classes.desktopBtn}>

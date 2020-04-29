@@ -9,7 +9,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import theme from './config/theme';
 
 import LandingPage from './components/LandingPage';
-import AppContainer from './components/AppMain/AppContainer';
+import LogIn from './components/AppMain/LogIn';
 import NotFound from './components/NotFound';
 
 const App = () => (
@@ -17,7 +17,7 @@ const App = () => (
     <Router>
       <Switch>
         <Route exact path="/" component={LandingPage} />
-        <Route path="/app" component={AppContainer} />
+        <Route path="/app-login" component={LogIn} />
         <Route component={NotFound} />
       </Switch>
     </Router>
