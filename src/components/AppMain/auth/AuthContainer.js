@@ -15,6 +15,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import bgImg from '../../../assets/bg.png';
 
+import * as ROUTES from '../../../config/ROUTES';
 import LogIn from './LogIn';
 import SignUp from './SignUp';
 import ForgotPwd from './ForgotPwd';
@@ -68,7 +69,7 @@ const AuthContainer = () => {
       <Paper elevation={10} className={classes.content}>
         <Grid container>
           <Grid item container xs={12} sm={1} alignItems="flex-start">
-            <Link to="/" title="Powrót do strony głównej" className={classes.arrowBackLink}>
+            <Link to={ROUTES.LANDINGPAGE} title="Powrót do strony głównej" className={classes.arrowBackLink}>
               <IconButton variant="outlined">
                 <ArrowBackIcon style={{ fontSize: '1.3rem' }}/>
               </IconButton>
@@ -85,9 +86,9 @@ const AuthContainer = () => {
           <Grid item xs={false} sm={2} md={3} />
           <Grid item container xs={12} sm={8} md={6}>
             <Switch>
-              <Route exact path="/app" component={LogIn} />
-              <Route path="/app/signup" component={SignUp} />
-              <Route path="/app/forgotpwd" component={ForgotPwd} />
+              <Route exact path={ROUTES.LOGIN} component={LogIn} />
+              <Route path={ROUTES.SIGNUP} component={SignUp} />
+              <Route path={ROUTES.FORGOTPWD} component={ForgotPwd} />
               <Route component={NotFound} />
             </Switch>
           </Grid>

@@ -30,6 +30,7 @@ import TodayIcon from '@material-ui/icons/Today';
 
 import bgImg from '../../assets/bg.png';
 
+import * as ROUTES from '../../config/ROUTES';
 import Desktop from './Desktop';
 import Receipt from './Receipt';
 import Schedule from './Schedule';
@@ -183,7 +184,7 @@ const AppContainer = () => {
                 <MenuIcon />
               </IconButton>
               <Typography variant="h1" className={classes.title} noWrap>
-                <Link to="/app" style={{ cursor: 'pointer' }}>
+                <Link to={ROUTES.DESKTOP} style={{ cursor: 'pointer' }}>
                   Zaplanuj <span className={classes.titleColor}>Jedzonko</span>
                 </Link>
               </Typography>
@@ -216,7 +217,7 @@ const AppContainer = () => {
         <Divider />
         <List style={{ paddingTop: 0 }}>
           <NavLink
-            exact to="/app"
+            exact to={ROUTES.DESKTOP}
             activeClassName={classes.activeNavButton}
           >
             <ListItem button className={classes.listItem}>
@@ -231,7 +232,7 @@ const AppContainer = () => {
           </NavLink>
           <Divider />
           <NavLink
-            to="/app/receipt"
+            to={ROUTES.RECEIPT}
             activeClassName={classes.activeNavButton}
           >
             <ListItem button className={classes.listItem}>
@@ -246,7 +247,7 @@ const AppContainer = () => {
           </NavLink>
           <Divider />
           <NavLink
-            to="/app/schedule"
+            to={ROUTES.SCHEDULE}
             activeClassName={classes.activeNavButton}
           >
             <ListItem button className={classes.listItem}>
@@ -264,9 +265,9 @@ const AppContainer = () => {
       <main className={classes.main}>
         <Paper elevation={10} className={classes.content}>
           <Switch>
-            <Route exact path="/app" component={Desktop} />
-            <Route path="/app/receipt" component={Receipt} />
-            <Route path="/app/schedule" component={Schedule} />
+            <Route exact path={ROUTES.DESKTOP} component={Desktop} />
+            <Route path={ROUTES.RECEIPT} component={Receipt} />
+            <Route path={ROUTES.SCHEDULE} component={Schedule} />
           </Switch>
         </Paper>
       </main>

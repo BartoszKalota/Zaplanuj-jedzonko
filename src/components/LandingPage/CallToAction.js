@@ -7,6 +7,8 @@ import {
   Button
 } from '@material-ui/core';
 
+import * as ROUTES from '../../config/ROUTES';
+
 const useStyles = makeStyles(theme => ({
   ctaSection: {
     backgroundColor: theme.palette.primary.main,
@@ -52,7 +54,7 @@ const CallToAction = () => {
           </Typography>
         </Grid>
         <Grid item container xs={12} md={4} className={classes.btnSection}>
-          <Link to="/app">
+          <Link to={ROUTES.LOGIN}>
             <Button variant="contained" color="secondary" className={classes.btn}>
               Lorem ipsum
             </Button>

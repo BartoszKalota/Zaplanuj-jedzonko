@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import firebase, { withFirebaseHOC } from '../../../config/Firebase';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Button,
-  FormControl,  // Pola typu password potrzebują własnego elementu FormControl do poprawnego wyświetlania
+  CircularProgress,
+  FormControl,  // pola typu password potrzebują własnego elementu FormControl do poprawnego wyświetlania
   Grid,
   IconButton,
   Input,
@@ -16,6 +18,8 @@ import EmailIcon from '@material-ui/icons/Email';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+
+import * as ROUTES from '../../../config/ROUTES';
 
 const useStyles = makeStyles(theme => ({
   operationTypeHeading: {
@@ -35,6 +39,9 @@ const useStyles = makeStyles(theme => ({
   inputIcon: {
     margin: theme.spacing(0, 1, 0.5, 0)
   },
+  errorMsg: {
+    color: theme.palette.error.main
+  },
   submitBtn: {
     color: '#FFF',
     fontSize: '1.3rem',
@@ -51,15 +58,19 @@ const useStyles = makeStyles(theme => ({
 
 const LogIn = () => {
   const classes = useStyles();
-  const [values, setValues] = useState({
+  const valuesInitialState = {
     email: '',
     password: '',
     showPassword: false,
-  });
-  // const [errors, setErrors] = useState({
-  //   email: '',
-  //   password: ''
-  // });
+  };
+  const [values, setValues] = useState({ ...valuesInitialState });
+  const errorsInitialState = {
+    email: '',
+    password: '',
+    login: ''
+  };
+  const [errors, setErrors] = useState({ ...errorsInitialState });
+  const [isPending, setIsPending] = useState(false);
 
   const handleOnChange = ({target: {name, value}}) => {
     setValues({
@@ -73,23 +84,41 @@ const LogIn = () => {
       showPassword: !prevState.showPassword
     }));
   };
+  const handleOnBlur = () => {
+    validateInputs();   // po odkliknięciu, komunikat o błędzie znika, żeby nie drażnił
+  };
+  const validateInputs = () => {
+    const errors = {};
+    if (!values.email) {
+      errors.email = 'Pole "Adres email" nie może zostać puste.';
+    }
+    if (!values.password) {
+      errors.password = 'Pole "Hasło" nie może zostać puste.';
+    }
+    setErrors(errors);
+  };
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    // const errors = {};
-    // if (!values.email) {
-    //   errors.email = 'Pole "Adres email" nie może zostać puste.';
-    // }
-    // if (!values.password) {
-    //   errors.password = 'Pole "Hasło" nie może zostać puste.';
-    // }
-    // setErrors(errors);
-    if (values.email && values.password) {    // Wkrótce nastąpi autoryzacja poprzez Firebase
-      console.log(values);
-      setValues({
-        ...values,
-        email: '',
-        password: ''
-      });
+    validateInputs();
+    if (
+      values.password && // bez tego dochodzi do logowania przy pustych inputach
+      !errors.email &&
+      !errors.password
+    ) {
+      setIsPending(true);
+      firebase.auth()
+        .signInWithEmailAndPassword(values.email, values.password)
+        .then(resp => {
+          console.log(resp);   // TU NASTĄPI PRZEKIEROWANIE NA ROUTE APKI
+          setValues({ ...valuesInitialState });
+          setErrors({ ...errorsInitialState });
+          setIsPending(false);
+        })
+        .catch(err => {
+          console.log(err);
+          setErrors({ login: 'Niepoprawny adres email lub hasło.' });
+          setIsPending(false);
+        });
     }
   };
 
@@ -108,9 +137,15 @@ const LogIn = () => {
             name="email"
             value={values.email}
             onChange={handleOnChange}
+            onBlur={handleOnBlur}
             fullWidth
           />
         </Grid>
+        {errors.email && (
+          <Typography component="p" className={classes.errorMsg}>
+            {errors.email}
+          </Typography>
+        )}
         <Grid item container alignItems="flex-end" wrap="nowrap">
           <LockOpenIcon className={classes.inputIcon} />
           <FormControl color="secondary" fullWidth>
@@ -121,6 +156,7 @@ const LogIn = () => {
               name="password"
               value={values.password}
               onChange={handleOnChange}
+              onBlur={handleOnBlur}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -135,24 +171,36 @@ const LogIn = () => {
             />
           </FormControl>
         </Grid>
-        <Grid item container justify="center">
+        {errors.password && (
+          <Typography component="p" className={classes.errorMsg}>
+            {errors.password}
+          </Typography>
+        )}
+        {errors.login && (
+          <Typography component="p" align="center" className={classes.errorMsg}>
+            {errors.login}
+          </Typography>
+        )}
+        <Grid item container justify="center" alignItems="center" style={{ position: 'relative' }}>
           <Button
             variant="contained"
             color="secondary"
             type="submit"
+            disabled={isPending}
             className={classes.submitBtn}
           >
             Zaloguj
           </Button>
+          {isPending && <CircularProgress color="secondary" style={{ position: 'absolute' }} />}
         </Grid>
       </form>
       <div className={classes.otherOptions}>
-        <Link to="/app/signup">
+        <Link to={ROUTES.SIGNUP}>
           <Typography variant="body1" paragraph>
             Nie masz jeszcze konta? Załóż je tutaj.
           </Typography>
         </Link>
-        <Link to="/app/forgotpwd">
+        <Link to={ROUTES.FORGOTPWD}>
           <Typography variant="body1" paragraph>
             Zapomniałeś hasła?
           </Typography>
@@ -162,4 +210,4 @@ const LogIn = () => {
   );
 }
  
-export default LogIn;
+export default withFirebaseHOC(LogIn);
