@@ -24,7 +24,7 @@ import NotFound from '../../NotFound';
 const useStyles = makeStyles(theme => ({
   background: {
     width: '100vw',
-    height: '100vh',
+    minHeight: '100vh',
     padding: theme.spacing(4, 7),
     background: `url(${bgImg}) repeat`
   },

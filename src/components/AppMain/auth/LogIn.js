@@ -5,17 +5,16 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
   Button,
   CircularProgress,
-  FormControl,  // pola typu password potrzebują własnego elementu FormControl do poprawnego wyświetlania
+  FormControl,
   Grid,
   IconButton,
   Input,
   InputAdornment,
   InputLabel,
-  TextField,
   Typography
 } from '@material-ui/core';
 import EmailIcon from '@material-ui/icons/Email';
-import LockOpenIcon from '@material-ui/icons/LockOpen';
+import LockIcon from '@material-ui/icons/Lock';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
@@ -130,16 +129,17 @@ const LogIn = () => {
       <form onSubmit={handleOnSubmit} className={classes.form}>
         <Grid item container alignItems="flex-end" wrap="nowrap">
           <EmailIcon className={classes.inputIcon} />
-          <TextField
-            label="Adres email"
-            color="secondary"
-            type="email"
-            name="email"
-            value={values.email}
-            onChange={handleOnChange}
-            onBlur={handleOnBlur}
-            fullWidth
-          />
+          <FormControl color="secondary" fullWidth>
+            <InputLabel htmlFor="email">Adres email</InputLabel>
+            <Input
+              id="email"
+              type="email"
+              name="email"
+              value={values.email}
+              onChange={handleOnChange}
+              onBlur={handleOnBlur}
+            />
+          </FormControl>
         </Grid>
         {errors.email && (
           <Typography component="p" className={classes.errorMsg}>
@@ -147,7 +147,7 @@ const LogIn = () => {
           </Typography>
         )}
         <Grid item container alignItems="flex-end" wrap="nowrap">
-          <LockOpenIcon className={classes.inputIcon} />
+          <LockIcon className={classes.inputIcon} />
           <FormControl color="secondary" fullWidth>
             <InputLabel htmlFor="password">Hasło</InputLabel>
             <Input
