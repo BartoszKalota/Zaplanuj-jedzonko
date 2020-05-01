@@ -66,7 +66,7 @@ const LogIn = () => {
   const errorsInitialState = {
     email: '',
     password: '',
-    login: ''
+    login: '' // informacja o nieprawidłowym loginie (gdy Firebase wyrzuci błąd)
   };
   const [errors, setErrors] = useState({ ...errorsInitialState });
   const [isPending, setIsPending] = useState(false);
@@ -83,8 +83,11 @@ const LogIn = () => {
       showPassword: !prevState.showPassword
     }));
   };
-  const handleOnBlur = () => {
-    validateInputs();   // po odkliknięciu, komunikat o błędzie znika, żeby nie drażnił
+  const handleOnBlur = ({target: {name}}) => {
+    setErrors({
+      ...errors,
+      [name]: ''  // żeby po odkliknięciu poprawionego inputa, komunikat o błędzie nie drażnił
+    });
   };
   const validateInputs = () => {
     const errors = {};
@@ -95,15 +98,15 @@ const LogIn = () => {
       errors.password = 'Pole "Hasło" nie może zostać puste.';
     }
     setErrors(errors);
+    if (!!Object.entries(errors).length) {  // sprawdzenie, czy obiekt błędów jest pusty
+      return false;
+    }
+    return true;
   };
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    validateInputs();
-    if (
-      values.password && // bez tego dochodzi do logowania przy pustych inputach
-      !errors.email &&
-      !errors.password
-    ) {
+    const isValidated = validateInputs();
+    if (isValidated) {
       setIsPending(true);
       firebase.auth()
         .signInWithEmailAndPassword(values.email, values.password)
