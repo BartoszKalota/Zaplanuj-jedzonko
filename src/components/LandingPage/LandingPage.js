@@ -12,21 +12,19 @@ import AboutMe from './AboutMe';
 import Contact from './Contact';
 import Footer from './Footer';
 
-const LandingPage = () => {
-  return (
-    <NewsletterProvider>
-      <Grid container direction="column">
-        <NavBar />
-        <CarouselSection />
-        <CallToAction />
-        <WhyUs />
-        <Newsletter />
-        <AboutMe />
-        <Contact />
-        <Footer />
-      </Grid>
-    </NewsletterProvider>
-  );
-};
+const LandingPage = () => (
+  <NewsletterProvider>
+    <Grid container direction="column">
+      <NavBar />
+      <CarouselSection />
+      <CallToAction />
+      <WhyUs />
+      <Newsletter />
+      <AboutMe />
+      <Contact />
+      <Footer />
+    </Grid>
+  </NewsletterProvider>
+);
  
 export default LandingPage;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import firebase, { withFirebaseHOC } from '../../../config/Firebase';
+import { Link, useHistory } from 'react-router-dom';
+import { withFirebaseHOC } from '../../../config/Firebase';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Button,
@@ -55,8 +55,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const LogIn = () => {
+const LogIn = ({ firebase }) => {
   const classes = useStyles();
+  const history = useHistory();
   const valuesInitialState = {
     email: '',
     password: '',
@@ -110,11 +111,11 @@ const LogIn = () => {
       setIsPending(true);
       firebase.auth()
         .signInWithEmailAndPassword(values.email, values.password)
-        .then(resp => {
-          console.log(resp);   // TU NASTĄPI PRZEKIEROWANIE NA ROUTE APKI
+        .then(() => {
           setValues({ ...valuesInitialState });
           setErrors({ ...errorsInitialState });
           setIsPending(false);
+          history.push(ROUTES.DESKTOP);
         })
         .catch(err => {
           console.log(err);

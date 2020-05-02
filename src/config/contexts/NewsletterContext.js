@@ -1,9 +1,9 @@
 import React, { createContext, useState } from 'react';
-import firebase, { withFirebaseHOC } from '../Firebase';
+import { withFirebaseHOC } from '../Firebase';
 
 export const NewsletterContext = createContext();
 
-const NewsletterContextProvider = ({ children }) => {
+const NewsletterContextProvider = ({ firebase, children }) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const sendToFirebase = (email) => {
