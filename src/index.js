@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import './scss/main.scss';  // ogólne reguły stylowania tagów <a>
 import App from './App';
 
 ReactDOM.render(

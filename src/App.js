@@ -4,9 +4,10 @@ import {
   Switch,
   Route
 } from 'react-router-dom';
+import injectSheet from 'react-jss';
 
 import { ThemeProvider } from '@material-ui/core/styles';
-import theme from './config/theme';
+import theme, { globalStyle } from './config/theme';
 
 import * as ROUTES from './config/ROUTES';
 import LandingPage from './components/LandingPage';
@@ -27,4 +28,4 @@ const App = () => (
   </ThemeProvider>
 );
 
-export default App;
+export default injectSheet(globalStyle)(App);
