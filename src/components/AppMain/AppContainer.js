@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   Switch,
   Route,
+  Redirect,
   NavLink,
   Link
 } from 'react-router-dom';
@@ -268,6 +269,7 @@ const AppContainer = () => {
             <Route exact path={ROUTES.DESKTOP} component={Desktop} />
             <Route path={ROUTES.RECEIPT} component={Receipt} />
             <Route path={ROUTES.SCHEDULE} component={Schedule} />
+            <Redirect from="*" to={ROUTES.ERROR} />
           </Switch>
         </Paper>
       </main>

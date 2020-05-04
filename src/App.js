@@ -2,7 +2,8 @@ import React from 'react';
 import {
   HashRouter as Router,
   Switch,
-  Route
+  Route,
+  Redirect
 } from 'react-router-dom';
 import injectSheet from 'react-jss';    // w celu nadania styli globalnych
 import firebase, { FirebaseProvider, withFirebaseHOC } from './config/Firebase';
@@ -33,7 +34,8 @@ const App = () => (
           <Route exact path={ROUTES.LANDINGPAGE} component={LandingPage} />
           <Route path={ROUTES.LOGIN} component={AuthContainer} />
           <Route path={ROUTES.DESKTOP} component={withAuthenticate(AppContainer)} />
-          <Route component={NotFound} />
+          <Route path={ROUTES.ERROR} component={NotFound} />
+          <Redirect from="*" to={ROUTES.ERROR} />
         </Switch>
       </Router>
     </FirebaseProvider>

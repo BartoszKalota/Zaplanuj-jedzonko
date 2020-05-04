@@ -7,3 +7,5 @@ export const FORGOTPWD = "/auth/forgotpwd";
 export const DESKTOP = "/app";
 export const RECEIPT = "/app/receipt";
 export const SCHEDULE = "/app/schedule";
+
+export const ERROR = "/404";

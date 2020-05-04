@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Switch,
   Route,
+  Redirect,
   Link
 } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -19,7 +20,6 @@ import * as ROUTES from '../../../config/ROUTES';
 import LogIn from './LogIn';
 import SignUp from './SignUp';
 import ForgotPwd from './ForgotPwd';
-import NotFound from '../../NotFound';
 
 const useStyles = makeStyles(theme => ({
   background: {
@@ -89,7 +89,7 @@ const AuthContainer = () => {
               <Route exact path={ROUTES.LOGIN} component={LogIn} />
               <Route path={ROUTES.SIGNUP} component={SignUp} />
               <Route path={ROUTES.FORGOTPWD} component={ForgotPwd} />
-              <Route component={NotFound} />
+              <Redirect from="*" to={ROUTES.ERROR} />
             </Switch>
           </Grid>
           <Grid item xs={false} sm={2} md={3} />
