@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
+  CircularProgress,
   Grid,
   Typography,
   TextField,
@@ -58,7 +59,7 @@ const useStyles = makeStyles(theme => ({
 const Contact = () => {
   const classes = useStyles();
   const [inputValue, setInputValue] = useState('');
-  const { isSubmitted, sendToFirebase } = useContext(NewsletterContext);
+  const { isSubmitted, isPending, sendToFirebase } = useContext(NewsletterContext);
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
@@ -120,10 +121,12 @@ const Contact = () => {
               type="submit"
               disabled={isSubmitted}
               className={classes.btn}
+              style={{ position: 'relative' }}
             >
               <Typography style={{ fontWeight: 'bold', fontSize: '0.8rem' }} noWrap>
                 {isSubmitted ? 'Wysłano' : 'Zapisuję się!'}
               </Typography>
+              {isPending && <CircularProgress color="secondary" style={{ position: 'absolute' }} />}
             </Button>
           </form>
           <div style={{ marginTop: 20 }}>
