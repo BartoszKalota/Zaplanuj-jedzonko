@@ -15,10 +15,12 @@ import LandingPage from './components/LandingPage';
 import AuthContainer from './components/AppMain/auth/AuthContainer';
 import AppContainer from './components/AppMain/AppContainer';
 import NotFound from './components/NotFound';
+import NotAuthenticated from './components/AppMain/auth/NotAuthenticated';
 
+// Autoryzacja wejścia do aplikacji
 const withAuthenticate = Component => {
   const innerHOC = ({ firebase, ...props }) => {
-    return firebase.auth().currentUser ? <Component {...props} /> : false; // <NotFound />
+    return firebase.auth().currentUser ? <Component {...props} /> : <NotAuthenticated />;
   };
   return withFirebaseHOC(innerHOC);
 };
