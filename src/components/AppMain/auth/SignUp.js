@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import firebase, { withFirebaseHOC } from '../../../config/Firebase';
+import { Link, useHistory } from 'react-router-dom';
+import { withFirebaseHOC } from '../../../config/Firebase';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Button,
@@ -22,6 +22,7 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 import * as ROUTES from '../../../config/ROUTES';
+import DialogModal from './Dialog';
 
 const useStyles = makeStyles(theme => ({
   operationTypeHeading: {
@@ -58,8 +59,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignUp = () => {
+const SignUp = ({ firebase }) => {
   const classes = useStyles();
+  const history = useHistory();
   const valuesInitialState = {
     name: '',
     email: '',
@@ -78,6 +80,7 @@ const SignUp = () => {
   };
   const [errors, setErrors] = useState({ ...errorsInitialState });
   const [isPending, setIsPending] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleOnChange = ({target: {name, value}}) => {
     setValues({
@@ -133,11 +136,11 @@ const SignUp = () => {
       setIsPending(true);
       firebase.auth()
         .createUserWithEmailAndPassword(values.email, values.password)
-        .then(resp => {
-          console.log(resp);   // TU NASTĄPI PRZEKIEROWANIE NA ROUTE APKI
+        .then(() => {
           setValues({ ...valuesInitialState });
           setErrors({ ...errorsInitialState });
           setIsPending(false);
+          setIsDialogOpen(true);    // przekierowanie na stronę LogIn w handleOnDialogClose
         })
         .catch(err => {
           console.log(err);
@@ -146,6 +149,14 @@ const SignUp = () => {
         });
     }
   };
+  const handleOnDialogClose = () => {
+    setIsDialogOpen(false);
+    history.push(ROUTES.LOGIN);
+  };
+
+  // Informacja do okna dialogowego
+  const infoTitle = 'Konto zarejestrowane!';
+  const infoMsg = 'Po zamknięciu tego okna znajdziesz się na stronie do logowania. Zaloguj się na swoje konto, aby skorzystać z aplikacji.';
 
   return (
     <>
@@ -290,6 +301,14 @@ const SignUp = () => {
           </Typography>
         </Link>
       </div>
+
+      {/* Okno dialogowe z info o udanej rejestracji i przekierowaniu */}
+      <DialogModal
+        infoTitle={infoTitle}
+        infoMsg={infoMsg}
+        isDialogOpen={isDialogOpen}
+        onDialogClose={handleOnDialogClose}
+      />
     </>
   );
 }
