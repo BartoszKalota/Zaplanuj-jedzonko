@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-// import firebase, { withFirebaseHOC } from '../../../config/Firebase';
+import { withFirebaseHOC } from '../../../config/Firebase';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Button,
-  // CircularProgress,
+  CircularProgress,
   FormControl,
   Grid,
   Input,
@@ -11,6 +11,8 @@ import {
   Typography
 } from '@material-ui/core';
 import EmailIcon from '@material-ui/icons/Email';
+
+import DialogModal from './Dialog';
 
 const useStyles = makeStyles(theme => ({
   operationTypeHeading: {
@@ -40,11 +42,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ForgotPwd = () => {
+const ForgotPwd = ({ firebase }) => {
   const classes = useStyles();
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
-  // const [isPending, setIsPending] = useState(false);
+  const [isPending, setIsPending] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleOnChange = ({target: {value}}) => setEmail(value);
   const handleOnBlur = () => setError('');
@@ -54,10 +57,26 @@ const ForgotPwd = () => {
       setError('Pole "Adres email" nie może zostać puste.');
     }
     if (email && !error) {
-      console.log('Reset hasła.');    // WKRÓTCE POPRZEZ FIREBASE
-      setEmail('');
+      setIsPending(true);
+      firebase.auth()
+        .sendPasswordResetEmail(email)
+        .then(() => {
+          setEmail('');
+          setIsPending(false);
+          setIsDialogOpen(true);
+        })
+        .catch(err => {
+          console.log(err);
+          alert('Błąd wysłania emaila z resetem hasła! Zajrzyj do konsoli.');
+          setIsPending(false);
+        });
     }
   };
+  const handleOnDialogClose = () => setIsDialogOpen(false);
+
+  // Informacja do okna dialogowego
+  const infoTitle = 'Wysłaliśmy do Ciebie emaila z możliwością zresetowania hasła!';
+  const infoMsg = 'Sprawdź swoją skrzynkę odbiorczą i wykonaj polecenia z wiadomości od ZaplanujJedzonko-App, aby zresetować swoje hasło.';
 
   return (
     <>
@@ -89,17 +108,24 @@ const ForgotPwd = () => {
             variant="contained"
             color="secondary"
             type="submit"
-            // disabled={isPending}
+            disabled={isPending}
             className={classes.submitBtn}
           >
             Resetuj hasło
           </Button>
-          {/* {isPending && <CircularProgress color="secondary" style={{ position: 'absolute' }} />} */}
+          {isPending && <CircularProgress color="secondary" style={{ position: 'absolute' }} />}
         </Grid>
       </form>
+
+      {/* Okno dialogowe z info o udanym wysłaniu emaila z linkiem do resetu hasła */}
+      <DialogModal
+        infoTitle={infoTitle}
+        infoMsg={infoMsg}
+        isDialogOpen={isDialogOpen}
+        onDialogClose={handleOnDialogClose}
+      />
     </>
   );
 }
  
-export default ForgotPwd;
-// export default withFirebaseHOC(ForgotPwd);
+export default withFirebaseHOC(ForgotPwd);
