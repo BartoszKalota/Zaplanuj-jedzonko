@@ -156,7 +156,7 @@ const SignUp = ({ firebase }) => {
 
   // Informacja do okna dialogowego
   const infoTitle = 'Konto zarejestrowane!';
-  const infoMsg = 'Po zamknięciu tego okna znajdziesz się na stronie do logowania. Zaloguj się na swoje konto, aby skorzystać z aplikacji.';
+  const infoMsg = 'Po zamknięciu tego okna dialogowego znajdziesz się na stronie do logowania. Zaloguj się na swoje konto, aby skorzystać z aplikacji.';
 
   return (
     <>

@@ -21,7 +21,6 @@ import {
   Typography
 } from '@material-ui/core';
 import clsx from 'clsx';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import DesktopWindowsIcon from '@material-ui/icons/DesktopWindows';
@@ -32,6 +31,7 @@ import TodayIcon from '@material-ui/icons/Today';
 import bgImg from '../../assets/bg.png';
 
 import * as ROUTES from '../../config/ROUTES';
+import UserInfo from './UserInfo';
 import Desktop from './Desktop';
 import Receipt from './Receipt';
 import Schedule from './Schedule';
@@ -74,13 +74,6 @@ const useStyles = makeStyles(theme => ({
   titleColor: {
     color: theme.palette.secondary.main,
     fontWeight: 'bold'
-  },
-  userSection: {
-    fontSize: '1.3rem'
-  },
-  userAvatar: {
-    fontSize: '3rem',
-    marginLeft: '1rem'
   },
   drawer: {
     width: drawerWidth,
@@ -190,10 +183,7 @@ const AppContainer = () => {
                 </Link>
               </Typography>
             </div>
-            <div className={classes.userSection}>
-              Imię
-              <AccountCircleIcon color="secondary" className={classes.userAvatar} />
-            </div>
+            <UserInfo />
           </Grid>
         </Toolbar>
       </AppBar>
