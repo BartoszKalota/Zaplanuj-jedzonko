@@ -78,6 +78,8 @@ const UserInfo = ({ firebase }) => {
         setAnchorEl(null);
       });
   };
+  
+  const userName = firebase.auth().currentUser?.displayName;  // bez '?' wykrzacza błąd podczas LogOut, że displayName is null
 
   return (
     <>
@@ -88,7 +90,7 @@ const UserInfo = ({ firebase }) => {
         onClick={handleOnClick}
         className={classes.userSection}
       >
-        Imię
+        {userName}
         <AccountCircleIcon color="secondary" className={classes.userAvatar} />
       </Button>
       <StyledMenu

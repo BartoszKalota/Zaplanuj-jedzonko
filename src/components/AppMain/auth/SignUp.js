@@ -136,6 +136,9 @@ const SignUp = ({ firebase }) => {
       setIsPending(true);
       firebase.auth()
         .createUserWithEmailAndPassword(values.email, values.password)
+        .then(res => res.user.updateProfile({
+            displayName: values.name
+        }))
         .then(() => {
           setValues({ ...valuesInitialState });
           setErrors({ ...errorsInitialState });
