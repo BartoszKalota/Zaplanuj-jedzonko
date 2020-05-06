@@ -18,7 +18,7 @@ const NewsletterContextProvider = ({ firebase, children }) => {
         setIsSubmitted(true);
         setIsPending(false);
       })
-      .catch(err => console.warn(`Błąd zapisu emaila w Firebase z kontekstu Newslettera: ${err}`));
+      .catch(err => console.warn('Błąd zapisu emaila w Firebase z kontekstu Newslettera:', err));
   };
   
   return (

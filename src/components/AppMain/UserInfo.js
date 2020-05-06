@@ -1,21 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { withFirebaseHOC } from '../../config/Firebase';
 import {
+  Avatar,
   Button,
   Menu,
   MenuItem,
   ListItemIcon,
   ListItemText
 } from '@material-ui/core';
+import clsx from 'clsx';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import SendIcon from '@material-ui/icons/Send';
+import FaceIcon from '@material-ui/icons/Face';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 
 import * as ROUTES from '../../config/ROUTES';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   userSection: {
     fontSize: '1.3rem',
     textTransform: 'capitalize',
@@ -24,8 +26,12 @@ const useStyles = makeStyles({
   userAvatar: {
     fontSize: '3rem',
     marginLeft: '1rem'
+  },
+  userUploadedAvatar: {
+    border: `2px solid ${theme.palette.secondary.main}`,
+    borderRadius: '50%'
   }
-});
+}));
 
 const StyledMenu = withStyles({   // wzięte z szablonu material-ui
   paper: {
@@ -61,14 +67,42 @@ const UserInfo = ({ firebase }) => {
   const classes = useStyles();
   const history = useHistory();
   const [anchorEl, setAnchorEl] = useState(null);
+  // Bieżący awatar użytkownika pobrany z Firebase
+  const USER_FIREBASE_AVATAR = firebase.auth().currentUser?.photoURL; // bez '?' wykrzacza błąd podczas LogOut, że photoURL stanowi null
+  const [avatarURL, setAvatarURL] = useState(USER_FIREBASE_AVATAR);
+  console.log(avatarURL)
 
   const handleOnClick = ({ currentTarget }) => setAnchorEl(currentTarget);
   const handleOnClose = () => setAnchorEl(null);
+  const handleOnAddAvatar = ({ target }) => {
+    setAnchorEl(null);
+    // Wysłanie awatara do Firebase
+    const file = target.files[0];
+    const userId = firebase.auth().currentUser.uid;
+    const storage = firebase.storage();
+    const uploadTask = storage.ref(`${userId}/profilePicture/${file.name}`).put(file);  // dotąd wystarczy, aby wysłać plik
+    uploadTask.on('state_changed',    // postęp wysyłania awatara
+      (snapshot) => {
+        console.log(snapshot);
+      },
+      (err) => {
+        console.warn('Błąd postępu wysyłania awatara:', err);
+      },
+      () => {                         // wygenerowanie URLa awatara i zapisanie w state'cie
+        storage.ref(`${userId}/profilePicture`).child(file.name).getDownloadURL()
+          .then(fileURL => {
+            setAvatarURL(fileURL)
+          })
+          .catch(err => {
+            console.warn('Błąd pobierania adresu URL dla wysłanego awatara:', err);
+          });
+      }
+    );
+  };
   const handleOnLogOut = () => {
     firebase.auth()
       .signOut()
       .then(() => {
-        console.log('Użytkownik wylogowany');
         setAnchorEl(null);
         history.push(ROUTES.LOGIN);
       })
@@ -78,8 +112,20 @@ const UserInfo = ({ firebase }) => {
         setAnchorEl(null);
       });
   };
-  
-  const userName = firebase.auth().currentUser?.displayName;  // bez '?' wykrzacza błąd podczas LogOut, że displayName is null
+
+  // Wysłanie URLa awatara ze state'a do profilu użytkownika na Firebase
+  useEffect(() => {
+    firebase.auth().currentUser.updateProfile({
+      photoURL: avatarURL
+    });
+  }, [avatarURL, firebase]);
+
+  // Jeżeli użytkownik usunie awatar, URL zostanie skasowany zarówno w state'cie jak i w profilu użytkownika (drugi useEffect)
+  useEffect(() => {
+    const noPhotoAvatar = document.getElementById('no-photo-avatar');
+    console.log(noPhotoAvatar);
+    noPhotoAvatar && setAvatarURL('');
+  }, []);
 
   return (
     <>
@@ -90,8 +136,21 @@ const UserInfo = ({ firebase }) => {
         onClick={handleOnClick}
         className={classes.userSection}
       >
-        {userName}
-        <AccountCircleIcon color="secondary" className={classes.userAvatar} />
+        {/* Bez '?' wykrzacza błąd podczas LogOut, że displayName stanowi null */}
+        {firebase.auth().currentUser?.displayName}
+        {avatarURL ? (
+          <Avatar
+            alt="Avatar uploaded by user"
+            src={avatarURL}
+            className={clsx(classes.userAvatar, classes.userUploadedAvatar)}
+          />
+        ) : (
+          <AccountCircleIcon
+            color="secondary"
+            id="no-photo-avatar"
+            className={classes.userAvatar}
+          />
+        )}
       </Button>
       <StyledMenu
         id="customized-menu"
@@ -100,13 +159,22 @@ const UserInfo = ({ firebase }) => {
         open={Boolean(anchorEl)}
         onClose={handleOnClose}
       >
-        <StyledMenuItem>
-          <ListItemIcon>
-            <SendIcon fontSize="small" />
-          </ListItemIcon>
-          {/* Później będzie możliwość wstawienia własnego awatara */}
-          <ListItemText primary="Sent mail" />
-        </StyledMenuItem>
+        {/* Label koniecznie w tym miejscu dla poprawności działania */}
+        <label style={{ marginBottom: 0 }}>
+          <StyledMenuItem>
+            <ListItemIcon>
+              <FaceIcon fontSize="small" />
+            </ListItemIcon>
+            <input
+              type="file"
+              accept="image/jpeg"
+              onChange={handleOnAddAvatar}
+              multiple={false}
+              style={{ display: 'none' }}
+            />
+            <ListItemText primary="Wstaw awatar" />
+          </StyledMenuItem>
+        </label>
         <StyledMenuItem
           onClick={handleOnLogOut}
         >
