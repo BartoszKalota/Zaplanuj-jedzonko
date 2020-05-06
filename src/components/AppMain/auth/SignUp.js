@@ -76,7 +76,8 @@ const SignUp = ({ firebase }) => {
     email: '',
     password: '',
     confirmPassword: '',
-    checked: ''
+    checked: '',
+    duplicatedEmail: '' // informacja, że w Firebase istnieje już podany email (gdy Firebase wyrzuci błąd)
   };
   const [errors, setErrors] = useState({ ...errorsInitialState });
   const [isPending, setIsPending] = useState(false);
@@ -147,7 +148,11 @@ const SignUp = ({ firebase }) => {
         })
         .catch(err => {
           console.log(err);
-          alert('Błąd połączenia! Zajrzyj do konsoli.');
+          if (err.code === 'auth/email-already-in-use') {
+            setErrors({ duplicatedEmail: 'Podany adres email jest już używany. Użyj innego adresu email.' });
+          } else {
+            alert('Błąd połączenia! Zajrzyj do konsoli.');
+          }
           setIsPending(false);
         });
     }
@@ -282,6 +287,11 @@ const SignUp = ({ firebase }) => {
         {errors.checked && (
           <Typography component="p" className={classes.errorMsg}>
             {errors.checked}
+          </Typography>
+        )}
+        {errors.duplicatedEmail && (
+          <Typography component="p" className={classes.errorMsg}>
+            {errors.duplicatedEmail}
           </Typography>
         )}
         <Grid item container justify="center" alignItems="center" style={{ position: 'relative' }}>
