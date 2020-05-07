@@ -104,6 +104,7 @@ const UserInfo = ({ firebase }) => {
       .signOut()
       .then(() => {
         setAnchorEl(null);
+        setAvatarURL('')
         history.push(ROUTES.LOGIN);
       })
       .catch(err => {
@@ -115,17 +116,12 @@ const UserInfo = ({ firebase }) => {
 
   // Wysłanie URLa awatara ze state'a do profilu użytkownika na Firebase
   useEffect(() => {
-    firebase.auth().currentUser.updateProfile({
-      photoURL: avatarURL
-    });
+    if (firebase.auth().currentUser) {  // bez tego warunku wyrzuca błąd w konsoli po wylogowaniu
+      firebase.auth().currentUser.updateProfile({
+        photoURL: avatarURL
+      });
+    }
   }, [avatarURL, firebase]);
-
-  // Jeżeli użytkownik usunie awatar, URL zostanie skasowany zarówno w state'cie jak i w profilu użytkownika (drugi useEffect)
-  useEffect(() => {
-    const noPhotoAvatar = document.getElementById('no-photo-avatar');
-    console.log(noPhotoAvatar);
-    noPhotoAvatar && setAvatarURL('');
-  }, []);
 
   return (
     <>
