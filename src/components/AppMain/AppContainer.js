@@ -31,7 +31,7 @@ import TodayIcon from '@material-ui/icons/Today';
 import bgImg from '../../assets/bg.png';
 
 import * as ROUTES from '../../config/ROUTES';
-import UserInfo from './UserInfo';
+import UserInfo from './elements/UserInfo';
 import Desktop from './Desktop';
 import Receipt from './Receipt';
 import Schedule from './Schedule';

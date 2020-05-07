@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { withFirebaseHOC } from '../../config/Firebase';
+import { withFirebaseHOC } from '../../../config/Firebase';
 import {
   Avatar,
   Button,
@@ -16,7 +16,7 @@ import FaceIcon from '@material-ui/icons/Face';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 
-import * as ROUTES from '../../config/ROUTES';
+import * as ROUTES from '../../../config/ROUTES';
 
 const useStyles = makeStyles(theme => ({
   userSection: {
