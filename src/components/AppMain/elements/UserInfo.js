@@ -4,7 +4,9 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { withFirebaseHOC } from '../../../config/Firebase';
 import {
   Avatar,
+  Backdrop,
   Button,
+  CircularProgress,
   Menu,
   MenuItem,
   ListItemIcon,
@@ -31,6 +33,10 @@ const useStyles = makeStyles(theme => ({
   userUploadedAvatar: {
     border: `2px solid ${theme.palette.secondary.main}`,
     borderRadius: '50%'
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#FFF',
   }
 }));
 
@@ -68,6 +74,7 @@ const UserInfo = ({ firebase }) => {
   const classes = useStyles();
   const history = useHistory();
   const [anchorEl, setAnchorEl] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   // Bieżący awatar użytkownika pobrany z Firebase
   const USER_FIREBASE_AVATAR = firebase.auth().currentUser?.photoURL; // bez '?' wykrzacza błąd podczas LogOut, że photoURL stanowi null
   const [avatarURL, setAvatarURL] = useState(USER_FIREBASE_AVATAR);
@@ -84,9 +91,11 @@ const UserInfo = ({ firebase }) => {
     uploadTask.on('state_changed',    // postęp wysyłania awatara
       (snapshot) => {
         console.log(snapshot);
+        setIsLoading(true);
       },
       (err) => {
         console.warn('Błąd postępu wysyłania awatara:', err);
+        setIsLoading(false);
       },
       () => {                         // wygenerowanie URLa awatara i zapisanie w state'cie
         storage.ref(`${userId}/profilePicture`).child(file.name).getDownloadURL()
@@ -99,6 +108,7 @@ const UserInfo = ({ firebase }) => {
   };
   const handleOnRemoveAvatar = () => {
     setAnchorEl(null);
+    setIsLoading(true);
     const currentUser = firebase.auth().currentUser;
     // Ekstrakcja nazwy pliku awatara z URLa Firebase, żeby później podać właściwą nazwę pliku do usunięcia
     const photoURL = currentUser.photoURL;
@@ -136,6 +146,7 @@ const UserInfo = ({ firebase }) => {
       firebase.auth().currentUser.updateProfile({
         photoURL: avatarURL
       });
+      setIsLoading(false);
     }
   }, [avatarURL, firebase]);
 
@@ -214,6 +225,11 @@ const UserInfo = ({ firebase }) => {
           <ListItemText primary="Wyloguj" />
         </StyledMenuItem>
       </StyledMenu>
+
+      {/* Ekran ładowania */}
+      <Backdrop className={classes.backdrop} open={isLoading}>
+        <CircularProgress color="secondary" />
+      </Backdrop>
     </>
   );
 }
