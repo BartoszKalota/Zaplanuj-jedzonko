@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { withFirebaseHOC } from '../../../config/Firebase';
 import {
   Avatar,
-  Backdrop,
   Button,
-  CircularProgress,
   Menu,
   MenuItem,
   ListItemIcon,
@@ -17,6 +15,8 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import FaceIcon from '@material-ui/icons/Face';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
+
+import { IsLoadingContext } from '../../../config/contexts/IsLoadingContext';
 
 import * as ROUTES from '../../../config/ROUTES';
 
@@ -33,10 +33,6 @@ const useStyles = makeStyles(theme => ({
   userUploadedAvatar: {
     border: `2px solid ${theme.palette.secondary.main}`,
     borderRadius: '50%'
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: '#FFF',
   }
 }));
 
@@ -74,7 +70,7 @@ const UserInfo = ({ firebase }) => {
   const classes = useStyles();
   const history = useHistory();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const { setIsLoading } = useContext(IsLoadingContext);
   // Bieżący awatar użytkownika pobrany z Firebase
   const USER_FIREBASE_AVATAR = firebase.auth().currentUser?.photoURL; // bez '?' wykrzacza błąd podczas LogOut, że photoURL stanowi null
   const [avatarURL, setAvatarURL] = useState(USER_FIREBASE_AVATAR);
@@ -145,10 +141,11 @@ const UserInfo = ({ firebase }) => {
     if (firebase.auth().currentUser) {  // bez tego warunku wykrzacza błąd w konsoli po wylogowaniu
       firebase.auth().currentUser.updateProfile({
         photoURL: avatarURL
-      });
-      setIsLoading(false);
+      })
+        .then(() => setIsLoading(false));
     }
-  }, [avatarURL, firebase]);
+    return () => setIsLoading(true);  // dzięki temu, po ponownym uruchomieniu aplikacji, uruchamia się kręciołek ładowania
+  }, [avatarURL, firebase, setIsLoading]);
 
   const avatarMenuItem = (
     avatarURL ? (
@@ -225,11 +222,6 @@ const UserInfo = ({ firebase }) => {
           <ListItemText primary="Wyloguj" />
         </StyledMenuItem>
       </StyledMenu>
-
-      {/* Ekran ładowania */}
-      <Backdrop className={classes.backdrop} open={isLoading}>
-        <CircularProgress color="secondary" />
-      </Backdrop>
     </>
   );
 }

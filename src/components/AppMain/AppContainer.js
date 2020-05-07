@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Switch,
   Route,
@@ -9,6 +9,8 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import {
   AppBar,
+  Backdrop,
+  CircularProgress,
   Divider,
   Drawer,
   Grid,
@@ -28,6 +30,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import TodayIcon from '@material-ui/icons/Today';
 
+import { IsLoadingContext } from '../../config/contexts/IsLoadingContext';
 import bgImg from '../../assets/bg.png';
 
 import * as ROUTES from '../../config/ROUTES';
@@ -145,16 +148,21 @@ const useStyles = makeStyles(theme => ({
   content: {
     height: '100%',
     padding: theme.spacing(2)
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#FFF',
   }
 }));
 
 const AppContainer = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const { isLoading } = useContext(IsLoadingContext);
 
   const handleDrawerOpen = () => setOpen(true);
   const handleDrawerClose = () => setOpen(false);
-
+  
   return (
     <div style={{ display: 'flex' }}>
       <AppBar
@@ -263,6 +271,11 @@ const AppContainer = () => {
           </Switch>
         </Paper>
       </main>
+
+      {/* Ekran ładowania */}
+      <Backdrop className={classes.backdrop} open={isLoading}>
+        <CircularProgress color="secondary" />
+      </Backdrop>
     </div>
   );
 }

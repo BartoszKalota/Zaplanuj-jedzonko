@@ -11,6 +11,8 @@ import firebase, { FirebaseProvider, withFirebaseHOC } from './config/Firebase';
 import { ThemeProvider } from '@material-ui/core/styles';
 import theme, { globalStyle } from './config/theme';
 
+import IsLoadingProvider from './config/contexts/IsLoadingContext';
+
 import * as ROUTES from './config/ROUTES';
 import LandingPage from './components/LandingPage';
 import AuthContainer from './components/AppMain/auth/AuthContainer';
@@ -29,15 +31,17 @@ const withAuthenticate = Component => {
 const App = () => (
   <ThemeProvider theme={theme}>
     <FirebaseProvider value={firebase}>
-      <Router>
-        <Switch>
-          <Route exact path={ROUTES.LANDINGPAGE} component={LandingPage} />
-          <Route path={ROUTES.LOGIN} component={AuthContainer} />
-          <Route path={ROUTES.DESKTOP} component={withAuthenticate(AppContainer)} />
-          <Route path={ROUTES.ERROR} component={NotFound} />
-          <Redirect from="*" to={ROUTES.ERROR} />
-        </Switch>
-      </Router>
+      <IsLoadingProvider>
+        <Router>
+          <Switch>
+            <Route exact path={ROUTES.LANDINGPAGE} component={LandingPage} />
+            <Route path={ROUTES.LOGIN} component={AuthContainer} />
+            <Route path={ROUTES.DESKTOP} component={withAuthenticate(AppContainer)} />
+            <Route path={ROUTES.ERROR} component={NotFound} />
+            <Redirect from="*" to={ROUTES.ERROR} />
+          </Switch>
+        </Router>
+      </IsLoadingProvider>
     </FirebaseProvider>
   </ThemeProvider>
 );
