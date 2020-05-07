@@ -14,6 +14,7 @@ import {
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 
+import * as ROUTES from '../../config/ROUTES';
 
 const useStyles = makeStyles(theme => ({
   navBar: {
@@ -93,7 +94,7 @@ const NavBar = () => {
     >
       <MenuItem>
         <Link 
-          to="/app"
+          to={ROUTES.LOGIN}
           style={{ width: '100%' }}
         >
           <Button color="inherit" fullWidth>
@@ -167,7 +168,7 @@ const NavBar = () => {
               </Typography>
               <div className={classes.sectionDesktop}>
                 <Link
-                  to="/app"
+                  to={ROUTES.LOGIN}
                   style={{ display: 'flex' }}
                 >
                   <Button color="inherit" className={classes.desktopBtn}>

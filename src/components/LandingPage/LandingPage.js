@@ -1,6 +1,8 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
 
+import NewsletterProvider from '../../config/contexts/NewsletterContext';
+
 import NavBar from './NavBar';
 import CarouselSection from './Carousel';
 import CallToAction from './CallToAction';
@@ -10,8 +12,8 @@ import AboutMe from './AboutMe';
 import Contact from './Contact';
 import Footer from './Footer';
 
-const LandingPage = () => {
-  return (
+const LandingPage = () => (
+  <NewsletterProvider>
     <Grid container direction="column">
       <NavBar />
       <CarouselSection />
@@ -22,7 +24,7 @@ const LandingPage = () => {
       <Contact />
       <Footer />
     </Grid>
-  );
-};
+  </NewsletterProvider>
+);
  
 export default LandingPage;

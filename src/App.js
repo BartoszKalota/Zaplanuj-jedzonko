@@ -2,26 +2,48 @@ import React from 'react';
 import {
   HashRouter as Router,
   Switch,
-  Route
+  Route,
+  Redirect
 } from 'react-router-dom';
+import injectSheet from 'react-jss';    // w celu nadania styli globalnych
+import firebase, { FirebaseProvider, withFirebaseHOC } from './config/Firebase';
 
 import { ThemeProvider } from '@material-ui/core/styles';
-import theme from './config/theme';
+import theme, { globalStyle } from './config/theme';
 
+import IsLoadingProvider from './config/contexts/IsLoadingContext';
+
+import * as ROUTES from './config/ROUTES';
 import LandingPage from './components/LandingPage';
-import AppContainer from './components/AppMain/Signup';
+import AuthContainer from './components/AppMain/auth/AuthContainer';
+import AppContainer from './components/AppMain/AppContainer';
 import NotFound from './components/NotFound';
+import NotAuthenticated from './components/AppMain/auth/NotAuthenticated';
+
+// Autoryzacja wejścia do aplikacji
+const withAuthenticate = Component => {
+  const innerHOC = ({ firebase, ...props }) => {
+    return firebase.auth().currentUser ? <Component {...props} /> : <NotAuthenticated />;
+  };
+  return withFirebaseHOC(innerHOC);
+};
 
 const App = () => (
   <ThemeProvider theme={theme}>
-    <Router>
-      <Switch>
-        <Route exact path="/" component={LandingPage} />
-        <Route path="/app" component={AppContainer} />
-        <Route component={NotFound} />
-      </Switch>
-    </Router>
+    <FirebaseProvider value={firebase}>
+      <IsLoadingProvider>
+        <Router>
+          <Switch>
+            <Route exact path={ROUTES.LANDINGPAGE} component={LandingPage} />
+            <Route path={ROUTES.LOGIN} component={AuthContainer} />
+            <Route path={ROUTES.DESKTOP} component={withAuthenticate(AppContainer)} />
+            <Route path={ROUTES.ERROR} component={NotFound} />
+            <Redirect from="*" to={ROUTES.ERROR} />
+          </Switch>
+        </Router>
+      </IsLoadingProvider>
+    </FirebaseProvider>
   </ThemeProvider>
 );
 
-export default App;
+export default injectSheet(globalStyle)(App);

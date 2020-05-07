@@ -11,9 +11,9 @@ import {
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
-import bgImg from '../assets/bg.png';
+import bgImg from '../../../assets/bg.png';
 
-import * as ROUTES from '../config/ROUTES';
+import * as ROUTES from '../../../config/ROUTES';
 
 const useStyles = makeStyles(theme => ({
   background: {
@@ -57,10 +57,16 @@ const useStyles = makeStyles(theme => ({
   heading: {
     textAlign: 'center',
     margin: theme.spacing(2, 0)
+  },
+  link: {
+    color: theme.palette.secondary.main,
+    '&:hover': {
+      color: theme.palette.secondary.main
+    }
   }
 }));
 
-const NotFound = () => {
+const NotAuthenticated = () => {
   const classes = useStyles();
   return (
     <main className={classes.background}>
@@ -84,10 +90,18 @@ const NotFound = () => {
           <Grid item xs={false} sm={2} md={3} />
           <Grid item container xs={12} sm={8} md={6} direction="column" justify="center">
             <Typography variant="h4" component="h2" className={classes.heading}>
-              Błąd 404
+              Błąd 403
             </Typography>
             <Typography variant="h6" component="h3" className={classes.heading}>
-              (Nie ma takiej strony)
+              (Brak dostępu)
+            </Typography>
+            <Typography align="center" paragraph>
+              <Link to={ROUTES.SIGNUP} className={classes.link}>
+                Zarejestruj się 
+              </Link> lub <Link to={ROUTES.LOGIN} className={classes.link}>
+                  zaloguj
+              </Link>
+              , aby skorzystać z aplikacji.
             </Typography>
           </Grid>
           <Grid item xs={false} sm={2} md={3} />
@@ -97,4 +111,4 @@ const NotFound = () => {
   );
 }
  
-export default NotFound;
+export default NotAuthenticated;

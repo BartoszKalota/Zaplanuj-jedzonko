@@ -5,14 +5,43 @@ import { Carousel } from 'react-bootstrap';
 import img1 from '../../assets/carousel-bg1.jpg';
 import img2 from '../../assets/carousel-bg2.jpg';
 import img3 from '../../assets/carousel-bg3.jpg';
- 
+
+const CAROUSEL_ARROW = 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Chevron_right_font_awesome.svg/768px-Chevron_right_font_awesome.svg.png';
 
 const useStyles = makeStyles({
   carouselSection: {
     marginTop: 75,
     '@media (min-width:1252px)': {
       marginTop: 90
+    },
+    // Stylowanie elementów wewnętrznych niewidocznych z poziomu kodu JS
+    '& .carousel-indicators li': {
+      width: 20,
+      height: 20,
+      borderRadius: '50%',
+      marginLeft: 10,
+      marginRight: 10,
+      '&.active': {
+        backgroundColor: '#0000057d'
+      }
+    },
+    '& .carousel-control-next-icon, & .carousel-control-prev-icon': {
+      backgroundImage: `url(${CAROUSEL_ARROW})`,
+      width: 40,
+      height: 40
+    },
+    '& .carousel-control-prev-icon': {
+      transform: 'rotate(180deg)'
+    },
+    '& .carousel-control-next:active .carousel-control-next-icon': {
+      position: 'relative',
+      top: 3
+    },
+    '& .carousel-control-prev:active .carousel-control-prev-icon': {
+      position: 'relative',
+      top: 3
     }
+    //
   },
   carouselItem: {
     height: 500,
@@ -34,7 +63,6 @@ const useStyles = makeStyles({
   captionDescr: {
     fontSize: '1.3rem'
   }
-  // Reszta styli w odpowiednim pliku SCSS (dla elementów HTML, które nie są widoczne z poziomu kodu JS)
 });
 
 const CarouselSection = () => {

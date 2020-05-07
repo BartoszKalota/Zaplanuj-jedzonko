@@ -1,5 +1,8 @@
 import React from 'react';
 import {
+  Switch,
+  Route,
+  Redirect,
   Link
 } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -11,9 +14,12 @@ import {
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
-import bgImg from '../assets/bg.png';
+import bgImg from '../../../assets/bg.png';
 
-import * as ROUTES from '../config/ROUTES';
+import * as ROUTES from '../../../config/ROUTES';
+import LogIn from './LogIn';
+import SignUp from './SignUp';
+import ForgotPwd from './ForgotPwd';
 
 const useStyles = makeStyles(theme => ({
   background: {
@@ -53,14 +59,10 @@ const useStyles = makeStyles(theme => ({
       display: 'inline',
       marginTop: 0
     }
-  },
-  heading: {
-    textAlign: 'center',
-    margin: theme.spacing(2, 0)
   }
 }));
 
-const NotFound = () => {
+const AuthContainer = () => {
   const classes = useStyles();
   return (
     <main className={classes.background}>
@@ -82,13 +84,13 @@ const NotFound = () => {
         </Grid>          
         <Grid container>
           <Grid item xs={false} sm={2} md={3} />
-          <Grid item container xs={12} sm={8} md={6} direction="column" justify="center">
-            <Typography variant="h4" component="h2" className={classes.heading}>
-              Błąd 404
-            </Typography>
-            <Typography variant="h6" component="h3" className={classes.heading}>
-              (Nie ma takiej strony)
-            </Typography>
+          <Grid item container xs={12} sm={8} md={6}>
+            <Switch>
+              <Route exact path={ROUTES.LOGIN} component={LogIn} />
+              <Route path={ROUTES.SIGNUP} component={SignUp} />
+              <Route path={ROUTES.FORGOTPWD} component={ForgotPwd} />
+              <Redirect from="*" to={ROUTES.ERROR} />
+            </Switch>
           </Grid>
           <Grid item xs={false} sm={2} md={3} />
         </Grid>
@@ -97,4 +99,4 @@ const NotFound = () => {
   );
 }
  
-export default NotFound;
+export default AuthContainer;
