@@ -162,7 +162,7 @@ const AppContainer = () => {
 
   const handleDrawerOpen = () => setOpen(true);
   const handleDrawerClose = () => setOpen(false);
-  
+
   return (
     <div style={{ display: 'flex' }}>
       <AppBar

@@ -144,7 +144,7 @@ const UserInfo = ({ firebase }) => {
       })
         .then(() => setIsLoading(false));
     }
-    return () => setIsLoading(true);  // dzięki temu, po ponownym uruchomieniu aplikacji, uruchamia się kręciołek ładowania
+    return () => setIsLoading(true);  // dzięki temu, po ponownym uruchomieniu aplikacji, przywracane jest uruchomienie kręciołka ładowania
   }, [avatarURL, firebase, setIsLoading]);
 
   const avatarMenuItem = (
