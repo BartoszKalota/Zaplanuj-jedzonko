@@ -8,8 +8,8 @@ import AddBoxIcon from '@material-ui/icons/AddBox';
 
 const useStyles = makeStyles(theme => ({
   tileButton: {
-    width: 150,
-    height: 150,
+    width: 160,
+    height: 160,
     marginRight: 20,
     textTransform: 'lowercase',
     border: `2px solid ${theme.palette.success.main}`,
