@@ -21,7 +21,13 @@ const Desktop = () => {
   return (
     <>
       <Grid container>
-        <Grid item container xs={12} md={5} wrap="nowrap" justify="space-evenly" className={classes.upperMainGrid}>
+        <Grid
+          item container
+          xs={12} md={7} lg={5}
+          wrap="nowrap"
+          justify="space-evenly"
+          className={classes.upperMainGrid}
+        >
           <Link to={ROUTES.RECEIPT}>
             <TileButton btnTitle="dodaj przepis" />
           </Link>
@@ -29,7 +35,11 @@ const Desktop = () => {
             <TileButton btnTitle="dodaj plan" />
           </Link>
         </Grid>
-        <Grid item container xs={12} md={7} className={classes.upperMainGrid}>
+        <Grid
+          item container
+          xs={12} md={5} lg={7}
+          className={classes.upperMainGrid}
+        >
           <AlertInfo />
           <AlertWarn />
           <AlertSucc />
