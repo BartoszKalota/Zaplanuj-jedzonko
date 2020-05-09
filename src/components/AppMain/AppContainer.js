@@ -148,6 +148,7 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     height: '100%',
+    overflow: 'auto',
     padding: theme.spacing(2)
   },
   backdrop: {
