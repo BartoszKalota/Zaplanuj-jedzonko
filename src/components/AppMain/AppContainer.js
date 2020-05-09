@@ -31,6 +31,7 @@ import ReceiptIcon from '@material-ui/icons/Receipt';
 import TodayIcon from '@material-ui/icons/Today';
 
 import { IsLoadingContext } from '../../config/contexts/IsLoadingContext';
+import { DesktopSwitcher } from '../../config/contexts/DesktopSwitcher';
 import bgImg from '../../assets/bg.png';
 
 import * as ROUTES from '../../config/ROUTES';
@@ -159,11 +160,15 @@ const AppContainer = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const { isLoading } = useContext(IsLoadingContext);
+  const { setDesktopMode } = useContext(DesktopSwitcher);
 
+  const handleOnRouteToDesktop = () => setDesktopMode(1);
   const handleDrawerOpen = () => setOpen(true);
   const handleDrawerClose = () => setOpen(false);
 
   return (
+    // Brak onLoad={handleOnContentLoaded}, bo zarządzanie załadowaniem odbywa się z poziomu komponentu UserInfo
+    // Poza tym, użycie <Route> blokuje tutaj uruchomienie eventu onLoad
     <div style={{ display: 'flex' }}>
       <AppBar
         position="fixed"
@@ -186,7 +191,7 @@ const AppContainer = () => {
                 <MenuIcon />
               </IconButton>
               <Typography variant="h1" className={classes.title} noWrap>
-                <Link to={ROUTES.DESKTOP} style={{ cursor: 'pointer' }}>
+                <Link to={ROUTES.DESKTOP} onClick={handleOnRouteToDesktop} style={{ cursor: 'pointer' }}>
                   Zaplanuj <span className={classes.titleColor}>Jedzonko</span>
                 </Link>
               </Typography>
@@ -218,6 +223,7 @@ const AppContainer = () => {
           <NavLink
             exact to={ROUTES.DESKTOP}
             activeClassName={classes.activeNavButton}
+            onClick={handleOnRouteToDesktop}
           >
             <ListItem button className={classes.listItem}>
               <ListItemIcon style={{ color: 'inherit' }}>

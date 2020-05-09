@@ -8,6 +8,7 @@ import {
 import injectSheet from 'react-jss';    // w celu nadania styli globalnych
 import firebase, { FirebaseProvider, withFirebaseHOC } from './config/Firebase';
 
+import DesktopSwitcher from './config/contexts/DesktopSwitcher';
 import { ThemeProvider } from '@material-ui/core/styles';
 import theme, { globalStyle } from './config/theme';
 
@@ -32,15 +33,17 @@ const App = () => (
   <ThemeProvider theme={theme}>
     <FirebaseProvider value={firebase}>
       <IsLoadingProvider>
-        <Router>
-          <Switch>
-            <Route exact path={ROUTES.LANDINGPAGE} component={LandingPage} />
-            <Route path={ROUTES.LOGIN} component={AuthContainer} />
-            <Route path={ROUTES.DESKTOP} component={withAuthenticate(AppContainer)} />
-            <Route path={ROUTES.ERROR} component={NotFound} />
-            <Redirect from="*" to={ROUTES.ERROR} />
-          </Switch>
-        </Router>
+        <DesktopSwitcher>
+          <Router>
+            <Switch>
+              <Route exact path={ROUTES.LANDINGPAGE} component={LandingPage} />
+              <Route path={ROUTES.LOGIN} component={AuthContainer} />
+              <Route path={ROUTES.DESKTOP} component={withAuthenticate(AppContainer)} />
+              <Route path={ROUTES.ERROR} component={NotFound} />
+              <Redirect from="*" to={ROUTES.ERROR} />
+            </Switch>
+          </Router>
+        </DesktopSwitcher>
       </IsLoadingProvider>
     </FirebaseProvider>
   </ThemeProvider>

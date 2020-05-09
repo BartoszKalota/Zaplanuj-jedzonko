@@ -31,7 +31,7 @@ const LandingPage = () => {
 
   const handleOnContentLoaded = () => setIsLoading(false);
 
-  // Przywrócenie domyślnej wartości state'a z contextu
+  // Przywrócenie domyślnej wartości state'a z contextu po odmontowaniu bieżącego komponentu (ponownie uruchomi się kręciołek ładowania)
   useEffect(() => {
     return () => setIsLoading(true);
   }, [setIsLoading]);
