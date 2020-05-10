@@ -4,11 +4,12 @@ import {
   Divider,
   Button,
   Grid,
-  ListItem,
   OutlinedInput,
   Typography
 } from '@material-ui/core';
 import AddBoxIcon from '@material-ui/icons/AddBox';
+
+import AddReceiptInstrList from './elements/AddReceiptInstrList';
 
 const useStyles = makeStyles(theme => ({
   heading: {
@@ -30,11 +31,6 @@ const useStyles = makeStyles(theme => ({
   dataFormSection: {
     paddingTop: 20
   },
-  dataFormColumnSection: {
-    // height: '100%',
-    // display: 'flex',
-    // flexDirection: 'column'
-  },
   dataInputSection: {
     width: '100%',
     display: 'flex',
@@ -53,7 +49,10 @@ const useStyles = makeStyles(theme => ({
   dataList: {
     height: 'calc(100vh - 580px)',
     minHeight: 70,
-    overflow: 'auto'
+    overflow: 'auto',
+    '& ol': {
+      paddingLeft: 0
+    }
   }
 }));
 
@@ -81,6 +80,25 @@ const DesktopAddReceipt = () => {
     });
   };
 
+  const handleOnAddDataToList = ({ currentTarget }) => {
+    const input = currentTarget.parentElement.querySelector('textarea');
+    let newArr;
+    if (input.id === 'receipt-instructions') {
+      newArr = [...values.instr, input.value.trim()];
+      setValues({
+        ...values,
+        instr: newArr
+      });
+    } else {
+      newArr = [...values.ingred, input.value.trim()];
+      setValues({
+        ...values,
+        ingred: newArr
+      });
+    }
+    input.value = '';
+  };
+
   return (
     <form autoComplete="off">
       <Grid container style={{ paddingBottom: 15 }}>
@@ -97,12 +115,12 @@ const DesktopAddReceipt = () => {
       </Grid>
       <Divider />
       <Grid container style={{ paddingTop: 10, paddingBottom: 10 }}>
-        <Grid item container xs={3} justify="center" alignItems="flex-start">
-          <Typography variant="h6" component="label" htmlFor="receipt-name">
+        <Grid item container xs={12} md={3} justify="center" alignItems="flex-start">
+          <Typography variant="h6" component="label" htmlFor="receipt-name" align="center">
             Nazwa przepisu
           </Typography>
         </Grid>
-        <Grid item xs={9}>
+        <Grid item xs={12} md={9}>
           <OutlinedInput
             id="receipt-name"
             className={classes.outlinedInput}
@@ -118,12 +136,12 @@ const DesktopAddReceipt = () => {
         </Grid>
       </Grid>
       <Grid container style={{ paddingBottom: 10 }}>
-        <Grid item container xs={3} justify="center" alignItems="flex-start">
-          <Typography variant="h6" component="label" htmlFor="receipt-description">
+        <Grid item container xs={12} md={3} justify="center" alignItems="flex-start">
+          <Typography variant="h6" component="label" htmlFor="receipt-description" align="center">
             Opis przepisu
           </Typography>
         </Grid>
-        <Grid item xs={9}>
+        <Grid item xs={12} md={9}>
           <OutlinedInput
             id="receipt-description"
             className={classes.outlinedInput}
@@ -141,7 +159,7 @@ const DesktopAddReceipt = () => {
         </Grid>
       </Grid>
       <Grid container spacing={3} className={classes.dataFormSection}>
-        <Grid item xs={6} className={classes.dataFormColumnSection}>
+        <Grid item xs={12} md={6}>
           <Grid item>
             <Typography variant="h6" component="label" htmlFor="receipt-instructions">
               Instrukcje
@@ -162,22 +180,15 @@ const DesktopAddReceipt = () => {
               placeholder="Po tym czasie, ziemniaki zalej śmietaną wymieszaną z 'Knorr Naturalnie smaczne', dodaj liście brukselki i dokładnie wymieszaj."
               inputProps={{ 'aria-label': 'receipt-instructions' }}
             />
-            <Button className={classes.addDataButton}>
+            <Button className={classes.addDataButton} onClick={handleOnAddDataToList}>
               <AddBoxIcon />
             </Button>
           </Grid>
           <Grid item xs={12} className={classes.dataList}>
-            <ol>
-              <ListItem button>
-                <li>Lorem</li>
-              </ListItem>
-              <ListItem button>
-                <li>Lorem</li>
-              </ListItem>
-            </ol>
+            <AddReceiptInstrList instructionsList={values.instr} />
           </Grid>
         </Grid>
-        <Grid item container xs={6} direction="column">
+        <Grid item container xs={12} md={6} direction="column">
           Składniki
         </Grid>
       </Grid>

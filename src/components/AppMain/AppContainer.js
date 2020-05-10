@@ -179,7 +179,7 @@ const AppContainer = () => {
       >
         <Toolbar>
           <Grid item container xs={12} justify="space-between" alignItems="center">
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
