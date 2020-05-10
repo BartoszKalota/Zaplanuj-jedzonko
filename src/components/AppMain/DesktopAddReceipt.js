@@ -82,21 +82,32 @@ const DesktopAddReceipt = () => {
 
   const handleOnAddDataToList = ({ currentTarget }) => {
     const input = currentTarget.parentElement.querySelector('textarea');
-    let newArr;
-    if (input.id === 'receipt-instructions') {
-      newArr = [...values.instr, input.value.trim()];
-      setValues({
-        ...values,
-        instr: newArr
-      });
-    } else {
-      newArr = [...values.ingred, input.value.trim()];
-      setValues({
-        ...values,
-        ingred: newArr
-      });
+    if (input.value) {
+      let newArr;
+      if (input.id === 'receipt-instructions') {
+        newArr = [...values.instr, input.value.trim()];
+        setValues({
+          ...values,
+          instr: newArr
+        });
+      } else {
+        newArr = [...values.ingred, input.value.trim()];
+        setValues({
+          ...values,
+          ingred: newArr
+        });
+      }
     }
+    
     input.value = '';
+  };
+
+  const handleOnDeleteInstructionItem = (itemId) => {
+    const itemToDelete = values.instr[itemId];
+    setValues(prevState => ({
+      ...values,
+      instr: prevState.instr.filter(item => item !== itemToDelete)
+    }));
   };
 
   return (
@@ -185,7 +196,10 @@ const DesktopAddReceipt = () => {
             </Button>
           </Grid>
           <Grid item xs={12} className={classes.dataList}>
-            <AddReceiptInstrList instructionsList={values.instr} />
+            <AddReceiptInstrList
+              instructionsList={values.instr}
+              onDelete={handleOnDeleteInstructionItem}
+            />
           </Grid>
         </Grid>
         <Grid item container xs={12} md={6} direction="column">

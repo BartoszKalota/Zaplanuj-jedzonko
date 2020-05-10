@@ -26,22 +26,43 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const AddReceiptInstrList = ({ instructionsList }) => {
+const AddReceiptInstrList = ({ instructionsList, onDelete }) => {
   const classes = useStyles();
+
+  const handleOnClick = ({ currentTarget }) => {
+    const buttonLabel = currentTarget.getAttribute('aria-label');
+    const currListItemId = currentTarget.parentElement.parentElement.parentElement.dataset.id;
+    if (buttonLabel === 'delete-item') {
+      onDelete(currListItemId);
+    } else {
+      console.log('edit method');
+    }
+  };
+
   return (
     <ol>
       {instructionsList.length ? (
         instructionsList.map((text, i) => (
-          <ListItem key={i} button className={classes.dataListItem}>
+          <ListItem key={i} data-id={i} button className={classes.dataListItem}>
             <li>
               <ListItemText className={classes.dataListItemText}>
                 {text}
               </ListItemText>
               <ListItemSecondaryAction>
-                <IconButton edge="end" aria-label="edit-item" className={classes.editBtn}>
+                <IconButton
+                  edge="end"
+                  aria-label="edit-item"
+                  className={classes.editBtn}
+                  onClick={handleOnClick}
+                >
                   <BorderColorIcon />
                 </IconButton>
-                <IconButton edge="end" aria-label="delete-item" className={classes.deleteBtn}>
+                <IconButton
+                  edge="end"
+                  aria-label="delete-item"
+                  className={classes.deleteBtn}
+                  onClick={handleOnClick}
+                >
                   <DeleteIcon />
                 </IconButton>
               </ListItemSecondaryAction>
