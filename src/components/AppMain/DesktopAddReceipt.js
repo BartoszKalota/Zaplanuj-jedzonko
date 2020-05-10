@@ -79,7 +79,6 @@ const DesktopAddReceipt = () => {
       [name]: value
     });
   };
-
   const handleOnAddDataToList = ({ currentTarget }) => {
     const input = currentTarget.parentElement.querySelector('textarea');
     if (input.value) {
@@ -98,10 +97,18 @@ const DesktopAddReceipt = () => {
         });
       }
     }
-    
     input.value = '';
   };
-
+  const handleOnEditInstructionItem = (itemId, itemNewContent) => {
+    if (!values.instr.includes(itemNewContent)) {
+      const newArr = [...values.instr];
+      newArr[itemId] = itemNewContent;
+      setValues({
+        ...values,
+        instr: newArr
+      }); 
+    }
+  };
   const handleOnDeleteInstructionItem = (itemId) => {
     const itemToDelete = values.instr[itemId];
     setValues(prevState => ({
@@ -198,6 +205,7 @@ const DesktopAddReceipt = () => {
           <Grid item xs={12} className={classes.dataList}>
             <AddReceiptInstrList
               instructionsList={values.instr}
+              onEdit={handleOnEditInstructionItem}
               onDelete={handleOnDeleteInstructionItem}
             />
           </Grid>
