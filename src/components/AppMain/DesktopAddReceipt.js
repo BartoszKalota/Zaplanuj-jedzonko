@@ -10,6 +10,7 @@ import {
 import AddBoxIcon from '@material-ui/icons/AddBox';
 
 import AddReceiptInstrList from './elements/AddReceiptInstrList';
+import AddReceiptIngredList from './elements/AddReceiptIngredList';
 
 const useStyles = makeStyles(theme => ({
   heading: {
@@ -109,11 +110,28 @@ const DesktopAddReceipt = () => {
       }); 
     }
   };
+  const handleOnEditIngredientsItem = (itemId, itemNewContent) => {
+    if (!values.ingred.includes(itemNewContent)) {
+      const newArr = [...values.ingred];
+      newArr[itemId] = itemNewContent;
+      setValues({
+        ...values,
+        ingred: newArr
+      }); 
+    }
+  };
   const handleOnDeleteInstructionItem = (itemId) => {
     const itemToDelete = values.instr[itemId];
     setValues(prevState => ({
       ...values,
       instr: prevState.instr.filter(item => item !== itemToDelete)
+    }));
+  };
+  const handleOnDeleteIngredientsItem = (itemId) => {
+    const itemToDelete = values.ingred[itemId];
+    setValues(prevState => ({
+      ...values,
+      ingred: prevState.ingred.filter(item => item !== itemToDelete)
     }));
   };
 
@@ -202,7 +220,7 @@ const DesktopAddReceipt = () => {
               <AddBoxIcon />
             </Button>
           </Grid>
-          <Grid item xs={12} className={classes.dataList}>
+          <Grid item className={classes.dataList}>
             <AddReceiptInstrList
               instructionsList={values.instr}
               onEdit={handleOnEditInstructionItem}
@@ -211,7 +229,37 @@ const DesktopAddReceipt = () => {
           </Grid>
         </Grid>
         <Grid item container xs={12} md={6} direction="column">
-          Składniki
+          <Grid item>
+            <Typography variant="h6" component="label" htmlFor="receipt-ingredients">
+              Składniki
+            </Typography>
+          </Grid>
+          <Grid item xs={12} style={{ flexBasis: 'unset' }}>
+            <Divider />
+          </Grid>
+          <Grid item className={classes.dataInputSection}>
+            <OutlinedInput
+              id="receipt-ingredients"
+              className={classes.outlinedInput}
+              type="text"
+              multiline
+              rows={3}
+              variant="outlined"
+              color="secondary"
+              placeholder="tarty parmezan, 100g"
+              inputProps={{ 'aria-label': 'receipt-ingredients' }}
+            />
+            <Button className={classes.addDataButton} onClick={handleOnAddDataToList}>
+              <AddBoxIcon />
+            </Button>
+          </Grid>
+          <Grid item className={classes.dataList}>
+            <AddReceiptIngredList
+              ingredientsList={values.ingred}
+              onEdit={handleOnEditIngredientsItem}
+              onDelete={handleOnDeleteIngredientsItem}
+            />
+          </Grid>
         </Grid>
       </Grid>
     </form>

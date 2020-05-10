@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   IconButton,
+  List,
   ListItem,
   ListItemText,
   ListItemSecondaryAction,
@@ -56,10 +57,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const AddReceiptInstrList = ({ instructionsList, onEdit, onDelete }) => {
+const AddReceiptIngredList = ({ ingredientsList, onEdit, onDelete }) => {
   const classes = useStyles();
   // Zbiór booleanów do zarządzania trybem edycji dla poszczególnych elementów listy
-  const initialArray = Array(instructionsList.length).fill(false);
+  const initialArray = Array(ingredientsList.length).fill(false);
   const [listItems, setListItems] = useState(initialArray);
 
   const handleOnDelete = ({ currentTarget }) => {
@@ -78,12 +79,11 @@ const AddReceiptInstrList = ({ instructionsList, onEdit, onDelete }) => {
     const currListItemId = target.parentElement.parentElement.parentElement.dataset.id;
     onEdit(currListItemId, target.value);
   };
-
+  
   return (
-    // Po zastosowaniu <List> znikają punktory, nawet po ustawieniu stylu typu listy. Dlatego pozostał natywny <ol>
-    <ol className={classes.zebraList}>
-      {instructionsList.length ? (
-        instructionsList.map((text, i) => (
+    <List className={classes.zebraList}>
+      {ingredientsList.length ? (
+        ingredientsList.map((text, i) => (
           <ListItem key={i} button className={classes.dataListItem}>
             <li style={{ width: '100%' }}>
               <div data-id={i} className={classes.dataListItemContainer}>
@@ -127,12 +127,12 @@ const AddReceiptInstrList = ({ instructionsList, onEdit, onDelete }) => {
       ) : (
         <ListItem button>
           <ListItemText style={{ width: '100%', textAlign: 'center' }}>
-            Wprowadź pierwszą instrukcję w powyższym polu
+            Wprowadź pierwszy składnik w powyższym polu
           </ListItemText>
         </ListItem>
       )}
-    </ol>
+    </List>
   );
 }
  
-export default AddReceiptInstrList;
+export default AddReceiptIngredList;
