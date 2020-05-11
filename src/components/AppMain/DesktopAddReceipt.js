@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
+import { withFirebaseHOC } from '../../config/Firebase';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Divider,
@@ -9,6 +11,9 @@ import {
 } from '@material-ui/core';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 
+import { IsLoadingContext } from '../../config/contexts/IsLoadingContext';
+
+import * as ROUTES from '../../config/ROUTES';
 import AddReceiptInstrList from './elements/AddReceiptInstrList';
 import AddReceiptIngredList from './elements/AddReceiptIngredList';
 
@@ -72,7 +77,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const DesktopAddReceipt = () => {
+const DesktopAddReceipt = ({ firebase }) => {
+  const history = useHistory();
+  const { setIsLoading } = useContext(IsLoadingContext);
   const valuesInitialState = {
     name: '',
     descr: '',
@@ -188,7 +195,26 @@ const DesktopAddReceipt = () => {
     e.preventDefault();
     const isValidated = validateInputs();
     if (isValidated) {
-      console.log('poszło');
+      const { name, descr, instr, ingred } = values;
+      setIsLoading(true);
+      const userId = firebase.auth().currentUser.uid;
+      firebase.firestore()
+        .collection('users')
+        .doc(userId)
+        .collection('receipts')
+        .doc()
+        .set({ name, descr, instr, ingred })
+        .then(() => {
+          setValues({ ...valuesInitialState });
+          setErrors({ ...errorsInitialState });
+          setIsLoading(false);
+        })
+        .then(() => history.push(ROUTES.RECEIPT))
+        .catch(err => {
+          console.log(err);
+          alert('Błąd połączenia! Zajrzyj do konsoli.');
+          setIsLoading(false);
+        });
     }
   };
 
@@ -349,4 +375,4 @@ const DesktopAddReceipt = () => {
   );
 }
  
-export default DesktopAddReceipt;
+export default withFirebaseHOC(DesktopAddReceipt);

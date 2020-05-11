@@ -151,6 +151,8 @@ const SignUp = ({ firebase }) => {
           console.log(err);
           if (err.code === 'auth/email-already-in-use') {
             setErrors({ duplicatedEmail: 'Podany adres email jest już używany. Użyj innego adresu email.' });
+          } else if (err.code === 'auth/invalid-email') {
+            setErrors({ duplicatedEmail: 'Popraw nazwę domeny w adresie email.' });
           } else {
             alert('Błąd połączenia! Zajrzyj do konsoli.');
           }
