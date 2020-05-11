@@ -29,6 +29,9 @@ const useStyles = makeStyles(theme => ({
       padding: theme.spacing(1.5, 2)
     }
   },
+  errorMsg: {
+    color: theme.palette.error.main
+  },
   dataFormSection: {
     paddingTop: 20
   },
@@ -47,18 +50,29 @@ const useStyles = makeStyles(theme => ({
       fontSize: '2.5rem'
     }
   },
-  dataList: {
-    height: 'calc(100vh - 580px)',
-    minHeight: 70,
-    overflow: 'auto',
-    '& ol': {
-      paddingLeft: 0
+  dataList: ({ name, descr, instr, ingred }) => {
+    let addValue = 0;
+    if (name) {
+      addValue += 24;
     }
+    if (descr) {
+      addValue += 24;
+    }
+    if (instr || ingred) {
+      addValue += 24;
+    }
+    return {
+      height: `calc(100vh - ${580 + addValue}px)`,
+      minHeight: 70,
+      overflow: 'auto',
+      '& ol': {
+        paddingLeft: 0
+      }
+    };
   }
 }));
 
 const DesktopAddReceipt = () => {
-  const classes = useStyles();
   const valuesInitialState = {
     name: '',
     descr: '',
@@ -73,11 +87,18 @@ const DesktopAddReceipt = () => {
     ingred: ''
   };
   const [errors, setErrors] = useState({ ...errorsInitialState });
+  const classes = useStyles(errors);  // przesłanie errors do zarządzania stylem 'dataList'
 
   const handleOnChange = ({target: {name, value}}) => {
     setValues({
       ...values,
       [name]: value
+    });
+  };
+  const handleOnBlur = ({target: {name}}) => {
+    setErrors({
+      ...errors,
+      [name]: ''
     });
   };
   const handleOnAddDataToList = ({ currentTarget }) => {
@@ -90,11 +111,19 @@ const DesktopAddReceipt = () => {
           ...values,
           instr: newArr
         });
+        setErrors({
+          ...errors,
+          instr: ''
+        });
       } else {
         newArr = [...values.ingred, input.value.trim()];
         setValues({
           ...values,
           ingred: newArr
+        });
+        setErrors({
+          ...errors,
+          ingred: ''
         });
       }
     }
@@ -134,9 +163,37 @@ const DesktopAddReceipt = () => {
       ingred: prevState.ingred.filter(item => item !== itemToDelete)
     }));
   };
+  const validateInputs = () => {
+    const errors = {};
+    const { name, descr, instr, ingred } = values;
+    if (!name) {
+      errors.name = 'Brak nazwy przepisu.';
+    }
+    if (!descr) {
+      errors.descr = 'Brak opisu przepisu.';
+    }
+    if (!instr.length) {
+      errors.instr = 'Wprowadź minimum jedną instrukcję do przepisu.';
+    }
+    if (!ingred.length) {
+      errors.ingred = 'Wprowadź minimum jeden składnik.';
+    }
+    setErrors(errors);
+    if (!!Object.entries(errors).length) {
+      return false;
+    }
+    return true;
+  };
+  const handleOnSubmit = (e) => {
+    e.preventDefault();
+    const isValidated = validateInputs();
+    if (isValidated) {
+      console.log('poszło');
+    }
+  };
 
   return (
-    <form autoComplete="off">
+    <form autoComplete="off" onSubmit={handleOnSubmit}>
       <Grid container style={{ paddingBottom: 15 }}>
         <Grid item xs={6}>
           <Typography className={classes.heading} variant="h5" component="h2" color="secondary">
@@ -144,7 +201,7 @@ const DesktopAddReceipt = () => {
           </Typography>
         </Grid>
         <Grid item container className={classes.buttonContainer} xs={6}>
-          <Button className={classes.button} variant="contained" color="secondary">
+          <Button className={classes.button} type="submit" variant="contained" color="secondary">
             Zapisz i zamknij
           </Button>
         </Grid>
@@ -164,11 +221,17 @@ const DesktopAddReceipt = () => {
             name="name"
             value={values.name}
             onChange={handleOnChange}
+            onBlur={handleOnBlur}
             variant="outlined"
             color="secondary"
             placeholder="Zapiekanka z ziemniakami i brukselką"
             inputProps={{ 'aria-label': 'receipt-name' }}
           />
+          {errors.name && (
+            <Typography component="p" className={classes.errorMsg}>
+              {errors.name}
+            </Typography>
+          )}
         </Grid>
       </Grid>
       <Grid container style={{ paddingBottom: 10 }}>
@@ -185,6 +248,7 @@ const DesktopAddReceipt = () => {
             name="descr"
             value={values.descr}
             onChange={handleOnChange}
+            onBlur={handleOnBlur}
             multiline
             rows={3}
             variant="outlined"
@@ -192,6 +256,11 @@ const DesktopAddReceipt = () => {
             placeholder="Mamusina najlepsza zapiekanka pod Słońcem. Można ją podać jako główne danie albo kolację. W zapiekance możesz użyć również kiełbasy paprykowej. Sprawi ona, że zapiekanka będzie ostrzejsza w smaku. Zgodnie z zaleceniami Makłowicza, podawać z dobrze dobranym winkiem ;)"
             inputProps={{ 'aria-label': 'receipt-description' }}
           />
+          {errors.descr && (
+            <Typography component="p" className={classes.errorMsg}>
+              {errors.descr}
+            </Typography>
+          )}
         </Grid>
       </Grid>
       <Grid container spacing={3} className={classes.dataFormSection}>
@@ -205,17 +274,24 @@ const DesktopAddReceipt = () => {
             <Divider />
           </Grid>
           <Grid item className={classes.dataInputSection}>
-            <OutlinedInput
-              id="receipt-instructions"
-              className={classes.outlinedInput}
-              type="text"
-              multiline
-              rows={3}
-              variant="outlined"
-              color="secondary"
-              placeholder="Po tym czasie, ziemniaki zalej śmietaną wymieszaną z 'Knorr Naturalnie smaczne', dodaj liście brukselki i dokładnie wymieszaj."
-              inputProps={{ 'aria-label': 'receipt-instructions' }}
-            />
+            <div style={{ width: '100%' }}>
+              <OutlinedInput
+                id="receipt-instructions"
+                className={classes.outlinedInput}
+                type="text"
+                multiline
+                rows={3}
+                variant="outlined"
+                color="secondary"
+                placeholder="Po tym czasie, ziemniaki zalej śmietaną wymieszaną z 'Knorr Naturalnie smaczne', dodaj liście brukselki i dokładnie wymieszaj."
+                inputProps={{ 'aria-label': 'receipt-instructions' }}
+              />
+              {errors.instr && (
+                <Typography component="p" className={classes.errorMsg}>
+                  {errors.instr}
+                </Typography>
+              )}
+            </div>
             <Button className={classes.addDataButton} onClick={handleOnAddDataToList}>
               <AddBoxIcon />
             </Button>
@@ -238,17 +314,24 @@ const DesktopAddReceipt = () => {
             <Divider />
           </Grid>
           <Grid item className={classes.dataInputSection}>
-            <OutlinedInput
-              id="receipt-ingredients"
-              className={classes.outlinedInput}
-              type="text"
-              multiline
-              rows={3}
-              variant="outlined"
-              color="secondary"
-              placeholder="tarty parmezan, 100g"
-              inputProps={{ 'aria-label': 'receipt-ingredients' }}
-            />
+            <div style={{ width: '100%' }}>
+              <OutlinedInput
+                id="receipt-ingredients"
+                className={classes.outlinedInput}
+                type="text"
+                multiline
+                rows={3}
+                variant="outlined"
+                color="secondary"
+                placeholder="tarty parmezan, 100 g"
+                inputProps={{ 'aria-label': 'receipt-ingredients' }}
+              />
+              {errors.ingred && (
+                <Typography component="p" className={classes.errorMsg}>
+                  {errors.ingred}
+                </Typography>
+              )}
+            </div>
             <Button className={classes.addDataButton} onClick={handleOnAddDataToList}>
               <AddBoxIcon />
             </Button>

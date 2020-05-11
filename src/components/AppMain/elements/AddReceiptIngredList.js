@@ -14,6 +14,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 const useStyles = makeStyles(theme => ({
   zebraList: {
+    padding: 0,
+    marginBottom: '1rem',
     '& > div:nth-child(2n+1)': {
       backgroundColor: 'rgba(0, 0, 0, 0.04)'
     },
