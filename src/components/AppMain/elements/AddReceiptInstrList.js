@@ -10,6 +10,7 @@ import {
 import BorderColorIcon from '@material-ui/icons/BorderColor';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import DeleteIcon from '@material-ui/icons/Delete';
+import CancelIcon from '@material-ui/icons/Cancel';
 
 const useStyles = makeStyles(theme => ({
   zebraList: {
@@ -56,25 +57,42 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const AddReceiptInstrList = ({ instructionsList, onEdit, onDelete }) => {
+const AddReceiptInstrList = ({ instructionsList, onEdit, onCancel, onDelete }) => {
   const classes = useStyles();
   // Zbiór booleanów do zarządzania trybem edycji dla poszczególnych elementów listy
   const initialArray = Array(instructionsList.length).fill(false);
   const [listItems, setListItems] = useState(initialArray);
+  const [originalContent, setOriginalContent] = useState('');
+
+  const toggleEditingOnListItem = (id) => {
+    // Przełączenie trybu edycji dla konkretnego elementu listy
+    const listItemsModified = [...listItems];
+    listItemsModified[id] = !listItemsModified[id];
+    setListItems(listItemsModified);
+  };
 
   const handleOnDelete = ({ currentTarget }) => {
     const currListItemId = currentTarget.parentElement.dataset.id;
     onDelete(currListItemId);
   };
-  const handleOnEdit = ({ currentTarget }) => {
-    // Zarządzanie trybem edycji dla poszczególnych elementów listy
+  const handleOnCancel = ({ currentTarget }) => {
     const currListItemId = currentTarget.parentElement.dataset.id;
-    const listItemsModified = [...listItems];
-    listItemsModified[currListItemId] = !listItemsModified[currListItemId];
-    setListItems(listItemsModified);
+    toggleEditingOnListItem(currListItemId);
+    onCancel(currListItemId, originalContent);
+  };
+  const handleOnEdit = ({ currentTarget }) => {
+    // Zapisanie orginalnej zawartości elementu listy
+    const span = currentTarget.parentElement.parentElement.querySelector('span');
+    if (span) {
+      setOriginalContent(span.innerText);
+    }
+    //
+    const currListItemId = currentTarget.parentElement.dataset.id;
+    toggleEditingOnListItem(currListItemId);
   };
   const handleOnChange = ({ target }) => {
-    // Będąc w trybie edycji, zmieniany jest state u źródła (w komponencie rodzica)
+    // Będąc w trybie edycji, zmieniany jest state u źródła (w komponencie rodzica),
+    // aby pisać w czasie rzeczywistym
     const currListItemId = target.parentElement.parentElement.parentElement.dataset.id;
     onEdit(currListItemId, target.value);
   };
@@ -115,9 +133,11 @@ const AddReceiptInstrList = ({ instructionsList, onEdit, onDelete }) => {
                     edge="end"
                     aria-label="delete-item"
                     className={classes.deleteBtn}
-                    onClick={handleOnDelete}
+                    onClick={
+                      listItems[i] ? handleOnCancel : handleOnDelete
+                    }
                   >
-                    <DeleteIcon />
+                    {listItems[i] ? <CancelIcon /> : <DeleteIcon />}
                   </IconButton>
                 </ListItemSecondaryAction>
               </div>

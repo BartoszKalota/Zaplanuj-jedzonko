@@ -136,8 +136,8 @@ const DesktopAddReceipt = ({ firebase }) => {
     }
     input.value = '';
   };
-  const handleOnEditInstructionItem = (itemId, itemNewContent) => {
-    if (!values.instr.includes(itemNewContent)) {
+  const handleOnEditInstructionsItem = (itemId, itemNewContent) => {
+    if (values.instr[itemId] !== itemNewContent) {
       const newArr = [...values.instr];
       newArr[itemId] = itemNewContent;
       setValues({
@@ -147,7 +147,7 @@ const DesktopAddReceipt = ({ firebase }) => {
     }
   };
   const handleOnEditIngredientsItem = (itemId, itemNewContent) => {
-    if (!values.ingred.includes(itemNewContent)) {
+    if (values.ingred[itemId] !== itemNewContent) {
       const newArr = [...values.ingred];
       newArr[itemId] = itemNewContent;
       setValues({
@@ -156,7 +156,23 @@ const DesktopAddReceipt = ({ firebase }) => {
       }); 
     }
   };
-  const handleOnDeleteInstructionItem = (itemId) => {
+  const handleOnCancelInstructionsItemChange = (itemId, originalContent) => {
+    const newArr = [...values.instr];
+    newArr[itemId] = originalContent;
+    setValues({
+      ...values,
+      instr: newArr
+    }); 
+  };
+  const handleOnCancelIngredientsItemChange = (itemId, originalContent) => {
+    const newArr = [...values.ingred];
+    newArr[itemId] = originalContent;
+    setValues({
+      ...values,
+      ingred: newArr
+    }); 
+  };
+  const handleOnDeleteInstructionsItem = (itemId) => {
     const itemToDelete = values.instr[itemId];
     setValues(prevState => ({
       ...values,
@@ -325,8 +341,9 @@ const DesktopAddReceipt = ({ firebase }) => {
           <Grid item className={classes.dataList}>
             <AddReceiptInstrList
               instructionsList={values.instr}
-              onEdit={handleOnEditInstructionItem}
-              onDelete={handleOnDeleteInstructionItem}
+              onEdit={handleOnEditInstructionsItem}
+              onCancel={handleOnCancelInstructionsItemChange}
+              onDelete={handleOnDeleteInstructionsItem}
             />
           </Grid>
         </Grid>
@@ -366,6 +383,7 @@ const DesktopAddReceipt = ({ firebase }) => {
             <AddReceiptIngredList
               ingredientsList={values.ingred}
               onEdit={handleOnEditIngredientsItem}
+              onCancel={handleOnCancelIngredientsItemChange}
               onDelete={handleOnDeleteIngredientsItem}
             />
           </Grid>
