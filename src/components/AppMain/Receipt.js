@@ -76,10 +76,10 @@ const Receipt = ({ firebase }) => {
     { id: 'actions', label: 'AKCJE', align: 'center', minWidth: 90 }
   ];
   // Wiersze (dane z Firebase)
+  const userId = firebase.auth().currentUser.uid;
   useEffect(() => {
     setIsLoading(true);
     const array = [];
-    const userId = firebase.auth().currentUser.uid;
     firebase.firestore()
       .collection('users')
       .doc(userId)
@@ -104,23 +104,29 @@ const Receipt = ({ firebase }) => {
         alert('Błąd połączenia! Zajrzyj do konsoli.');
         setIsLoading(false);
       });
-  }, [firebase, setIsLoading]);
+  }, [firebase, userId, setIsLoading]);
 
   const handleOnAddData = () => {
     setDesktopMode(2);
     history.push(ROUTES.DESKTOP);
   };
   const handleOnDeleteReceipt = (rowId) => {
-    const userId = firebase.auth().currentUser.uid;
+    setIsLoading(true);
     firebase.firestore()
       .collection('users')
       .doc(userId)
       .collection('receipts')
       .doc(rowId)
       .delete()
+      .then(() => {
+        const rowsWithoutDeletedItem = rows.filter(row => row.id !== rowId);
+        setRows(rowsWithoutDeletedItem);
+        setIsLoading(false);
+      })
       .catch(err => {
         console.log(err);
         alert('Błąd połączenia! Zajrzyj do konsoli.');
+        setIsLoading(false);
       });
   };
   const handleOnEditReceipt = (rowId) => {
