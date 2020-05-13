@@ -110,6 +110,22 @@ const Receipt = ({ firebase }) => {
     setDesktopMode(2);
     history.push(ROUTES.DESKTOP);
   };
+  const handleOnDeleteReceipt = (rowId) => {
+    const userId = firebase.auth().currentUser.uid;
+    firebase.firestore()
+      .collection('users')
+      .doc(userId)
+      .collection('receipts')
+      .doc(rowId)
+      .delete()
+      .catch(err => {
+        console.log(err);
+        alert('Błąd połączenia! Zajrzyj do konsoli.');
+      });
+  };
+  const handleOnEditReceipt = (rowId) => {
+    console.log(rowId, 'edit');
+  };
 
   return (
     <Grid container direction="column">
@@ -146,14 +162,19 @@ const Receipt = ({ firebase }) => {
             <TableBody>
               {rows.length ? (
                 rows.map((row, index) => (
-                  <TableRow key={row.id} className={classes.tableRow}>
+                  <TableRow key={row.id} data-id={row.id} className={classes.tableRow}>
                     {columns.map(column => {
                       let value = row[column.id];   // wartości pól column.id muszą być takie same jak te, które przyszły z Firebase ( array.push({ id, name, descr }) )
                       if (column.id === 'id') {
-                        value = index + 1
+                        value = index + 1;
                       }
                       if (column.id === 'actions') {
-                        value = <TableEditRemoveBtns />
+                        value = (
+                          <TableEditRemoveBtns
+                            onEdit={handleOnEditReceipt}
+                            onDelete={handleOnDeleteReceipt}
+                          />
+                        );
                       }
                       return (
                         <TableCell key={column.id} align={column.align}>

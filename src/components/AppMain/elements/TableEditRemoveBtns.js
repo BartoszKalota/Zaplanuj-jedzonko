@@ -7,6 +7,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 const useStyles = makeStyles(theme => ({
   buttonsContainer: {
     display: 'flex',
+    justifyContent: 'center',
     flexDirection: 'column',
     [theme.breakpoints.up('md')]: {
       flexDirection: 'row'
@@ -24,25 +25,32 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const TableEditRemoveBtns = () => {
+const TableEditRemoveBtns = ({ onEdit, onDelete }) => {
   const classes = useStyles();
 
-  const handleOnEdit = () => console.log('edit');
-  const handleOnDelete = () => console.log('delete');
+  const handleOnClick = ({ currentTarget }) => {
+    const currRowId = currentTarget.parentElement.parentElement.parentElement.dataset.id;
+    const buttonType = currentTarget.getAttribute('aria-label');
+    if (buttonType === 'delete-item') {
+      onDelete(currRowId);
+    } else {
+      onEdit(currRowId);
+    }
+  };
 
   return (
     <div className={classes.buttonsContainer}>
       <IconButton
         aria-label="edit-item"
         className={classes.editBtn}
-        onClick={handleOnEdit}
+        onClick={handleOnClick}
       >
         <BorderColorIcon />
       </IconButton>
       <IconButton
         aria-label="delete-item"
         className={classes.deleteBtn}
-        onClick={handleOnDelete}
+        onClick={handleOnClick}
       >
         <DeleteIcon />
       </IconButton>
