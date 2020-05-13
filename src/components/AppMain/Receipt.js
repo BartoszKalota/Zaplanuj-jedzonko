@@ -18,6 +18,7 @@ import {
 import AddBoxIcon from '@material-ui/icons/AddBox';
 
 import { IsLoadingContext } from '../../config/contexts/IsLoadingContext';
+import { IdClipboard } from '../../config/contexts/IdClipboard';
 import { DesktopSwitcher } from '../../config/contexts/DesktopSwitcher';
 
 import * as ROUTES from '../../config/ROUTES';
@@ -66,6 +67,7 @@ const Receipt = ({ firebase }) => {
   const history = useHistory();
   const [rows, setRows] = useState([]);
   const { setIsLoading } = useContext(IsLoadingContext);
+  const { setClipboardRowId } = useContext(IdClipboard);
   const { setDesktopMode } = useContext(DesktopSwitcher);
 
   // Kolumny
@@ -130,7 +132,9 @@ const Receipt = ({ firebase }) => {
       });
   };
   const handleOnEditReceipt = (rowId) => {
-    console.log(rowId, 'edit');
+    setClipboardRowId(rowId);
+    setDesktopMode(4);
+    history.push(ROUTES.DESKTOP);
   };
 
   return (

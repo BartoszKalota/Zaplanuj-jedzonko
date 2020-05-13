@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   Switch,
   Route,
@@ -30,6 +30,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import TodayIcon from '@material-ui/icons/Today';
 
+import IdClipboardProvider from '../../config/contexts/IdClipboard';
 import { IsLoadingContext } from '../../config/contexts/IsLoadingContext';
 import { DesktopSwitcher } from '../../config/contexts/DesktopSwitcher';
 import bgImg from '../../assets/bg.png';
@@ -167,6 +168,10 @@ const AppContainer = () => {
   const handleDrawerOpen = () => setOpen(true);
   const handleDrawerClose = () => setOpen(false);
 
+  useEffect(() => {
+    return () => setDesktopMode(1); // po wylogowaniu i ponownym zalogowaniu, ustawi się domyślny ekran pulpitu
+  }, [setDesktopMode]);
+
   return (
     // Brak onLoad={handleOnContentLoaded}, bo zarządzanie załadowaniem odbywa się z poziomu komponentu UserInfo
     // Poza tym, użycie <Route> blokuje tutaj uruchomienie eventu onLoad
@@ -270,12 +275,14 @@ const AppContainer = () => {
       </Drawer>
       <main className={classes.main}>
         <Paper elevation={10} className={classes.content}>
-          <Switch>
-            <Route exact path={ROUTES.DESKTOP} component={Desktop} />
-            <Route path={ROUTES.RECEIPT} component={Receipt} />
-            <Route path={ROUTES.SCHEDULE} component={Schedule} />
-            <Redirect from="*" to={ROUTES.ERROR} />
-          </Switch>
+          <IdClipboardProvider>
+            <Switch>
+              <Route exact path={ROUTES.DESKTOP} component={Desktop} />
+              <Route path={ROUTES.RECEIPT} component={Receipt} />
+              <Route path={ROUTES.SCHEDULE} component={Schedule} />
+              <Redirect from="*" to={ROUTES.ERROR} />
+            </Switch>
+          </IdClipboardProvider>
         </Paper>
       </main>
 
