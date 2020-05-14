@@ -7,6 +7,8 @@ import {
   Button,
   Divider,
   Grid,
+  IconButton,
+  OutlinedInput,
   Paper,
   Table,
   TableBody,
@@ -18,6 +20,7 @@ import {
   Typography
 } from '@material-ui/core';
 import AddBoxIcon from '@material-ui/icons/AddBox';
+import SearchIcon from '@material-ui/icons/Search';
 
 import { IsLoadingContext } from '../../config/contexts/IsLoadingContext';
 import { IdClipboard } from '../../config/contexts/IdClipboard';
@@ -30,7 +33,22 @@ const useStyles = makeStyles(theme => ({
   heading: {
     textAlign: 'left'
   },
-  buttonContainer: {
+  searchContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    '& > div': {
+      width: '100%',
+      paddingRight: 5
+    },
+    '& input': {
+      width: '100%',
+      padding: theme.spacing(1, 0, 1, 2)
+    }
+  },
+  searchIconButton: {
+    padding: 5
+  },
+  addDataButtonContainer: {
     justifyContent: 'flex-end'
   },
   addDataButton: {
@@ -205,6 +223,10 @@ const Receipt = ({ firebase }) => {
       });
   }, [firebase, userId, setIsLoading]);
 
+  const handleOnSearch = (e) => {
+    e.preventDefault();
+    console.log('szukam');
+  };
   const handleOnAddData = () => {
     setDesktopMode(2);
     history.push(ROUTES.DESKTOP);
@@ -241,13 +263,29 @@ const Receipt = ({ firebase }) => {
 
   return (
     <Grid container direction="column">
-      <Grid item container>
-        <Grid item xs={6}>
+      <Grid item container spacing={2}>
+        <Grid item xs={4}>
           <Typography className={classes.heading} variant="h5" component="h2" color="secondary">
             LISTA PRZEPISÓW
           </Typography>
         </Grid>
-        <Grid item container className={classes.buttonContainer} xs={6}>
+        <Grid item xs={6} md={4}>
+          <form onSubmit={handleOnSearch}>
+            <div className={classes.searchContainer}>
+              <OutlinedInput
+                color="secondary"
+                placeholder="Znajdź..."
+                inputProps={{ 'aria-label': 'search-field' }}
+                endAdornment={
+                  <IconButton type="submit" className={classes.searchIconButton} aria-label="search-button">
+                    <SearchIcon />
+                  </IconButton>
+                }
+              />
+            </div>
+          </form>
+        </Grid>
+        <Grid item container xs={2} md={4} className={classes.addDataButtonContainer}>
           <Button className={classes.addDataButton} onClick={handleOnAddData}>
             <AddBoxIcon />
           </Button>
