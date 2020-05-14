@@ -188,8 +188,9 @@ const Receipt = ({ firebase }) => {
   const [rows, setRows] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('id');
+  const [searchField, setSearchField] = useState('');
   const { setIsLoading } = useContext(IsLoadingContext);
-  const { setClipboardRowId } = useContext(IdClipboard);
+  const { setClipboardFirebaseId } = useContext(IdClipboard);
   const { setDesktopMode } = useContext(DesktopSwitcher);
 
   // Wiersze (dane z Firebase)
@@ -206,7 +207,8 @@ const Receipt = ({ firebase }) => {
         snapshot.docs.forEach((doc, index) => {
           const { name, descr } = doc.data(); // potrzebujemy tylko kilku danych (nie wszystkich)
           array.push({
-            id: index,    // zmienione z doc.id na index, aby umożliwić funkcję sortowania wg ID w tabeli
+            firebaseId: doc.id,
+            id: index,    // wstawione aby umożliwić funkcję sortowania wg ID w tabeli
             name,
             descr
           })
@@ -225,8 +227,9 @@ const Receipt = ({ firebase }) => {
 
   const handleOnSearch = (e) => {
     e.preventDefault();
-    console.log('szukam');
+    console.log(searchField);
   };
+  const handleOnChange = ({ target: { value }}) => setSearchField(value);
   const handleOnAddData = () => {
     setDesktopMode(2);
     history.push(ROUTES.DESKTOP);
@@ -236,13 +239,13 @@ const Receipt = ({ firebase }) => {
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
-  const handleOnDeleteReceipt = (rowId) => {
+  const handleOnDeleteReceipt = (firebaseId, rowId) => {
     setIsLoading(true);
     firebase.firestore()
       .collection('users')
       .doc(userId)
       .collection('receipts')
-      .doc(rowId)
+      .doc(firebaseId)
       .delete()
       .then(() => {
         const rowsWithoutDeletedItem = rows.filter(row => row.id !== rowId);
@@ -255,8 +258,8 @@ const Receipt = ({ firebase }) => {
         setIsLoading(false);
       });
   };
-  const handleOnEditReceipt = (rowId) => {
-    setClipboardRowId(rowId);
+  const handleOnEditReceipt = (firebaseId) => {
+    setClipboardFirebaseId(firebaseId);
     setDesktopMode(4);
     history.push(ROUTES.DESKTOP);
   };
@@ -273,6 +276,10 @@ const Receipt = ({ firebase }) => {
           <form onSubmit={handleOnSearch}>
             <div className={classes.searchContainer}>
               <OutlinedInput
+                type="text"
+                name="searchField"
+                value={searchField}
+                onChange={handleOnChange}
                 color="secondary"
                 placeholder="Znajdź..."
                 inputProps={{ 'aria-label': 'search-field' }}
@@ -304,7 +311,7 @@ const Receipt = ({ firebase }) => {
               {rows.length ? (
                 stableSort(rows, getComparator(order, orderBy))
                   .map(row => (
-                    <TableRow key={row.id} data-id={row.id} className={classes.tableRow}>
+                    <TableRow key={row.firebaseId} data-id={row.firebaseId} className={classes.tableRow}>
                       {columns.map(column => {
                         let value = row[column.id];   // wartości pól column.id muszą być takie same jak te, które przyszły z Firebase ( array.push({ id, name, descr }) )
                         if (column.id === 'id') {

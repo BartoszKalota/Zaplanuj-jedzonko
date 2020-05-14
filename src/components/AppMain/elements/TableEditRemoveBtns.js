@@ -29,12 +29,13 @@ const TableEditRemoveBtns = ({ onEdit, onDelete }) => {
   const classes = useStyles();
 
   const handleOnClick = ({ currentTarget }) => {
-    const currRowId = currentTarget.parentElement.parentElement.parentElement.dataset.id;
+    const currFirebaseId = currentTarget.parentElement.parentElement.parentElement.dataset.id;
+    const currId = currentTarget.parentElement.parentElement.parentElement.querySelector('td').innerText - 1;
     const buttonType = currentTarget.getAttribute('aria-label');
     if (buttonType === 'delete-item') {
-      onDelete(currRowId);
+      onDelete(currFirebaseId, currId);
     } else {
-      onEdit(currRowId);
+      onEdit(currFirebaseId);
     }
   };
 

@@ -82,7 +82,7 @@ const useStyles = makeStyles(theme => ({
 const DesktopEditReceipt = ({ firebase }) => {
   const history = useHistory();
   const { setIsLoading } = useContext(IsLoadingContext);
-  const { clipboardRowId } = useContext(IdClipboard);
+  const { clipboardFirebaseId } = useContext(IdClipboard);
   const valuesInitialState = {
     name: '',
     descr: '',
@@ -107,7 +107,7 @@ const DesktopEditReceipt = ({ firebase }) => {
       .collection('users')
       .doc(userId)
       .collection('receipts')
-      .doc(clipboardRowId)
+      .doc(clipboardFirebaseId)
       .get()
       .then(snapshot => {
         const { name, descr, instr, ingred } = snapshot.data();
@@ -124,7 +124,7 @@ const DesktopEditReceipt = ({ firebase }) => {
         alert('Błąd połączenia! Zajrzyj do konsoli.');
         setIsLoading(false);
       });
-  }, [firebase, userId, clipboardRowId, setIsLoading]);
+  }, [firebase, userId, clipboardFirebaseId, setIsLoading]);
 
   const handleOnChange = ({target: {name, value}}) => {
     setValues({
@@ -248,7 +248,7 @@ const DesktopEditReceipt = ({ firebase }) => {
         .collection('users')
         .doc(userId)
         .collection('receipts')
-        .doc(clipboardRowId)
+        .doc(clipboardFirebaseId)
         .update({ name, descr, instr, ingred })
         .then(() => {
           setValues({ ...valuesInitialState });
