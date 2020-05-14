@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { withFirebaseHOC } from '../../config/Firebase';
 import { makeStyles } from '@material-ui/core/styles';
@@ -10,6 +11,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableSortLabel,
   TableContainer,
   TableHead,
   TableRow,
@@ -49,6 +51,25 @@ const useStyles = makeStyles(theme => ({
     textTransform: 'uppercase',
     backgroundColor: theme.palette.background.paper
   },
+  tableHeaderSortLabel: {
+    '&:hover': {
+      color: theme.palette.secondary.main
+    },
+    '& svg': {
+      color: [[theme.palette.secondary.main], '!important']
+    }
+  },
+  visuallyHidden: {
+    border: 0,
+    clip: 'rect(0 0 0 0)',
+    height: 1,
+    margin: -1,
+    overflow: 'hidden',
+    padding: 0,
+    position: 'absolute',
+    top: 20,
+    width: 1
+  },
   tableRow: {
     '& td': {
       fontSize: '0.95rem'
@@ -62,21 +83,97 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+// Funkcje sortowania
+const descendingComparator = (a, b, orderBy) => {
+  if (b[orderBy] < a[orderBy]) {
+    return -1;
+  }
+  if (b[orderBy] > a[orderBy]) {
+    return 1;
+  }
+  return 0;
+};
+const getComparator = (order, orderBy) => {
+  return order === 'desc' ? (
+    (a, b) => descendingComparator(a, b, orderBy)
+  ) : (
+    (a, b) => -descendingComparator(a, b, orderBy)
+  );
+};
+const stableSort = (array, comparator) => {
+  const stabilizedThis = array.map((el, index) => [el, index]);
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) {
+      return order;
+    }
+    return a[1] - b[1];
+  });
+  return stabilizedThis.map(el => el[0]);
+};
+
+// Kolumny
+const columns = [
+  { id: 'id', label: 'ID', align: 'left', minWidth: 50 },
+  { id: 'name', label: 'NAZWA', align: 'left', minWidth: 170 },
+  { id: 'descr', label: 'OPIS', align: 'left', minWidth: 230 },
+  { id: 'actions', label: 'AKCJE', align: 'center', minWidth: 90 }
+];
+
+// Nagłówek tabeli
+const TableHeaderWithSorting = ({ order, orderBy, onRequestSort }) => {
+  const classes = useStyles();
+  const createSortHandler = property => event => {
+    onRequestSort(event, property);
+  };
+  return (
+    <TableHead>
+      <TableRow>
+        {columns.map(({ id, label, align, minWidth }) => (
+          <TableCell
+            key={id}
+            align={align}
+            style={{ minWidth }}
+            className={classes.tableHeader}
+            sortDirection={
+              orderBy === id ? order : false
+            }
+          >
+            <TableSortLabel
+              active={orderBy === id}
+              direction={orderBy === id ? order : 'asc'}
+              onClick={createSortHandler(id)}
+              className={classes.tableHeaderSortLabel}
+            >
+              {label}
+              {orderBy === id ? (
+                <span className={classes.visuallyHidden}>
+                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                </span>
+              ) : null}
+            </TableSortLabel>
+          </TableCell>
+        ))}
+      </TableRow>
+    </TableHead>
+  );
+};
+TableHeaderWithSorting.propTypes = {
+  order: PropTypes.oneOf(['asc', 'desc']).isRequired,
+  orderBy: PropTypes.string.isRequired,
+  onRequestSort: PropTypes.func.isRequired
+};
+
 const Receipt = ({ firebase }) => {
   const classes = useStyles();
   const history = useHistory();
   const [rows, setRows] = useState([]);
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState('id');
   const { setIsLoading } = useContext(IsLoadingContext);
   const { setClipboardRowId } = useContext(IdClipboard);
   const { setDesktopMode } = useContext(DesktopSwitcher);
 
-  // Kolumny
-  const columns = [
-    { id: 'id', label: 'ID', align: 'left', minWidth: 50 },
-    { id: 'name', label: 'NAZWA', align: 'left', minWidth: 170 },
-    { id: 'descr', label: 'OPIS', align: 'left', minWidth: 230 },
-    { id: 'actions', label: 'AKCJE', align: 'center', minWidth: 90 }
-  ];
   // Wiersze (dane z Firebase)
   const userId = firebase.auth().currentUser.uid;
   useEffect(() => {
@@ -88,10 +185,10 @@ const Receipt = ({ firebase }) => {
       .collection('receipts')
       .get()
       .then(snapshot => {
-        snapshot.docs.forEach(doc => {
+        snapshot.docs.forEach((doc, index) => {
           const { name, descr } = doc.data(); // potrzebujemy tylko kilku danych (nie wszystkich)
           array.push({
-            id: doc.id,
+            id: index,    // zmienione z doc.id na index, aby umożliwić funkcję sortowania wg ID w tabeli
             name,
             descr
           })
@@ -111,6 +208,11 @@ const Receipt = ({ firebase }) => {
   const handleOnAddData = () => {
     setDesktopMode(2);
     history.push(ROUTES.DESKTOP);
+  };
+  const handleOnRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
   };
   const handleOnDeleteReceipt = (rowId) => {
     setIsLoading(true);
@@ -155,45 +257,37 @@ const Receipt = ({ firebase }) => {
       <Grid item container>
         <TableContainer component={Paper} className={classes.table}>
           <Table stickyHeader aria-label="table">
-            <TableHead>
-              <TableRow>
-                {columns.map(({ id, label, align, minWidth }) => (
-                  <TableCell
-                    key={id}
-                    align={align}
-                    style={{ minWidth }}
-                    className={classes.tableHeader}
-                  >
-                    {label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
+            <TableHeaderWithSorting
+              order={order}
+              orderBy={orderBy}
+              onRequestSort={handleOnRequestSort}
+            />
             <TableBody>
               {rows.length ? (
-                rows.map((row, index) => (
-                  <TableRow key={row.id} data-id={row.id} className={classes.tableRow}>
-                    {columns.map(column => {
-                      let value = row[column.id];   // wartości pól column.id muszą być takie same jak te, które przyszły z Firebase ( array.push({ id, name, descr }) )
-                      if (column.id === 'id') {
-                        value = index + 1;
-                      }
-                      if (column.id === 'actions') {
-                        value = (
-                          <TableEditRemoveBtns
-                            onEdit={handleOnEditReceipt}
-                            onDelete={handleOnDeleteReceipt}
-                          />
+                stableSort(rows, getComparator(order, orderBy))
+                  .map(row => (
+                    <TableRow key={row.id} data-id={row.id} className={classes.tableRow}>
+                      {columns.map(column => {
+                        let value = row[column.id];   // wartości pól column.id muszą być takie same jak te, które przyszły z Firebase ( array.push({ id, name, descr }) )
+                        if (column.id === 'id') {
+                          value = row.id + 1;
+                        }
+                        if (column.id === 'actions') {
+                          value = (
+                            <TableEditRemoveBtns
+                              onEdit={handleOnEditReceipt}
+                              onDelete={handleOnDeleteReceipt}
+                            />
+                          );
+                        }
+                        return (
+                          <TableCell key={column.id} align={column.align}>
+                            {value}
+                          </TableCell>
                         );
-                      }
-                      return (
-                        <TableCell key={column.id} align={column.align}>
-                          {value}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                ))
+                      })}
+                    </TableRow>
+                  ))
               ) : (
                 <TableRow className={classes.tableRow}>
                   <TableCell align="center" colSpan={columns.length}>
