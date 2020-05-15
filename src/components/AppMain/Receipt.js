@@ -188,7 +188,7 @@ const Receipt = ({ firebase }) => {
   const [rows, setRows] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('id');
-  const [searchField, setSearchField] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
   const { setIsLoading } = useContext(IsLoadingContext);
   const { setClipboardFirebaseId } = useContext(IdClipboard);
   const { setDesktopMode } = useContext(DesktopSwitcher);
@@ -211,8 +211,8 @@ const Receipt = ({ firebase }) => {
             id: index,    // wstawione aby umożliwić funkcję sortowania wg ID w tabeli
             name,
             descr
-          })
-        })
+          });
+        });
       })
       .then(() => {
         setRows(array);
@@ -227,9 +227,47 @@ const Receipt = ({ firebase }) => {
 
   const handleOnSearch = (e) => {
     e.preventDefault();
-    console.log(searchField);
+    // Pobranie wszystkich przepisów w celu wykonania selekcji
+    setIsLoading(true);
+    const array = [];
+    firebase.firestore()
+      .collection('users')
+      .doc(userId)
+      .collection('receipts')
+      .get()
+      .then(snapshot => {
+        snapshot.docs.forEach((doc, index) => {
+          const { name, descr } = doc.data(); // potrzebujemy tylko kilku danych (nie wszystkich)
+          array.push({
+            firebaseId: doc.id,
+            id: index,    // wstawione aby umożliwić funkcję sortowania wg ID w tabeli
+            name,
+            descr
+          });
+        });
+      })
+      .then(() => {
+        // Przeszukanie pierwszej kolumny tabeli
+        const resultsByName = array.filter(el => el.name.includes(searchQuery));
+        // Przeszukanie drugiej kolumny tabeli
+        const resultsByDescr = array.filter(el => el.descr.includes(searchQuery));
+        // Usunięcie ewentualnych powtórek w wynikach wyszukiwania
+        const resultsComplete = [...resultsByName, ...resultsByDescr];
+        const resultsWithoutRepetition = resultsComplete
+          .map(el => el['firebaseId'])  // utworzenie tablicy zawierającej wartość klucza 'firebaseId' każdego obiektu
+          .map((el, index, final) => final.indexOf(el) === index && index)  // przechowanie indeksów unikalnych obiektów
+          .filter(el => resultsComplete[el])  // usunięcie powtórek z tablicy (wartości false) - pozostają indeksy unikalnych obiektów
+          .map(el => resultsComplete[el]);  // zastąpienie indeksów pełnymi obiektami o podanch indeksach
+        setRows(resultsWithoutRepetition);
+        setIsLoading(false);
+      })
+      .catch(err => {
+        console.log(err);
+        alert('Błąd połączenia! Zajrzyj do konsoli.');
+        setIsLoading(false);
+      });
   };
-  const handleOnChange = ({ target: { value }}) => setSearchField(value);
+  const handleOnChange = ({ target: { value }}) => setSearchQuery(value);
   const handleOnAddData = () => {
     setDesktopMode(2);
     history.push(ROUTES.DESKTOP);
@@ -278,7 +316,7 @@ const Receipt = ({ firebase }) => {
               <OutlinedInput
                 type="text"
                 name="searchField"
-                value={searchField}
+                value={searchQuery}
                 onChange={handleOnChange}
                 color="secondary"
                 placeholder="Znajdź..."
