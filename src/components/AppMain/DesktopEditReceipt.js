@@ -100,9 +100,9 @@ const DesktopEditReceipt = ({ firebase }) => {
   const classes = useStyles(errors);  // przesłanie errors do zarządzania stylem 'dataList'
 
   // Pobranie danych (z Firebase) do formularza
-  const userId = firebase.auth().currentUser.uid;
   useEffect(() => {
     setIsLoading(true);
+    const userId = firebase.auth().currentUser.uid;
     firebase.firestore()
       .collection('users')
       .doc(userId)
@@ -124,7 +124,7 @@ const DesktopEditReceipt = ({ firebase }) => {
         alert('Błąd połączenia! Zajrzyj do konsoli.');
         setIsLoading(false);
       });
-  }, [firebase, userId, clipboardFirebaseId, setIsLoading]);
+  }, [firebase, clipboardFirebaseId, setIsLoading]);
 
   const handleOnChange = ({target: {name, value}}) => {
     setValues({
