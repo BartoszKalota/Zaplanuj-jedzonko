@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { withFirebaseHOC } from '../../config/Firebase';
 import { makeStyles } from '@material-ui/core/styles';
 import { Autocomplete } from '@material-ui/lab';
 import {
@@ -16,6 +17,8 @@ import {
   TextField,
   Typography
 } from '@material-ui/core';
+
+import { IsLoadingContext } from '../../config/contexts/IsLoadingContext';
 
 const useStyles = makeStyles(theme => ({
   heading: {
@@ -44,21 +47,42 @@ const useStyles = makeStyles(theme => ({
     }
   },
   outlinedInputForWeekNum: {
+    marginRight: theme.spacing(2),
     '& > input': {
       maxWidth: 30,
       textAlign: 'center',
-      padding: theme.spacing(1.5, 1)
+      padding: theme.spacing(1.5, 1),
+    },
+    // Usunięcie strzałek w inpucie (type="number") dla numeru tygodnia
+    '& > input::-webkit-outer-spin-button, & > input::-webkit-inner-spin-button': {
+      appearance: 'none',
+      margin: 0
+    },
+    '& > input[type=number]': {
+      appearance: 'textfield'
     }
   },
   errorMsg: {
     color: theme.palette.error.main
   },
-  table: {
-    height: 'calc(100vh - 465px)',
-    overflow: 'auto',
-    '& table': {
-      height: '100%'
+  table: ({ name, descr, schedule }) => {
+    let addValue = 0;
+    if (name) {
+      addValue += 24;
     }
+    if (descr) {
+      addValue += 24;
+    }
+    if (schedule) {
+      addValue += 25;
+    }
+    return {
+      height: `calc(100vh - ${465 + addValue}px)`,
+      overflow: 'auto',
+      '& table': {
+        height: '100%'
+      }
+    };
   },
   tableHeader: {
     fontSize: '1.3rem',
@@ -79,10 +103,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const options = ['Option 1', 'Option 2', 'Dupa', 'Żopa', 'Test'];
-
-const DesktopAddSchedule = () => {
-  const classes = useStyles();
+const DesktopAddSchedule = ({ firebase }) => {
+  const { setIsLoading } = useContext(IsLoadingContext);
+  const [receipts, setReceipts] = useState([]);
   const valuesInitialState = {
     name: '',
     descr: '',
@@ -105,6 +128,7 @@ const DesktopAddSchedule = () => {
     schedule: ''
   };
   const [errors, setErrors] = useState({ ...errorsInitialState });
+  const classes = useStyles(errors);  // przesłanie errors do zarządzania stylem 'table'
 
   // Kolumny
   const columns = [
@@ -125,12 +149,47 @@ const DesktopAddSchedule = () => {
     { id: 'sat', label: 'sobota' },
     { id: 'sun', label: 'niedziela' }
   ];
+  // Przepisy (dane z Firebase)
+  const userId = firebase.auth().currentUser.uid;
+  useEffect(() => {
+    setIsLoading(true);
+    const array = [];
+    firebase.firestore()
+      .collection('users')
+      .doc(userId)
+      .collection('receipts')
+      .get()
+      .then(snapshot => {
+        snapshot.docs.forEach(doc => {
+          const { name } = doc.data();
+          array.push(name);
+        });
+      })
+      .then(() => {
+        setReceipts(array);
+        setIsLoading(false);
+      })
+      .catch(err => {
+        console.log(err);
+        alert('Błąd połączenia! Zajrzyj do konsoli.');
+        setIsLoading(false);
+      });
+  }, [firebase, userId, setIsLoading]);
 
   const handleOnChange = ({target: {name, value}}) => {
     setValues({
       ...values,
       [name]: value
     });
+  };
+  const isNumberKey = ({target: {value}}) => {  // blokada przed wpisywaniem znaków innych niż cyfry (samo type="number" nie wystarczyło)
+    const charCode = (value.which) ? value.which : value.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      setValues({
+        ...values,
+        weekNum: ''
+      });
+    }
   };
   const handleOnBlur = ({target: {name}}) => {
     setErrors({
@@ -148,9 +207,38 @@ const DesktopAddSchedule = () => {
       schedule
     });
   };
+  const validateInputs = () => {
+    const errors = {};
+    const { name, descr, weekNum, schedule } = values;
+    if (!name) {
+      errors.name = 'Brak nazwy planu.';
+    }
+    if (!descr) {
+      errors.descr = 'Brak opisu planu.';
+    }
+    if (!weekNum) {
+      errors.weekNum = 'Brak numeru tygodnia.';
+    }
+    const selectValuesArr = Object.values(schedule).filter(item => !item.length);
+    if (selectValuesArr.length) {
+      errors.schedule = 'Uzupełnij brakujące rubryki w tabeli.';
+    }
+    setErrors(errors);
+    if (!!Object.entries(errors).length) {
+      return false;
+    }
+    return true;
+  };
+  const handleOnSubmit = (e) => {
+    e.preventDefault();
+    const isValidated = validateInputs();
+    if (isValidated) {
+      console.log('poszło');
+    }
+  };
 
   return (
-    <form autoComplete="off">
+    <form autoComplete="off" onSubmit={handleOnSubmit}>
       <Grid container style={{ paddingBottom: 15 }}>
         <Grid item xs={6}>
           <Typography className={classes.heading} variant="h5" component="h2" color="secondary">
@@ -158,7 +246,7 @@ const DesktopAddSchedule = () => {
           </Typography>
         </Grid>
         <Grid item container className={classes.buttonContainer} xs={6}>
-          <Button className={classes.button} variant="contained" color="secondary">
+          <Button className={classes.button} type="submit" variant="contained" color="secondary">
             Zapisz i zamknij
           </Button>
         </Grid>
@@ -226,14 +314,15 @@ const DesktopAddSchedule = () => {
             Numer tygodnia
           </Typography>
         </Grid>
-        <Grid item container xs={6} md={9} justify="flex-start">
+        <Grid item container xs={6} md={9} justify="flex-start" alignItems="center">
           <OutlinedInput
             id="schedule-week-number"
             className={classes.outlinedInputForWeekNum}
-            type="text"
+            type="number"
             name="weekNum"
             value={values.weekNum}
             onChange={handleOnChange}
+            onKeyPress={isNumberKey}
             onBlur={handleOnBlur}
             variant="outlined"
             color="secondary"
@@ -247,7 +336,15 @@ const DesktopAddSchedule = () => {
           )}
         </Grid>
       </Grid>
-      <Grid item container>
+      <Grid item container direction="column">
+        {errors.schedule && (
+          <>
+            <Divider />
+            <Typography component="p" className={classes.errorMsg} style={{ textAlign: 'center' }}>
+              {errors.schedule}
+            </Typography>
+          </>
+        )}
         <TableContainer component={Paper} className={classes.table}>
           <Table stickyHeader aria-label="table">
             <TableHead>
@@ -288,12 +385,12 @@ const DesktopAddSchedule = () => {
                         // Ten select (z material-ui) bardzo utrudnia posługiwanie się e.targetem.
                         // Dlatego konieczna jest tutaj funkcja strzałkowa, aby przenieść odpowiednie dane do handlera
                         onInputChange={(e, newInputValue) => handleOnSelectInputChange(`${row.id}_${column.id}`, newInputValue)}
-                        options={options}
+                        options={receipts}
                         size="small"
                         renderInput={params => (
                           <TextField
                             {...params}
-                            placeholder={options[0]}
+                            placeholder={receipts[0]}
                             color="secondary"
                             variant="outlined"
                           />
@@ -311,4 +408,4 @@ const DesktopAddSchedule = () => {
   );
 };
  
-export default DesktopAddSchedule;
+export default withFirebaseHOC(DesktopAddSchedule);
