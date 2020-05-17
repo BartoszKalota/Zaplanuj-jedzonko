@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import { withFirebaseHOC } from '../../config/Firebase';
 import { makeStyles } from '@material-ui/core/styles';
 import { Autocomplete } from '@material-ui/lab';
@@ -19,6 +20,8 @@ import {
 } from '@material-ui/core';
 
 import { IsLoadingContext } from '../../config/contexts/IsLoadingContext';
+
+import * as ROUTES from '../../config/ROUTES';
 
 const useStyles = makeStyles(theme => ({
   heading: {
@@ -104,6 +107,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const DesktopAddSchedule = ({ firebase }) => {
+  const history = useHistory();
   const { setIsLoading } = useContext(IsLoadingContext);
   const [receipts, setReceipts] = useState([]);
   const valuesInitialState = {
@@ -233,7 +237,26 @@ const DesktopAddSchedule = ({ firebase }) => {
     e.preventDefault();
     const isValidated = validateInputs();
     if (isValidated) {
-      console.log('poszło');
+      const { name, descr, weekNum, schedule } = values;
+      setIsLoading(true);
+      const userId = firebase.auth().currentUser.uid;
+      firebase.firestore()
+        .collection('users')
+        .doc(userId)
+        .collection('schedules')
+        .doc()
+        .set({ name, descr, weekNum, schedule })
+        .then(() => {
+          setValues({ ...valuesInitialState });
+          setErrors({ ...errorsInitialState });
+          setIsLoading(false);
+        })
+        .then(() => history.push(ROUTES.SCHEDULE))
+        .catch(err => {
+          console.log(err);
+          alert('Błąd połączenia! Zajrzyj do konsoli.');
+          setIsLoading(false);
+        });
     }
   };
 
