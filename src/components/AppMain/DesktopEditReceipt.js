@@ -278,7 +278,7 @@ const DesktopEditReceipt = ({ firebase }) => {
             Zapisz i zamknij
           </Button>
           <Button className={classes.button} onClick={handleOnExit} variant="contained" color="primary">
-            ANULUJ
+            Anuluj
           </Button>
         </Grid>
       </Grid>

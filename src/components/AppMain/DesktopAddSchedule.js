@@ -239,7 +239,6 @@ const DesktopAddSchedule = ({ firebase }) => {
     if (isValidated) {
       const { name, descr, weekNum, schedule } = values;
       setIsLoading(true);
-      const userId = firebase.auth().currentUser.uid;
       firebase.firestore()
         .collection('users')
         .doc(userId)
