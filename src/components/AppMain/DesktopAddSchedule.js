@@ -413,7 +413,7 @@ const DesktopAddSchedule = ({ firebase }) => {
                         renderInput={params => (
                           <TextField
                             {...params}
-                            placeholder={receipts[0]}
+                            placeholder="Zapiekanka z ziemniakami i brukselką"
                             color="secondary"
                             variant="outlined"
                           />
