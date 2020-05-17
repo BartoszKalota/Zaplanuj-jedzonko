@@ -108,12 +108,12 @@ const DesktopAddSchedule = () => {
 
   // Kolumny
   const columns = [
-    { id: 'header', label: '', align: 'center', minWidth: 120 },
-    { id: 'breakf', label: 'śniadanie', align: 'center', minWidth: 100 },
-    { id: 'secBr', label: 'drugie śniadanie', align: 'center', minWidth: 100 },
-    { id: 'soup', label: 'zupa', align: 'center', minWidth: 100 },
-    { id: 'dinner', label: 'drugie danie', align: 'center', minWidth: 100 },
-    { id: 'supper', label: 'kolacja', align: 'center', minWidth: 100 }
+    { id: 'header', label: '', align: 'center', width: '17%', minWidth: 120 },
+    { id: 'breakf', label: 'śniadanie', align: 'center', width: '16.6%', minWidth: 100 },
+    { id: 'secBr', label: 'drugie śniadanie', align: 'center', width: '16.6%', minWidth: 100 },
+    { id: 'soup', label: 'zupa', align: 'center', width: '16.6%', minWidth: 100 },
+    { id: 'dinner', label: 'drugie danie', align: 'center', width: '16.6%', minWidth: 100 },
+    { id: 'supper', label: 'kolacja', align: 'center', width: '16.6%', minWidth: 100 }
   ];
   // Wiersze
   const rows = [
@@ -138,10 +138,10 @@ const DesktopAddSchedule = () => {
       [name]: ''
     });
   };
-  const handleOnSelectChange = ({target: {name, value}}) => {
+  const handleOnSelectInputChange = (name, newInputValue) => {
     const schedule = {
       ...values.schedule,
-      [name]: value
+      [name]: newInputValue
     };
     setValues({
       ...values,
@@ -252,11 +252,11 @@ const DesktopAddSchedule = () => {
           <Table stickyHeader aria-label="table">
             <TableHead>
               <TableRow>
-                {columns.map(({ id, label, align, minWidth }) => (
+                {columns.map(({ id, label, align, width, minWidth }) => (
                   <TableCell
                     key={id}
                     align={align}
-                    style={{ minWidth }}
+                    style={{ width, minWidth }}
                     className={classes.tableHeader}
                   >
                     {label}
@@ -284,14 +284,19 @@ const DesktopAddSchedule = () => {
                       className={classes.tableColumn}
                     >
                       <Autocomplete 
-                        name={`${row.id}_${column.id}`}
                         inputValue={values.schedule[`${row.id}_${column.id}`]}
-                        onInputChange={handleOnSelectChange}
-                        // value={values.schedule[`${row.id}_${column.id}`]}
-                        // onChange={handleOnSelectChange}
+                        // Ten select (z material-ui) bardzo utrudnia posługiwanie się e.targetem.
+                        // Dlatego konieczna jest tutaj funkcja strzałkowa, aby przenieść odpowiednie dane do handlera
+                        onInputChange={(e, newInputValue) => handleOnSelectInputChange(`${row.id}_${column.id}`, newInputValue)}
                         options={options}
+                        size="small"
                         renderInput={params => (
-                          <TextField {...params} variant="outlined" />
+                          <TextField
+                            {...params}
+                            placeholder={options[0]}
+                            color="secondary"
+                            variant="outlined"
+                          />
                         )}
                       />
                     </TableCell>
