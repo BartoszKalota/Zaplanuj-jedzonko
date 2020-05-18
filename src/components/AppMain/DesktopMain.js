@@ -10,7 +10,7 @@ import TileButton from './elements/TileButton';
 import AlertInfo from './elements/AlertInfo';
 import AlertWarn from './elements/AlertWarn';
 import AlertSucc from './elements/AlertSucc';
-import TableMain from './elements/TableMain';
+import TableDesktopMain from './elements/TableDesktopMain';
 
 const useStyles = makeStyles({
   upperMainGrid: {
@@ -53,7 +53,7 @@ const DesktopMain = () => {
         </Grid>
       </Grid>
       <Grid container>
-        <TableMain />
+        <TableDesktopMain />
       </Grid>
     </>
   );

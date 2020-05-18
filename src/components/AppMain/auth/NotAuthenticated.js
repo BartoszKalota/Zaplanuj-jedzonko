@@ -56,7 +56,7 @@ const useStyles = makeStyles(theme => ({
   },
   heading: {
     textAlign: 'center',
-    margin: theme.spacing(2, 0)
+    margin: theme.spacing(2, 0, 6, 0)
   },
   link: {
     color: theme.palette.secondary.main,
@@ -90,10 +90,7 @@ const NotAuthenticated = () => {
           <Grid item xs={false} sm={2} md={3} />
           <Grid item container xs={12} sm={8} md={6} direction="column" justify="center">
             <Typography variant="h4" component="h2" className={classes.heading}>
-              Błąd 403
-            </Typography>
-            <Typography variant="h6" component="h3" className={classes.heading}>
-              (Brak dostępu)
+              Brak dostępu
             </Typography>
             <Typography align="center" paragraph>
               <Link to={ROUTES.SIGNUP} className={classes.link}>

@@ -270,7 +270,7 @@ const DesktopEditReceipt = ({ firebase }) => {
       <Grid container style={{ paddingBottom: 15 }}>
         <Grid item xs={6}>
           <Typography className={classes.heading} variant="h5" component="h2" color="secondary">
-            EDYTUJ PRZEPIS
+            EDYCJA PRZEPISU
           </Typography>
         </Grid>
         <Grid item container className={classes.buttonContainer} xs={6}>
