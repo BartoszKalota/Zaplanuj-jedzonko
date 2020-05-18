@@ -1,23 +1,88 @@
 import React, { useState, useEffect } from 'react';
 import { withFirebaseHOC } from '../../../config/Firebase';
-import { Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { Pagination } from '@material-ui/lab';
+import { 
+  Divider,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography
+} from '@material-ui/core';
+
+const useStyles = makeStyles(theme => ({
+  tableTitle: {
+    width: '100%',
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(1),
+    textAlign: 'center',
+    fontSize: '1.3rem',
+    fontWeight: 'bold'
+  },
+  tableContainer: {
+    width: '100%'
+  },
+  table: {
+    height: `calc(100vh - 460px)`,
+    overflow: 'auto',
+    '& table': {
+      height: '100%'
+    }
+  },
+  tableHeader: {
+    fontSize: '1.0rem',
+    fontWeight: 'bold',
+    lineHeight: '1.8rem',
+    textTransform: 'uppercase',
+    borderTop: '1px solid rgba(0, 0, 0, 0.12)',
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(1, 2),
+    [theme.breakpoints.up('lg')]: {
+      fontSize: '1.3rem'
+    }
+  },
+  tableRow: {
+    '& td': {
+      fontSize: '0.95rem'
+    },
+    '&:nth-child(2n+1)': {
+      backgroundColor: 'rgba(0, 0, 0, 0.04)'
+    },
+    '&:hover': {
+      backgroundColor: 'rgba(0, 0, 0, 0.08)'
+    }
+  },
+  pagination: {
+    '& ul': {
+      display: 'flex',
+      justifyContent: 'center',
+      margin: theme.spacing(1, 0)
+    }
+  }
+}));
 
 // Kolumny
 const columns = [
-  { id: 'mon', label: 'poniedziałek', align: 'center', width: '14.8%', minWidth: 120 },
-  { id: 'tue', label: 'wtorek', align: 'center', width: '14.2%', minWidth: 100 },
-  { id: 'wed', label: 'środa', align: 'center', width: '14.2%', minWidth: 100 },
-  { id: 'thu', label: 'czwartek', align: 'center', width: '14.2%', minWidth: 100 },
-  { id: 'fri', label: 'piątek', align: 'center', width: '14.2%', minWidth: 100 },
-  { id: 'sat', label: 'sobota', align: 'center', width: '14.2%', minWidth: 100 },
-  { id: 'sun', label: 'niedziela', align: 'center', width: '14.2%', minWidth: 100 }
+  { id: 'mon', label: 'poniedziałek', align: 'center', width: '14.8%', minWidth: 80 },
+  { id: 'tue', label: 'wtorek', align: 'center', width: '14.2%', minWidth: 60 },
+  { id: 'wed', label: 'środa', align: 'center', width: '14.2%', minWidth: 60 },
+  { id: 'thu', label: 'czwartek', align: 'center', width: '14.2%', minWidth: 60 },
+  { id: 'fri', label: 'piątek', align: 'center', width: '14.2%', minWidth: 60 },
+  { id: 'sat', label: 'sobota', align: 'center', width: '14.2%', minWidth: 60 },
+  { id: 'sun', label: 'niedziela', align: 'center', width: '14.2%', minWidth: 60 }
 ];
 
 const TableDesktopMain = ({ firebase }) => {
+  const classes = useStyles();
+  const [weekNumber, setWeekNumber] = useState(1);
   const [schedules, setSchedules] = useState([]);
   const [rows, setRows] = useState([]);
 
-  // Zbiór planów (dane z Firebase)
+  // Zbiór planów (dane z Firebase) + Przygotowanie wierszy danego planu
   const userId = firebase.auth().currentUser.uid;
   useEffect(() => {
     const schedules = [];
@@ -39,22 +104,25 @@ const TableDesktopMain = ({ firebase }) => {
         });
       })
       .then(() => {
-        const { schedule } = schedules[0];
-        const createSingleObject = (mealType) => {
-          return Object.keys(schedule)
-            .filter(key => key.includes(mealType))
-            .reduce((obj, key) => {
-              obj[key] = schedule[key];
-              return obj;
-            }, {});
-        };
-        const breakfasts = createSingleObject('breakf');
-        const secondBreakfasts = createSingleObject('secBr');
-        const soups = createSingleObject('soup');
-        const dinners = createSingleObject('dinner');
-        const suppers = createSingleObject('supper');
-        const array = [breakfasts, secondBreakfasts, soups, dinners, suppers];
-        setRows(array);
+        if (schedules[0]) { // potrzebne, bo przy braku planów, wykrzacza błąd przy destrukturyzacji
+          const { weekNum, schedule } = schedules[0];
+          const createSingleObject = (mealType) => {
+            return Object.keys(schedule)
+              .filter(key => key.includes(mealType))
+              .reduce((obj, key) => {
+                obj[key] = schedule[key];
+                return obj;
+              }, {});
+          };
+          const breakfasts = createSingleObject('breakf');
+          const secondBreakfasts = createSingleObject('secBr');
+          const soups = createSingleObject('soup');
+          const dinners = createSingleObject('dinner');
+          const suppers = createSingleObject('supper');
+          const array = [breakfasts, secondBreakfasts, soups, dinners, suppers];
+          setWeekNumber(weekNum);
+          setRows(array);
+        }
       })
       .catch(err => {
         console.log(err);
@@ -63,8 +131,64 @@ const TableDesktopMain = ({ firebase }) => {
   }, [firebase, userId]);
 
   return (
-    <Typography variant="h3" component="h1">Desktop</Typography>
+    <>
+      <Typography component="p" color="secondary" className={classes.tableTitle}>
+        {`Twój plan na ${weekNumber} tydzień:`}
+      </Typography>
+      <Paper className={classes.tableContainer}>
+        <TableContainer className={classes.table}>
+          <Table stickyHeader aria-label="table">
+            <TableHead>
+              <TableRow>
+                {columns.map(({ id, label, align, width, minWidth }) => (
+                  <TableCell
+                    key={id}
+                    align={align}
+                    style={{ width, minWidth }}
+                    component="th"
+                    scope="col"
+                    className={classes.tableHeader}
+                  >
+                    {label}
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.length ? (
+                rows.map((row, index) => (
+                  <TableRow key={index} className={classes.tableRow}>
+                    {columns.map(column => {
+                      const array = Object.keys(row).filter(key => key.substring(0, 3) === column.id)
+                      const [ rowKeyName ] = array;
+                      const value = row[rowKeyName];
+                      return (
+                        <TableCell key={column.id} align={column.align}>
+                          {value}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow className={classes.tableRow}>
+                  <TableCell align="center" colSpan={columns.length}>
+                    Brak planów do wyświetlenia
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <Divider />
+        <Pagination
+          count={schedules.length}
+          color="secondary"
+          className={classes.pagination}
+        />
+      </Paper>
+    </>
   );
-}
+};
  
 export default withFirebaseHOC(TableDesktopMain);
