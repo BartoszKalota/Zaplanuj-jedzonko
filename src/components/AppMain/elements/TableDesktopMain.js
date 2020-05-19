@@ -82,6 +82,25 @@ const TableDesktopMain = ({ firebase }) => {
   const [schedules, setSchedules] = useState([]);
   const [rows, setRows] = useState([]);
 
+  const setWeekNumAndRowsBasedOnCurrSchedule = (weekNum, schedule) => {
+    const createSingleObject = (mealType) => {
+      return Object.keys(schedule)
+        .filter(key => key.includes(mealType))
+        .reduce((obj, key) => {
+          obj[key] = schedule[key];
+          return obj;
+        }, {});
+    };
+    const breakfasts = createSingleObject('breakf');
+    const secondBreakfasts = createSingleObject('secBr');
+    const soups = createSingleObject('soup');
+    const dinners = createSingleObject('dinner');
+    const suppers = createSingleObject('supper');
+    const array = [breakfasts, secondBreakfasts, soups, dinners, suppers];
+    setWeekNumber(weekNum);
+    setRows(array);
+  };
+
   // Zbiór planów (dane z Firebase) + Przygotowanie wierszy danego planu
   const userId = firebase.auth().currentUser.uid;
   useEffect(() => {
@@ -106,22 +125,7 @@ const TableDesktopMain = ({ firebase }) => {
       .then(() => {
         if (schedules[0]) { // potrzebne, bo przy braku planów, wykrzacza błąd przy destrukturyzacji
           const { weekNum, schedule } = schedules[0];
-          const createSingleObject = (mealType) => {
-            return Object.keys(schedule)
-              .filter(key => key.includes(mealType))
-              .reduce((obj, key) => {
-                obj[key] = schedule[key];
-                return obj;
-              }, {});
-          };
-          const breakfasts = createSingleObject('breakf');
-          const secondBreakfasts = createSingleObject('secBr');
-          const soups = createSingleObject('soup');
-          const dinners = createSingleObject('dinner');
-          const suppers = createSingleObject('supper');
-          const array = [breakfasts, secondBreakfasts, soups, dinners, suppers];
-          setWeekNumber(weekNum);
-          setRows(array);
+          setWeekNumAndRowsBasedOnCurrSchedule(weekNum, schedule);
         }
       })
       .catch(err => {
@@ -129,6 +133,12 @@ const TableDesktopMain = ({ firebase }) => {
         alert('Błąd połączenia! Zajrzyj do konsoli.');
       });
   }, [firebase, userId]);
+
+  const handleOnScheduleChange = (e, page) => {
+    e.preventDefault();
+    const { weekNum, schedule } = schedules[page - 1];
+    setWeekNumAndRowsBasedOnCurrSchedule(weekNum, schedule);
+  };
 
   return (
     <>
@@ -185,6 +195,8 @@ const TableDesktopMain = ({ firebase }) => {
           count={schedules.length}
           color="secondary"
           className={classes.pagination}
+          // użycie funkcji strzałkowej, aby pobrać do handlera aktualny numer strony
+          onChange={(e, page) => handleOnScheduleChange(e, page)}
         />
       </Paper>
     </>
