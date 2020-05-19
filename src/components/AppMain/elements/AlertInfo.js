@@ -13,7 +13,7 @@ const useStyles = makeStyles({
   }
 });
 
-const AlertInfo = () => {
+const AlertInfo = ({ receiptsNum }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(true);     // docelowo zarządzanie odbędzie się przez context
   const [displayValue, setDisplayValue] = useState(open);
@@ -26,6 +26,11 @@ const AlertInfo = () => {
     }, 500);
     return () => clearTimeout(timeoutId);
   }, [open]);
+
+  let wordEnding = receiptsNum === 1 ? 's' : 'sy';
+  if (receiptsNum > 4) {
+    wordEnding = 'sów';
+  }
 
   return (
     <div style={{ width: '100%', display: displayValue ? 'block' : 'none' }}>
@@ -45,7 +50,9 @@ const AlertInfo = () => {
           variant="filled"
           elevation={6}
         >
-          Masz już 99 przepisów, nieźle!
+          {receiptsNum === 0
+            ? (`Masz 0 przepisów.`)
+            : (`Masz już ${receiptsNum} przepi${wordEnding}, nieźle!`)}
         </Alert>
       </Collapse>
     </div>

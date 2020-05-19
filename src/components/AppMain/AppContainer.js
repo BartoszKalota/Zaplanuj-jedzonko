@@ -31,6 +31,7 @@ import ReceiptIcon from '@material-ui/icons/Receipt';
 import TodayIcon from '@material-ui/icons/Today';
 
 import IdClipboardProvider from '../../config/contexts/IdClipboard';
+import MsgYellowContextProvider from '../../config/contexts/MsgYellowContext';
 import { IsLoadingContext } from '../../config/contexts/IsLoadingContext';
 import { DesktopSwitcher } from '../../config/contexts/DesktopSwitcher';
 import bgImg from '../../assets/bg.png';
@@ -275,14 +276,16 @@ const AppContainer = () => {
       </Drawer>
       <main className={classes.main}>
         <Paper elevation={10} className={classes.content}>
-          <IdClipboardProvider>
-            <Switch>
-              <Route exact path={ROUTES.DESKTOP} component={Desktop} />
-              <Route path={ROUTES.RECEIPT} component={Receipt} />
-              <Route path={ROUTES.SCHEDULE} component={Schedule} />
-              <Redirect from="*" to={ROUTES.ERROR} />
-            </Switch>
-          </IdClipboardProvider>
+          <MsgYellowContextProvider>
+            <IdClipboardProvider>
+              <Switch>
+                <Route exact path={ROUTES.DESKTOP} component={Desktop} />
+                <Route path={ROUTES.RECEIPT} component={Receipt} />
+                <Route path={ROUTES.SCHEDULE} component={Schedule} />
+                <Redirect from="*" to={ROUTES.ERROR} />
+              </Switch>
+            </IdClipboardProvider>
+          </MsgYellowContextProvider>
         </Paper>
       </main>
 

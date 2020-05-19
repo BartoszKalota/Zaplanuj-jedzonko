@@ -14,6 +14,7 @@ import {
   Typography
 } from '@material-ui/core';
 
+import { MsgYellowContext } from '../../../config/contexts/MsgYellowContext';
 import { IsLoadingContext } from '../../../config/contexts/IsLoadingContext';
 
 const useStyles = makeStyles(theme => ({
@@ -83,6 +84,7 @@ const TableDesktopMain = ({ firebase }) => {
   const [weekNumber, setWeekNumber] = useState(1);
   const [schedules, setSchedules] = useState([]);
   const [rows, setRows] = useState([]);
+  const { setSchedulesNum } = useContext(MsgYellowContext);
   const { setIsLoading } = useContext(IsLoadingContext);
 
   const setWeekNumAndRowsBasedOnCurrSchedule = (weekNum, schedule) => {
@@ -127,6 +129,7 @@ const TableDesktopMain = ({ firebase }) => {
         });
       })
       .then(() => {
+        setSchedulesNum(schedules.length);
         if (schedules[0]) { // potrzebne, bo przy braku planów, wykrzacza błąd przy destrukturyzacji
           const { weekNum, schedule } = schedules[0];
           setWeekNumAndRowsBasedOnCurrSchedule(weekNum, schedule);
@@ -138,7 +141,7 @@ const TableDesktopMain = ({ firebase }) => {
         alert('Błąd połączenia! Zajrzyj do konsoli.');
         setIsLoading(false);
       });
-  }, [firebase, userId, setIsLoading]);
+  }, [firebase, userId, setIsLoading, setSchedulesNum]);
 
   const handleOnScheduleChange = (e, page) => {
     e.preventDefault();
