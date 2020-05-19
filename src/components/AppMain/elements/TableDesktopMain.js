@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { withFirebaseHOC } from '../../../config/Firebase';
 import { makeStyles } from '@material-ui/core/styles';
 import { Pagination } from '@material-ui/lab';
@@ -13,6 +13,8 @@ import {
   TableRow,
   Typography
 } from '@material-ui/core';
+
+import { IsLoadingContext } from '../../../config/contexts/IsLoadingContext';
 
 const useStyles = makeStyles(theme => ({
   tableTitle: {
@@ -81,6 +83,7 @@ const TableDesktopMain = ({ firebase }) => {
   const [weekNumber, setWeekNumber] = useState(1);
   const [schedules, setSchedules] = useState([]);
   const [rows, setRows] = useState([]);
+  const { setIsLoading } = useContext(IsLoadingContext);
 
   const setWeekNumAndRowsBasedOnCurrSchedule = (weekNum, schedule) => {
     const createSingleObject = (mealType) => {
@@ -104,6 +107,7 @@ const TableDesktopMain = ({ firebase }) => {
   // Zbiór planów (dane z Firebase) + Przygotowanie wierszy danego planu
   const userId = firebase.auth().currentUser.uid;
   useEffect(() => {
+    setIsLoading(true);
     const schedules = [];
     firebase.firestore()
       .collection('users')
@@ -126,13 +130,15 @@ const TableDesktopMain = ({ firebase }) => {
         if (schedules[0]) { // potrzebne, bo przy braku planów, wykrzacza błąd przy destrukturyzacji
           const { weekNum, schedule } = schedules[0];
           setWeekNumAndRowsBasedOnCurrSchedule(weekNum, schedule);
+          setIsLoading(false);
         }
       })
       .catch(err => {
         console.log(err);
         alert('Błąd połączenia! Zajrzyj do konsoli.');
+        setIsLoading(false);
       });
-  }, [firebase, userId]);
+  }, [firebase, userId, setIsLoading]);
 
   const handleOnScheduleChange = (e, page) => {
     e.preventDefault();
