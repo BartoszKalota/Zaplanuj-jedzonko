@@ -29,7 +29,7 @@ import { DesktopSwitcher } from '../../config/contexts/DesktopSwitcher';
 import * as ROUTES from '../../config/ROUTES';
 import { getComparator, stableSort } from '../../config/sortingFunctions';
 import DialogModal from './auth/Dialog';
-import TableEditRemoveBtns from './elements/TableButtons';
+import TableButtons from './elements/TableButtons';
 
 const useStyles = makeStyles(theme => ({
   heading: {
@@ -400,7 +400,7 @@ const Receipt = ({ firebase }) => {
                           }
                           if (column.id === 'actions') {
                             value = (
-                              <TableEditRemoveBtns
+                              <TableButtons
                                 onEdit={handleOnEditReceipt}
                                 onDelete={handleOnDeleteReceipt}
                                 onDuplicate={handleOnDuplicateReceipt}

@@ -7,7 +7,7 @@ import FileCopyIcon from '@material-ui/icons/FileCopy';
 
 const useStyles = makeStyles(theme => ({
   buttonsContainer: {
-    maxWidth: 110,
+    width: 110,
     margin: '0 auto',
     display: 'flex',
     flexWrap: 'wrap',
@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const TableEditRemoveBtns = ({ onEdit, onDelete, onDuplicate }) => {
+const TableButtons = ({ onEdit, onDelete, onDuplicate }) => {
   const classes = useStyles();
 
   const handleOnClick = ({ currentTarget }) => {
@@ -75,4 +75,4 @@ const TableEditRemoveBtns = ({ onEdit, onDelete, onDuplicate }) => {
   );
 }
  
-export default TableEditRemoveBtns;
+export default TableButtons;
