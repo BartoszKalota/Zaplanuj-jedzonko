@@ -29,7 +29,7 @@ import { DesktopSwitcher } from '../../config/contexts/DesktopSwitcher';
 import * as ROUTES from '../../config/ROUTES';
 import { getComparator, stableSort } from '../../config/sortingFunctions';
 import DialogModal from './auth/Dialog';
-import TableEditRemoveBtns from './elements/TableEditRemoveBtns';
+import TableEditRemoveBtns from './elements/TableButtons';
 
 const useStyles = makeStyles(theme => ({
   heading: {
