@@ -28,6 +28,7 @@ import { DesktopSwitcher } from '../../config/contexts/DesktopSwitcher';
 
 import * as ROUTES from '../../config/ROUTES';
 import { getComparator, stableSort } from '../../config/sortingFunctions';
+import DialogModal from './auth/Dialog';
 import TableEditRemoveBtns from './elements/TableEditRemoveBtns';
 
 const useStyles = makeStyles(theme => ({
@@ -161,6 +162,7 @@ const Receipt = ({ firebase }) => {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('id');
   const [searchQuery, setSearchQuery] = useState('');
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { setIsLoading } = useContext(IsLoadingContext);
   const { setClipboardFirebaseId } = useContext(IdClipboard);
   const { setDesktopMode } = useContext(DesktopSwitcher);
@@ -273,88 +275,167 @@ const Receipt = ({ firebase }) => {
     setDesktopMode(4);
     history.push(ROUTES.DESKTOP);
   };
+  const handleOnDuplicateReceipt = (firebaseId) => {
+    setIsLoading(true);
+    // Pobranie pełnych danych do skopiowania
+    firebase.firestore()
+      .collection('users')
+      .doc(userId)
+      .collection('receipts')
+      .doc(firebaseId)
+      .get()
+      .then(doc => {
+        const { name, descr, instr, ingred } = doc.data();
+        // Zapisanie skopiowanych danych pod szyldem nowego elementu w Firebase
+        firebase.firestore()
+          .collection('users')
+          .doc(userId)
+          .collection('receipts')
+          .doc()
+          .set({ name, descr, instr, ingred })
+          .catch(err => {
+            console.log(err);
+            alert('Błąd połączenia! Zajrzyj do konsoli.');
+            setIsLoading(false);
+          });
+      })
+      .then(() => {
+        const rowsWithDuplicatedItem = [];
+        // Umieszczenie zduplikowanego elementu na końcu tabeli
+        firebase.firestore()
+          .collection('users')
+          .doc(userId)
+          .collection('receipts')
+          .get()
+          .then(snapshot => {
+            snapshot.docs.forEach((doc, index) => {
+              const { name, descr } = doc.data();
+              rowsWithDuplicatedItem.push({
+                firebaseId: doc.id,
+                id: index,
+                name,
+                descr
+              });
+            });
+          })
+          .then(() => {
+            const [ duplicatedItem ] = rowsWithDuplicatedItem.filter(item => !rows.find(({ firebaseId }) => item.firebaseId === firebaseId));
+            duplicatedItem.id = rows.length;
+            const updatedRows = [...rows, duplicatedItem];
+            setRows(updatedRows);
+            setIsLoading(false);
+            setIsDialogOpen(true);
+          })
+          .catch(err => {
+            console.log(err);
+            alert('Błąd połączenia! Zajrzyj do konsoli.');
+            setIsLoading(false);
+          });
+      })
+      .catch(err => {
+        console.log(err);
+        alert('Błąd połączenia! Zajrzyj do konsoli.');
+        setIsLoading(false);
+      });
+  };
+  const handleOnDialogClose = () => setIsDialogOpen(false);
+
+  // Informacja do okna dialogowego
+  const infoTitle = 'Element zduplikowany!';
+  const infoMsg = 'Duplikat znajdziesz na dole tabeli.';
 
   return (
-    <Grid container direction="column">
-      <Grid item container spacing={2}>
-        <Grid item xs={4}>
-          <Typography className={classes.heading} variant="h5" component="h2" color="secondary">
-            LISTA PRZEPISÓW
-          </Typography>
+    <>
+      <Grid container direction="column">
+        <Grid item container spacing={2}>
+          <Grid item xs={4}>
+            <Typography className={classes.heading} variant="h5" component="h2" color="secondary">
+              LISTA PRZEPISÓW
+            </Typography>
+          </Grid>
+          <Grid item xs={6} md={4}>
+            <form onSubmit={handleOnSearch}>
+              <div className={classes.searchContainer}>
+                <OutlinedInput
+                  type="text"
+                  name="searchField"
+                  value={searchQuery}
+                  onChange={handleOnChange}
+                  color="secondary"
+                  placeholder="Znajdź..."
+                  inputProps={{ 'aria-label': 'search-field' }}
+                  endAdornment={
+                    <IconButton type="submit" className={classes.searchIconButton} aria-label="search-button">
+                      <SearchIcon />
+                    </IconButton>
+                  }
+                />
+              </div>
+            </form>
+          </Grid>
+          <Grid item container xs={2} md={4} className={classes.addDataButtonContainer}>
+            <Button className={classes.addDataButton} onClick={handleOnAddData}>
+              <AddBoxIcon />
+            </Button>
+          </Grid>
         </Grid>
-        <Grid item xs={6} md={4}>
-          <form onSubmit={handleOnSearch}>
-            <div className={classes.searchContainer}>
-              <OutlinedInput
-                type="text"
-                name="searchField"
-                value={searchQuery}
-                onChange={handleOnChange}
-                color="secondary"
-                placeholder="Znajdź..."
-                inputProps={{ 'aria-label': 'search-field' }}
-                endAdornment={
-                  <IconButton type="submit" className={classes.searchIconButton} aria-label="search-button">
-                    <SearchIcon />
-                  </IconButton>
-                }
+        <Divider />
+        <Grid item container>
+          <TableContainer component={Paper} className={classes.table}>
+            <Table stickyHeader aria-label="table">
+              <TableHeaderWithSorting
+                order={order}
+                orderBy={orderBy}
+                onRequestSort={handleOnRequestSort}
               />
-            </div>
-          </form>
-        </Grid>
-        <Grid item container xs={2} md={4} className={classes.addDataButtonContainer}>
-          <Button className={classes.addDataButton} onClick={handleOnAddData}>
-            <AddBoxIcon />
-          </Button>
-        </Grid>
-      </Grid>
-      <Divider />
-      <Grid item container>
-        <TableContainer component={Paper} className={classes.table}>
-          <Table stickyHeader aria-label="table">
-            <TableHeaderWithSorting
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleOnRequestSort}
-            />
-            <TableBody>
-              {rows.length ? (
-                stableSort(rows, getComparator(order, orderBy))
-                  .map(row => (
-                    <TableRow key={row.firebaseId} data-id={row.firebaseId} className={classes.tableRow}>
-                      {columns.map(column => {
-                        let value = row[column.id];   // wartości pól column.id muszą być takie same jak te, które przyszły z Firebase ( array.push({ id, name, descr }) )
-                        if (column.id === 'id') {
-                          value = row.id + 1;
-                        }
-                        if (column.id === 'actions') {
-                          value = (
-                            <TableEditRemoveBtns
-                              onEdit={handleOnEditReceipt}
-                              onDelete={handleOnDeleteReceipt}
-                            />
+              <TableBody>
+                {rows.length ? (
+                  stableSort(rows, getComparator(order, orderBy))
+                    .map(row => (
+                      <TableRow key={row.firebaseId} data-id={row.firebaseId} className={classes.tableRow}>
+                        {columns.map(column => {
+                          let value = row[column.id];   // wartości pól column.id muszą być takie same jak te, które przyszły z Firebase ( array.push({ id, name, descr }) )
+                          if (column.id === 'id') {
+                            value = row.id + 1;
+                          }
+                          if (column.id === 'actions') {
+                            value = (
+                              <TableEditRemoveBtns
+                                onEdit={handleOnEditReceipt}
+                                onDelete={handleOnDeleteReceipt}
+                                onDuplicate={handleOnDuplicateReceipt}
+                              />
+                            );
+                          }
+                          return (
+                            <TableCell key={column.id} align={column.align}>
+                              {value}
+                            </TableCell>
                           );
-                        }
-                        return (
-                          <TableCell key={column.id} align={column.align}>
-                            {value}
-                          </TableCell>
-                        );
-                      })}
-                    </TableRow>
-                  ))
-              ) : (
-                <TableRow className={classes.tableRow}>
-                  <TableCell align="center" colSpan={columns.length}>
-                    Brak przepisów do wyświetlenia
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
+                        })}
+                      </TableRow>
+                    ))
+                ) : (
+                  <TableRow className={classes.tableRow}>
+                    <TableCell align="center" colSpan={columns.length}>
+                      Brak przepisów do wyświetlenia
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Grid>
       </Grid>
-    </Grid>
+
+      {/* Okno dialogowe z info o udanym powieleniu elementu */}
+      <DialogModal
+        infoTitle={infoTitle}
+        infoMsg={infoMsg}
+        isDialogOpen={isDialogOpen}
+        onDialogClose={handleOnDialogClose}
+      />
+    </>
   );
 };
 
