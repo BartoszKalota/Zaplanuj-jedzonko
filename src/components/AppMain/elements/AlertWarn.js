@@ -13,9 +13,9 @@ const useStyles = makeStyles({
   }
 });
 
-const AlertInfo = () => {
+const AlertWarn = () => {
   const classes = useStyles();
-  const [open, setOpen] = useState(true);     // docelowo zarządzanie odbędzie się przez context
+  const [open, setOpen] = useState(true);
   const [displayValue, setDisplayValue] = useState(open);
 
   // Dzięki temu, wraz z alertem zniknie div wrapujący ten alert i zwolni przestrzeń
@@ -52,4 +52,4 @@ const AlertInfo = () => {
   );
 }
  
-export default AlertInfo;
+export default AlertWarn;

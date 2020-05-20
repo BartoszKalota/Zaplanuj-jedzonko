@@ -13,6 +13,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import theme, { globalStyle } from './config/theme';
 
 import IsLoadingProvider from './config/contexts/IsLoadingContext';
+import MsgGreenContextProvider from './config/contexts/MsgGreenContext';
 
 import * as ROUTES from './config/ROUTES';
 import LandingPage from './components/LandingPage';
@@ -33,17 +34,19 @@ const App = () => (
   <ThemeProvider theme={theme}>
     <FirebaseProvider value={firebase}>
       <IsLoadingProvider>
-        <DesktopSwitcher>
-          <Router>
-            <Switch>
-              <Route exact path={ROUTES.LANDINGPAGE} component={LandingPage} />
-              <Route path={ROUTES.LOGIN} component={AuthContainer} />
-              <Route path={ROUTES.DESKTOP} component={withAuthenticate(AppContainer)} />
-              <Route path={ROUTES.ERROR} component={NotFound} />
-              <Redirect from="*" to={ROUTES.ERROR} />
-            </Switch>
-          </Router>
-        </DesktopSwitcher>
+        <MsgGreenContextProvider>
+          <DesktopSwitcher>
+            <Router>
+              <Switch>
+                <Route exact path={ROUTES.LANDINGPAGE} component={LandingPage} />
+                <Route path={ROUTES.LOGIN} component={AuthContainer} />
+                <Route path={ROUTES.DESKTOP} component={withAuthenticate(AppContainer)} />
+                <Route path={ROUTES.ERROR} component={NotFound} />
+                <Redirect from="*" to={ROUTES.ERROR} />
+              </Switch>
+            </Router>
+          </DesktopSwitcher>
+        </MsgGreenContextProvider>
       </IsLoadingProvider>
     </FirebaseProvider>
   </ThemeProvider>

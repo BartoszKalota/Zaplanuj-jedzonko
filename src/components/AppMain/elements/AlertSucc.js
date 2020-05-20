@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Alert } from '@material-ui/lab';
 import { Collapse, IconButton } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions';
+
+import { MsgGreenContext } from '../../../config/contexts/MsgGreenContext';
 
 const useStyles = makeStyles({
   wrapper: {
@@ -16,17 +18,23 @@ const useStyles = makeStyles({
 
 const AlertSucc = () => {
   const classes = useStyles();
-  const [open, setOpen] = useState(true);     // docelowo zarządzanie odbędzie się przez context
-  const [displayValue, setDisplayValue] = useState(open);
+  const { setIsOn } = useContext(MsgGreenContext);
+  const [open, setOpen] = useState(true); // potrzebne, bo bazując na kontekście (isOn) nie działa animacja zamykania okna
+  const [displayValue] = useState(open);
+  const [timeoutId, setTimeoutId] = useState('');
 
-  // Dzięki temu, wraz z alertem zniknie div wrapujący ten alert i zwolni przestrzeń
-  // Opóźnienie ma na celu wyświetlenie pełnej animacji
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setDisplayValue(open)
+  const handleOnClick = () => {
+    setOpen(false);
+    // Opóźnienie ma na celu wyświetlenie pełnej animacji
+    const timeFunct = setTimeout(() => {
+      setIsOn(false);
     }, 500);
+    setTimeoutId(timeFunct);
+  };
+
+  useEffect(() => {
     return () => clearTimeout(timeoutId);
-  }, [open]);
+  }, [timeoutId]);
 
   return (
     <div style={{ width: '100%', display: displayValue ? 'block' : 'none' }}>
@@ -37,7 +45,7 @@ const AlertSucc = () => {
               aria-label="close"
               color="inherit"
               size="small"
-              onClick={() => setOpen(false)}
+              onClick={handleOnClick}
             >
               <CloseIcon fontSize="inherit" />
             </IconButton>

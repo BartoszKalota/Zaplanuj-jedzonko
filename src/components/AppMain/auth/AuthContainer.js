@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import {
   Switch,
   Route,
@@ -14,6 +14,8 @@ import {
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import bgImg from '../../../assets/bg.png';
+
+import { MsgGreenContext } from '../../../config/contexts/MsgGreenContext';
 
 import * as ROUTES from '../../../config/ROUTES';
 import LogIn from './LogIn';
@@ -64,7 +66,14 @@ const useStyles = makeStyles(theme => ({
 
 const AuthContainer = ({ history }) => {
   const classes = useStyles();
+  const { setIsOn } = useContext(MsgGreenContext);
+
   const handleOnClick = () => history.goBack();   // nie działało przy użyciu hooka 'useHistory'
+  
+  useEffect(() => {
+    return () => setIsOn(true);
+  }, [setIsOn]);
+
   return (
     <main className={classes.background}>
       <Paper elevation={10} className={classes.content}>

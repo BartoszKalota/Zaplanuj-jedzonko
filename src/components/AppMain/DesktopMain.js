@@ -5,6 +5,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 
 import { MsgYellowContext } from '../../config/contexts/MsgYellowContext';
+import { MsgGreenContext } from '../../config/contexts/MsgGreenContext';
+import { IsLoadingContext } from '../../config/contexts/IsLoadingContext';
 import { DesktopSwitcher } from '../../config/contexts/DesktopSwitcher';
 
 import * as ROUTES from '../../config/ROUTES';
@@ -24,6 +26,8 @@ const DesktopMain = ({ firebase }) => {
   const classes = useStyles();
   const [receiptsNum, setReceiptsNum] = useState('');
   const { schedulesNum } = useContext(MsgYellowContext);
+  const { isOn } = useContext(MsgGreenContext);
+  const { setIsLoading } = useContext(IsLoadingContext);
   const { setDesktopMode } = useContext(DesktopSwitcher);
 
   const handleOnRouteToAddReceipt = () => setDesktopMode(2);
@@ -41,14 +45,14 @@ const DesktopMain = ({ firebase }) => {
         snapshot.docs.forEach(doc => {
           array.push(doc.data());
         });
-        console.log(array);
         setReceiptsNum(array.length);
+        setIsLoading(false);
       })
       .catch(err => {
         console.log(err);
         alert('Błąd połączenia! Zajrzyj do konsoli.');
       });
-  }, [firebase]);
+  }, [firebase, setIsLoading]);
 
   return (
     <>
@@ -74,7 +78,7 @@ const DesktopMain = ({ firebase }) => {
         >
           <AlertInfo receiptsNum={receiptsNum} />
           {schedulesNum === 0 && <AlertWarn />}
-          <AlertSucc />
+          {isOn && <AlertSucc />}
         </Grid>
       </Grid>
       <Grid container>
