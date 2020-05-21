@@ -21,6 +21,7 @@ import {
 } from '@material-ui/core';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import SearchIcon from '@material-ui/icons/Search';
+import printJS from 'print-js'
 
 import { IsLoadingContext } from '../../config/contexts/IsLoadingContext';
 import { IdClipboard } from '../../config/contexts/IdClipboard';
@@ -334,6 +335,51 @@ const Receipt = ({ firebase }) => {
       });
   };
   const handleOnDialogClose = () => setIsDialogOpen(false);
+  const handleOnPrintReceipt = (firebaseId) => {
+    // Pobranie pełnych danych do druku
+    firebase.firestore()
+      .collection('users')
+      .doc(userId)
+      .collection('receipts')
+      .doc(firebaseId)
+      .get()
+      .then(doc => {
+        const itemToPrint = [doc.data()] // funkcja printJS wymaga danych JSON w formie tablicy
+        const LOGO_FOR_PDF_URL = 'https://firebasestorage.googleapis.com/v0/b/zaplanuj-jedzonko.appspot.com/o/logoForPDF.jpg?alt=media&token=e01de362-0dca-498e-9e04-4900118942b9';
+        printJS({
+          printable: itemToPrint,
+          properties: [
+            { field: 'name', displayName: 'Nazwa' },
+            { field: 'descr', displayName: 'Opis' },
+            { field: 'instr', displayName: 'Instrukcje' },
+            { field: 'ingred', displayName: 'Składniki' }
+          ],
+          type: 'json',
+          header: `
+            <div class="print-header">
+              <img class="print-logo" src=${LOGO_FOR_PDF_URL} title="Zaplanuj Jedzonko Logo" />
+              <h1>Przepis</h1>
+            </div>
+          `,
+          style: `
+            .print-header {
+              display: flex;
+              flex-direction: column;
+              align-items: center; 
+            }
+            .print-logo {
+              width: 300px;
+            }
+          `,
+          gridHeaderStyle: 'border: 1px solid lightgrey;',
+          gridStyle: 'border: 1px solid lightgrey; padding: 10px;'
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        alert('Błąd połączenia! Zajrzyj do konsoli.');
+      });
+  };
 
   // Informacja do okna dialogowego
   const infoTitle = 'Element zduplikowany!';
@@ -399,6 +445,7 @@ const Receipt = ({ firebase }) => {
                                 onEdit={handleOnEditReceipt}
                                 onDelete={handleOnDeleteReceipt}
                                 onDuplicate={handleOnDuplicateReceipt}
+                                onPrint={handleOnPrintReceipt}
                               />
                             );
                           }
