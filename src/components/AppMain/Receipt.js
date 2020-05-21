@@ -336,6 +336,7 @@ const Receipt = ({ firebase }) => {
   };
   const handleOnDialogClose = () => setIsDialogOpen(false);
   const handleOnPrintReceipt = (firebaseId) => {
+    setIsLoading(true);
     // Pobranie pełnych danych do druku
     firebase.firestore()
       .collection('users')
@@ -344,21 +345,35 @@ const Receipt = ({ firebase }) => {
       .doc(firebaseId)
       .get()
       .then(doc => {
-        const itemToPrint = [doc.data()] // funkcja printJS wymaga danych JSON w formie tablicy
+        const { name, descr, instr, ingred } = doc.data();
+        let instructions = ``; // zapis umożliwiający (1) dodanie punktorów oraz (2) zawijanie wierszy w kolumnie tabeli
+        for (let i = 0; i < instr.length; i++) {
+          instructions += `(${i + 1}) ${instr[i]} \n`;
+        }
+        let ingredients = ``;
+        for (let i = 0; i < ingred.length; i++) {
+          ingredients += `\u2022 ${ingred[i]} \n`;
+        }
+        const itemToPrint = [{  // funkcja printJS wymaga danych JSON w formie tablicy
+          name,
+          descr,
+          instructions,
+          ingredients
+        }];
         const LOGO_FOR_PDF_URL = 'https://firebasestorage.googleapis.com/v0/b/zaplanuj-jedzonko.appspot.com/o/logoForPDF.jpg?alt=media&token=e01de362-0dca-498e-9e04-4900118942b9';
         printJS({
           printable: itemToPrint,
           properties: [
             { field: 'name', displayName: 'Nazwa' },
             { field: 'descr', displayName: 'Opis' },
-            { field: 'instr', displayName: 'Instrukcje' },
-            { field: 'ingred', displayName: 'Składniki' }
+            { field: 'instructions', displayName: 'Instrukcje' },
+            { field: 'ingredients', displayName: 'Składniki' }
           ],
           type: 'json',
           header: `
             <div class="print-header">
               <img class="print-logo" src=${LOGO_FOR_PDF_URL} title="Zaplanuj Jedzonko Logo" />
-              <h1>Przepis</h1>
+              <h1>Przepis: "${name}"</h1>
             </div>
           `,
           style: `
@@ -375,9 +390,11 @@ const Receipt = ({ firebase }) => {
           gridStyle: 'border: 1px solid lightgrey; padding: 10px;'
         });
       })
+      .then(() => setIsLoading(false))
       .catch(err => {
         console.log(err);
         alert('Błąd połączenia! Zajrzyj do konsoli.');
+        setIsLoading(false);
       });
   };
 

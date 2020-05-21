@@ -364,7 +364,7 @@ const Schedule = ({ firebase }) => {
         const mondayObj = createSingleObject('mon');
         const { mon_breakf, mon_secBr, mon_soup, mon_dinner, mon_supper } = mondayObj;
         const mondayArr = [mon_breakf, mon_secBr, mon_soup, mon_dinner, mon_supper]; // poprawna kolejność dań
-        let monday = ``;  // zapis umożliwiający zawijanie wierszy w kolumnie tabeli
+        let monday = ``;  // zapis umożliwiający (1) dodanie punktorów oraz (2) zawijanie wierszy w kolumnie tabeli
         for (let i = 0; i < mondayArr.length; i++) {
           monday += `(${i + 1}) ${mondayArr[i]}. \n`;
         }
