@@ -109,19 +109,20 @@ const SignUp = ({ firebase }) => {
   };
   const validateInputs = () => {
     const errors = {};
-    if (values.name.length < 3) {
+    const { name, email, password, confirmPassword, checked } = values;
+    if (name.length < 3) {
       errors.name = 'Twoje imię musi zawierać minimum 3 znaki.';
     }
-    if (!values.email) {
+    if (!email) {
       errors.email = 'Pole "Adres email" nie może zostać puste.';
     }
-    if (values.password.length < 6) {
+    if (password.length < 6) {
       errors.password = 'Twoje hasło musi zawierać minimum 6 znaków.';
     }
-    if (!values.confirmPassword || values.password !== values.confirmPassword) {
+    if (!confirmPassword || password !== confirmPassword) {
       errors.confirmPassword = 'Hasło musi być identyczne z tym powyżej.';
     }
-    if (!values.checked) {
+    if (!checked) {
       errors.checked = 'W celu rejestracji konta należy zaakceptować warunki.';
     }
     setErrors(errors);
@@ -150,6 +151,8 @@ const SignUp = ({ firebase }) => {
           console.log(err);
           if (err.code === 'auth/email-already-in-use') {
             setErrors({ duplicatedEmail: 'Podany adres email jest już używany. Użyj innego adresu email.' });
+          } else if (err.code === 'auth/invalid-email') {
+            setErrors({ duplicatedEmail: 'Popraw nazwę domeny w adresie email.' });
           } else {
             alert('Błąd połączenia! Zajrzyj do konsoli.');
           }

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   Switch,
   Route,
@@ -30,7 +30,10 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import TodayIcon from '@material-ui/icons/Today';
 
+import IdClipboardProvider from '../../config/contexts/IdClipboard';
+import MsgYellowContextProvider from '../../config/contexts/MsgYellowContext';
 import { IsLoadingContext } from '../../config/contexts/IsLoadingContext';
+import { DesktopSwitcher } from '../../config/contexts/DesktopSwitcher';
 import bgImg from '../../assets/bg.png';
 
 import * as ROUTES from '../../config/ROUTES';
@@ -147,6 +150,7 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     height: '100%',
+    overflow: 'auto',
     padding: theme.spacing(2)
   },
   backdrop: {
@@ -159,11 +163,20 @@ const AppContainer = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const { isLoading } = useContext(IsLoadingContext);
+  const { setDesktopMode } = useContext(DesktopSwitcher);
 
+  const handleOnRouteToDesktop = () => setDesktopMode(1);
   const handleDrawerOpen = () => setOpen(true);
   const handleDrawerClose = () => setOpen(false);
 
+  useEffect(() => {
+    document.title = 'Zaplanuj Jedzonko - App';
+    return () => setDesktopMode(1); // po wylogowaniu i ponownym zalogowaniu, ustawi się domyślny ekran pulpitu
+  }, [setDesktopMode]);
+
   return (
+    // Brak onLoad={handleOnContentLoaded}, bo zarządzanie załadowaniem odbywa się z poziomu komponentu UserInfo
+    // Poza tym, użycie <Route> blokuje tutaj uruchomienie eventu onLoad
     <div style={{ display: 'flex' }}>
       <AppBar
         position="fixed"
@@ -173,7 +186,7 @@ const AppContainer = () => {
       >
         <Toolbar>
           <Grid item container xs={12} justify="space-between" alignItems="center">
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
@@ -186,7 +199,7 @@ const AppContainer = () => {
                 <MenuIcon />
               </IconButton>
               <Typography variant="h1" className={classes.title} noWrap>
-                <Link to={ROUTES.DESKTOP} style={{ cursor: 'pointer' }}>
+                <Link to={ROUTES.DESKTOP} onClick={handleOnRouteToDesktop} style={{ cursor: 'pointer' }}>
                   Zaplanuj <span className={classes.titleColor}>Jedzonko</span>
                 </Link>
               </Typography>
@@ -218,6 +231,7 @@ const AppContainer = () => {
           <NavLink
             exact to={ROUTES.DESKTOP}
             activeClassName={classes.activeNavButton}
+            onClick={handleOnRouteToDesktop}
           >
             <ListItem button className={classes.listItem}>
               <ListItemIcon style={{ color: 'inherit' }}>
@@ -263,12 +277,16 @@ const AppContainer = () => {
       </Drawer>
       <main className={classes.main}>
         <Paper elevation={10} className={classes.content}>
-          <Switch>
-            <Route exact path={ROUTES.DESKTOP} component={Desktop} />
-            <Route path={ROUTES.RECEIPT} component={Receipt} />
-            <Route path={ROUTES.SCHEDULE} component={Schedule} />
-            <Redirect from="*" to={ROUTES.ERROR} />
-          </Switch>
+          <MsgYellowContextProvider>
+            <IdClipboardProvider>
+              <Switch>
+                <Route exact path={ROUTES.DESKTOP} component={Desktop} />
+                <Route path={ROUTES.RECEIPT} component={Receipt} />
+                <Route path={ROUTES.SCHEDULE} component={Schedule} />
+                <Redirect from="*" to={ROUTES.ERROR} />
+              </Switch>
+            </IdClipboardProvider>
+          </MsgYellowContextProvider>
         </Paper>
       </main>
 

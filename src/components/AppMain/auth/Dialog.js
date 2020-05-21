@@ -1,4 +1,5 @@
 import React, { forwardRef } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import {
   Button,
   Dialog,
@@ -8,6 +9,15 @@ import {
   DialogTitle,
   Slide
 } from '@material-ui/core';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+
+const useStyles = makeStyles(theme => ({
+  icon: {
+    color: theme.palette.success.main,
+    fontSize: '2rem',
+    marginRight: 10
+  }
+}));
 
 // Nadanie referencji reactowej oknu dialogowemu (z szablonu material-ui)
 const Transition = forwardRef((props, ref) => {
@@ -15,6 +25,7 @@ const Transition = forwardRef((props, ref) => {
 });
 
 const DialogModal = ({ isDialogOpen, onDialogClose, infoTitle, infoMsg }) => {
+  const classes = useStyles();
   const handleOnClick = () => onDialogClose();
   return (
     <Dialog
@@ -25,6 +36,7 @@ const DialogModal = ({ isDialogOpen, onDialogClose, infoTitle, infoMsg }) => {
       aria-describedby="alert-dialog-slide-description"
     >
       <DialogTitle id="alert-dialog-slide-title">
+        <CheckCircleIcon className={classes.icon} />
         {infoTitle}
       </DialogTitle>
       <DialogContent>
