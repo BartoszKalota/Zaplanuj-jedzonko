@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Link
 } from 'react-router-dom';
@@ -62,6 +62,11 @@ const useStyles = makeStyles(theme => ({
 
 const NotFound = () => {
   const classes = useStyles();
+
+  useEffect(() => {
+    document.title = 'Zaplanuj Jedzonko - Błąd 404';
+  }, []);
+
   return (
     <main className={classes.background}>
       <Paper elevation={10} className={classes.content}>

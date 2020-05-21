@@ -33,6 +33,7 @@ const LandingPage = () => {
 
   // Przywrócenie domyślnej wartości state'a z contextu po odmontowaniu bieżącego komponentu (ponownie uruchomi się kręciołek ładowania)
   useEffect(() => {
+    document.title = 'Zaplanuj Jedzonko';
     return () => setIsLoading(true);
   }, [setIsLoading]);
 

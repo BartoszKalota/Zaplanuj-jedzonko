@@ -170,6 +170,7 @@ const AppContainer = () => {
   const handleDrawerClose = () => setOpen(false);
 
   useEffect(() => {
+    document.title = 'Zaplanuj Jedzonko - App';
     return () => setDesktopMode(1); // po wylogowaniu i ponownym zalogowaniu, ustawi się domyślny ekran pulpitu
   }, [setDesktopMode]);
 

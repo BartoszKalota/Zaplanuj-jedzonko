@@ -71,6 +71,7 @@ const AuthContainer = ({ history }) => {
   const handleOnClick = () => history.goBack();   // nie działało przy użyciu hooka 'useHistory'
   
   useEffect(() => {
+    document.title = 'Zaplanuj Jedzonko - Autoryzacja';
     return () => setIsOn(true);
   }, [setIsOn]);
 

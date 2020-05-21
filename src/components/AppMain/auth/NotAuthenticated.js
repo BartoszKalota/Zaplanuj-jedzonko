@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Link
 } from 'react-router-dom';
@@ -68,6 +68,11 @@ const useStyles = makeStyles(theme => ({
 
 const NotAuthenticated = () => {
   const classes = useStyles();
+
+  useEffect(() => {
+    document.title = 'Zaplanuj Jedzonko - Autoryzacja';
+  }, []);
+
   return (
     <main className={classes.background}>
       <Paper elevation={10} className={classes.content}>
