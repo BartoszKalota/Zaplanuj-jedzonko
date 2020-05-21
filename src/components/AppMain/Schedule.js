@@ -21,6 +21,7 @@ import {
 } from '@material-ui/core';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import SearchIcon from '@material-ui/icons/Search';
+import printJS from 'print-js';
 
 import { IsLoadingContext } from '../../config/contexts/IsLoadingContext';
 import { IdClipboard } from '../../config/contexts/IdClipboard';
@@ -340,6 +341,130 @@ const Schedule = ({ firebase }) => {
       });
   };
   const handleOnDialogClose = () => setIsDialogOpen(false);
+  const handleOnPrintReceipt = (firebaseId) => {
+    setIsLoading(true);
+    // Pobranie pełnych danych do druku
+    firebase.firestore()
+      .collection('users')
+      .doc(userId)
+      .collection('schedules')
+      .doc(firebaseId)
+      .get()
+      .then(doc => {
+        const { name, descr, weekNum, schedule } = doc.data();
+        // Tworzenie osobnych rubryk dla każdego dnia tygodnia (inaczej plan nie wyświetli się w PDFie)
+        const createSingleObject = (day) => {
+          return Object.keys(schedule)
+            .filter(key => key.includes(day))
+            .reduce((obj, key) => {
+              obj[key] = schedule[key];
+              return obj;
+            }, {});
+        };
+        const mondayObj = createSingleObject('mon');
+        const { mon_breakf, mon_secBr, mon_soup, mon_dinner, mon_supper } = mondayObj;
+        const mondayArr = [mon_breakf, mon_secBr, mon_soup, mon_dinner, mon_supper]; // poprawna kolejność dań
+        let monday = ``;  // zapis umożliwiający zawijanie wierszy w kolumnie tabeli
+        for (let i = 0; i < mondayArr.length; i++) {
+          monday += `(${i + 1}) ${mondayArr[i]}. \n`;
+        }
+        const tuesdayObj = createSingleObject('tue');
+        const { tue_breakf, tue_secBr, tue_soup, tue_dinner, tue_supper } = tuesdayObj;
+        const tuesdayArr = [tue_breakf, tue_secBr, tue_soup, tue_dinner, tue_supper];
+        let tuesday = ``;
+        for (let i = 0; i < tuesdayArr.length; i++) {
+          tuesday += `(${i + 1}) ${tuesdayArr[i]}. \n`;
+        }
+        const wednesdayObj = createSingleObject('wed');
+        const { wed_breakf, wed_secBr, wed_soup, wed_dinner, wed_supper } = wednesdayObj;
+        const wednesdayArr = [wed_breakf, wed_secBr, wed_soup, wed_dinner, wed_supper];
+        let wednesday = ``;
+        for (let i = 0; i < wednesdayArr.length; i++) {
+          wednesday += `(${i + 1}) ${wednesdayArr[i]}. \n`;
+        }
+        const thursdayObj = createSingleObject('thu');
+        const { thu_breakf, thu_secBr, thu_soup, thu_dinner, thu_supper } = thursdayObj;
+        const thursdayArr = [thu_breakf, thu_secBr, thu_soup, thu_dinner, thu_supper];
+        let thursday = ``;
+        for (let i = 0; i < thursdayArr.length; i++) {
+          thursday += `(${i + 1}) ${thursdayArr[i]}. \n`;
+        }
+        const fridayObj = createSingleObject('fri');
+        const { fri_breakf, fri_secBr, fri_soup, fri_dinner, fri_supper } = fridayObj;
+        const fridayArr = [fri_breakf, fri_secBr, fri_soup, fri_dinner, fri_supper];
+        let friday = ``;
+        for (let i = 0; i < fridayArr.length; i++) {
+          friday += `(${i + 1}) ${fridayArr[i]}. \n`;
+        }
+        const saturdayObj = createSingleObject('sat');
+        const { sat_breakf, sat_secBr, sat_soup, sat_dinner, sat_supper } = saturdayObj;
+        const saturdayArr = [sat_breakf, sat_secBr, sat_soup, sat_dinner, sat_supper];
+        let saturday = ``;
+        for (let i = 0; i < saturdayArr.length; i++) {
+          saturday += `(${i + 1}) ${saturdayArr[i]}. \n`;
+        }
+        const sundayObj = createSingleObject('sun');
+        const { sun_breakf, sun_secBr, sun_soup, sun_dinner, sun_supper } = sundayObj;
+        const sundayArr = [sun_breakf, sun_secBr, sun_soup, sun_dinner, sun_supper];
+        let sunday = ``;
+        for (let i = 0; i < sundayArr.length; i++) {
+          sunday += `(${i + 1}) ${sundayArr[i]}. \n`;
+        }
+        const itemToPrint = [{  // funkcja printJS wymaga danych JSON w formie tablicy
+          name,
+          descr,
+          weekNum,
+          monday,
+          tuesday,
+          wednesday,
+          thursday,
+          friday,
+          saturday,
+          sunday
+        }];
+        const LOGO_FOR_PDF_URL = 'https://firebasestorage.googleapis.com/v0/b/zaplanuj-jedzonko.appspot.com/o/logoForPDF.jpg?alt=media&token=e01de362-0dca-498e-9e04-4900118942b9';
+        printJS({
+          printable: itemToPrint,
+          properties: [
+            { field: 'name', displayName: 'Nazwa' },
+            { field: 'descr', displayName: 'Opis' },
+            { field: 'weekNum', displayName: 'Numer tygodnia' },
+            { field: 'monday', displayName: 'Poniedziałek' },
+            { field: 'tuesday', displayName: 'Wtorek' },
+            { field: 'wednesday', displayName: 'Środa' },
+            { field: 'thursday', displayName: 'Czwartek' },
+            { field: 'friday', displayName: 'Piątek' },
+            { field: 'saturday', displayName: 'Sobota' },
+            { field: 'sunday', displayName: 'Niedziela' }
+          ],
+          type: 'json',
+          header: `
+            <div class="print-header">
+              <img class="print-logo" src=${LOGO_FOR_PDF_URL} title="Zaplanuj Jedzonko Logo" />
+              <h1>Plan na tydzień nr ${weekNum}</h1>
+            </div>
+          `,
+          style: `
+            .print-header {
+              display: flex;
+              flex-direction: column;
+              align-items: center; 
+            }
+            .print-logo {
+              width: 300px;
+            }
+          `,
+          gridHeaderStyle: 'border: 1px solid lightgrey;',
+          gridStyle: 'border: 1px solid lightgrey; padding: 10px;'
+        });
+      })
+      .then(() => setIsLoading(false))
+      .catch(err => {
+        console.log(err);
+        alert('Błąd połączenia! Zajrzyj do konsoli.');
+        setIsLoading(false);
+      });
+  };
 
   // Informacja do okna dialogowego
   const infoTitle = 'Element zduplikowany!';
@@ -405,6 +530,7 @@ const Schedule = ({ firebase }) => {
                                 onEdit={handleOnEditReceipt}
                                 onDelete={handleOnDeleteReceipt}
                                 onDuplicate={handleOnDuplicateReceipt}
+                                onPrint={handleOnPrintReceipt}
                               />
                             );
                           }

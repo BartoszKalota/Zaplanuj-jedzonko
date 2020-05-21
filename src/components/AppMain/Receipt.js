@@ -21,7 +21,7 @@ import {
 } from '@material-ui/core';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import SearchIcon from '@material-ui/icons/Search';
-import printJS from 'print-js'
+import printJS from 'print-js';
 
 import { IsLoadingContext } from '../../config/contexts/IsLoadingContext';
 import { IdClipboard } from '../../config/contexts/IdClipboard';
