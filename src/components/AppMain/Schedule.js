@@ -282,20 +282,18 @@ const Schedule = ({ firebase }) => {
   };
   const handleOnDuplicateReceipt = (firebaseId) => {
     setIsLoading(true);
-    // Pobranie pełnych danych do skopiowania
-    firebase.firestore()
+    const schedulesRef = firebase.firestore()
       .collection('users')
       .doc(userId)
-      .collection('schedules')
+      .collection('schedules');
+    // Pobranie pełnych danych do skopiowania
+    schedulesRef
       .doc(firebaseId)
       .get()
       .then(doc => {
         const { name, descr, weekNum, schedule } = doc.data();
         // Zapisanie skopiowanych danych pod szyldem nowego elementu w Firebase
-        firebase.firestore()
-          .collection('users')
-          .doc(userId)
-          .collection('schedules')
+        schedulesRef
           .doc()
           .set({ name, descr, weekNum, schedule })
           .catch(err => {
@@ -307,10 +305,7 @@ const Schedule = ({ firebase }) => {
       .then(() => {
         const rowsWithDuplicatedItem = [];
         // Umieszczenie zduplikowanego elementu na końcu tabeli
-        firebase.firestore()
-          .collection('users')
-          .doc(userId)
-          .collection('schedules')
+        schedulesRef
           .get()
           .then(snapshot => {
             snapshot.docs.forEach((doc, index) => {
@@ -348,7 +343,7 @@ const Schedule = ({ firebase }) => {
 
   // Informacja do okna dialogowego
   const infoTitle = 'Element zduplikowany!';
-  const infoMsg = 'Duplikat znajdziesz na dole tabeli.';
+  const infoMsg = 'Duplikat znajdziesz na dole tabeli (jeżeli jest włączone sortowanie rosnące wg ID).';
 
   return (
     <>
