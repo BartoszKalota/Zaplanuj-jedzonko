@@ -66,8 +66,19 @@ const useStyles = makeStyles(theme => ({
     if (instr || ingred) {
       addValue += 24;
     }
+    const trigger = window.matchMedia(`screen and (min-width: ${theme.breakpoints.values.md}px)`);
+    if (trigger.matches) {
+      return {
+        height: `calc(100vh - ${580 + addValue}px)`,
+        minHeight: 70,
+        overflow: 'auto',
+        '& ol': {
+          paddingLeft: 0
+        }
+      };
+    }
     return {
-      height: `calc(100vh - ${580 + addValue}px)`,
+      height: `calc(100vh - ${700 + addValue}px)`,  // dostosowane do widoku mobilnego
       minHeight: 70,
       overflow: 'auto',
       '& ol': {
