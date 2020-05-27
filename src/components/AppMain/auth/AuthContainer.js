@@ -2,6 +2,7 @@ import React, { useEffect, useContext } from 'react';
 import {
   Switch,
   Route,
+  Link,
   Redirect
 } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -85,9 +86,11 @@ const AuthContainer = ({ history }) => {
             </IconButton>
           </Grid>
           <Grid item container xs={12} sm={10} justify="center" alignItems="center" style={{ marginBottom: 40 }}>
-            <Typography variant="h3" component="h1" align="center" className={classes.title}>
-              Zaplanuj <span className={classes.titleColor}>Jedzonko</span>
-            </Typography>
+            <Link to={ROUTES.LANDINGPAGE}>
+              <Typography variant="h3" component="h1" align="center" className={classes.title}>
+                Zaplanuj <span className={classes.titleColor}>Jedzonko</span>
+              </Typography>
+            </Link>
           </Grid>
           <Grid item xs={false} sm={1} />
         </Grid>          

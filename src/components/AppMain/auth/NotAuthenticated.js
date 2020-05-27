@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import {
-  Link
+  Link,
+  useHistory
 } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -27,16 +28,17 @@ const useStyles = makeStyles(theme => ({
     position: 'relative'
   },
   arrowBackLink: {
-    display: 'inline-block',
-    position: 'relative',
+    backgroundColor: '#8080802b',
+    marginBottom: theme.spacing(1),
     left: '50%',
     transform: 'translateX(-50%)',
-    backgroundColor: '#8080802b',
-    borderRadius: '50%',
-    marginBottom: theme.spacing(1),
     [theme.breakpoints.up('sm')]: {
       left: 'unset',
       transform: 'translateX(0)',
+    },
+    '&:hover': {
+      backgroundColor: 'rgb(0, 0, 0, 0.15)',
+      transition: '0.3s'
     }
   },
   title: {
@@ -68,6 +70,9 @@ const useStyles = makeStyles(theme => ({
 
 const NotAuthenticated = () => {
   const classes = useStyles();
+  const history = useHistory();
+
+  const handleOnClick = () => history.goBack();
 
   useEffect(() => {
     document.title = 'Zaplanuj Jedzonko - Autoryzacja';
@@ -78,16 +83,16 @@ const NotAuthenticated = () => {
       <Paper elevation={10} className={classes.content}>
         <Grid container>
           <Grid item container xs={12} sm={1} alignItems="flex-start">
-            <Link to={ROUTES.LANDINGPAGE} title="Powrót do strony głównej" className={classes.arrowBackLink}>
-              <IconButton variant="outlined">
-                <ArrowBackIcon style={{ fontSize: '1.3rem' }}/>
-              </IconButton>
-            </Link>
+            <IconButton variant="outlined" onClick={handleOnClick} className={classes.arrowBackLink}>
+              <ArrowBackIcon style={{ fontSize: '1.3rem' }}/>
+            </IconButton>
           </Grid>
           <Grid item container xs={12} sm={10} justify="center" alignItems="center" style={{ marginBottom: 40 }}>
-            <Typography variant="h3" component="h1" align="center" className={classes.title}>
-              Zaplanuj <span className={classes.titleColor}>Jedzonko</span>
-            </Typography>
+            <Link to={ROUTES.LANDINGPAGE}>
+              <Typography variant="h3" component="h1" align="center" className={classes.title}>
+                Zaplanuj <span className={classes.titleColor}>Jedzonko</span>
+              </Typography>
+            </Link>
           </Grid>
           <Grid item xs={false} sm={1} />
         </Grid>          
