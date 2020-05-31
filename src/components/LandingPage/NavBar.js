@@ -169,7 +169,7 @@ const NavBar = () => {
               <div className={classes.sectionDesktop}>
                 <Link
                   to={ROUTES.LOGIN}
-                  style={{ display: 'flex' }}
+                  style={{ display: 'flex', cursor: 'default', color: 'inherit' }}
                 >
                   <Button color="inherit" className={classes.desktopBtn}>
                     ZAPLANUJ POSIŁKI!
