@@ -119,7 +119,7 @@ const Contact = () => {
               variant="contained"
               color="secondary"
               type="submit"
-              disabled={isSubmitted}
+              disabled={isPending || isSubmitted}
               className={classes.btn}
               style={{ position: 'relative' }}
             >
