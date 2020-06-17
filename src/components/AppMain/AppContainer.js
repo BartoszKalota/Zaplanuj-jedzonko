@@ -172,7 +172,7 @@ const AppContainer = () => {
   useEffect(() => {
     document.title = 'Zaplanuj Jedzonko - App';
     return () => setDesktopMode(1); // po wylogowaniu i ponownym zalogowaniu, ustawi się domyślny ekran pulpitu
-  }, [setDesktopMode]);
+  }, []);
 
   return (
     // Brak onLoad={handleOnContentLoaded}, bo zarządzanie załadowaniem odbywa się z poziomu komponentu UserInfo

@@ -178,7 +178,7 @@ const DesktopAddSchedule = ({ firebase }) => {
         alert('Błąd połączenia! Zajrzyj do konsoli.');
         setIsLoading(false);
       });
-  }, [firebase, userId, setIsLoading]);
+  }, []);
 
   const handleOnChange = ({target: {name, value}}) => {
     setValues({

@@ -181,7 +181,7 @@ const DesktopEditSchedule = ({ firebase }) => {
         alert('Błąd połączenia! Zajrzyj do konsoli.');
         setIsLoading(false);
       });
-  }, [firebase, userId, setIsLoading]);
+  }, []);
   // Pobranie danych (z Firebase) do formularza
   useEffect(() => {
     setIsLoading(true);
@@ -206,7 +206,7 @@ const DesktopEditSchedule = ({ firebase }) => {
         alert('Błąd połączenia! Zajrzyj do konsoli.');
         setIsLoading(false);
       });
-  }, [firebase, userId, clipboardFirebaseId, setIsLoading]);
+  }, []);
 
   const handleOnChange = ({target: {name, value}}) => {
     setValues({

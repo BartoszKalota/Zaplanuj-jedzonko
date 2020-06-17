@@ -25,7 +25,7 @@ const AlertWarn = () => {
       setDisplayValue(open)
     }, 500);
     return () => clearTimeout(timeoutId);
-  }, [open]);
+  }, []);
 
   return (
     <div style={{ width: '100%', display: displayValue ? 'block' : 'none' }}>

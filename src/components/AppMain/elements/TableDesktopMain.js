@@ -141,7 +141,7 @@ const TableDesktopMain = ({ firebase }) => {
         alert('Błąd połączenia! Zajrzyj do konsoli.');
         setIsLoading(false);
       });
-  }, [firebase, userId, setIsLoading, setSchedulesNum]);
+  }, []);
 
   const handleOnScheduleChange = (e, page) => {
     e.preventDefault();

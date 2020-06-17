@@ -200,7 +200,7 @@ const Schedule = ({ firebase }) => {
         alert('Błąd połączenia! Zajrzyj do konsoli.');
         setIsLoading(false);
       });
-  }, [firebase, userId, setIsLoading]);
+  }, []);
   
   const handleOnSearch = (e) => {
     e.preventDefault();

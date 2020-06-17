@@ -52,7 +52,7 @@ const DesktopMain = ({ firebase }) => {
         console.log(err);
         alert('Błąd połączenia! Zajrzyj do konsoli.');
       });
-  }, [firebase, setIsLoading]);
+  }, []);
 
   return (
     <>

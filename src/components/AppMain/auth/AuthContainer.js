@@ -74,7 +74,7 @@ const AuthContainer = ({ history }) => {
   useEffect(() => {
     document.title = 'Zaplanuj Jedzonko - Autoryzacja';
     return () => setIsOn(true);
-  }, [setIsOn]);
+  }, []);
 
   return (
     <main className={classes.background}>

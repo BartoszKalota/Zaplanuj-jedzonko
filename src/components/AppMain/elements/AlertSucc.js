@@ -34,7 +34,7 @@ const AlertSucc = () => {
 
   useEffect(() => {
     return () => clearTimeout(timeoutId);
-  }, [timeoutId]);
+  }, []);
 
   return (
     <div style={{ width: '100%', display: displayValue ? 'block' : 'none' }}>

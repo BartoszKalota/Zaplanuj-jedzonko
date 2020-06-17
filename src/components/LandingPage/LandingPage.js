@@ -35,7 +35,7 @@ const LandingPage = () => {
   useEffect(() => {
     document.title = 'Zaplanuj Jedzonko';
     return () => setIsLoading(true);
-  }, [setIsLoading]);
+  }, []);
 
   return (
     <NewsletterProvider>

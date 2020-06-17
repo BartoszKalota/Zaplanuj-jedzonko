@@ -135,7 +135,7 @@ const DesktopEditReceipt = ({ firebase }) => {
         alert('Błąd połączenia! Zajrzyj do konsoli.');
         setIsLoading(false);
       });
-  }, [firebase, clipboardFirebaseId, setIsLoading]);
+  }, []);
 
   const handleOnChange = ({target: {name, value}}) => {
     setValues({
