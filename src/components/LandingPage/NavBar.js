@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     width: 255,   // przy domyślnej (mniejszej) szerokości, końcowe 'o' było przycięte 
-    fontFamily: '"Charmonman", cursive',
+    fontFamily: theme.palette.fontFamilyAlt,
     fontSize: '2rem',
     display: 'flex',
     alignItems: 'center',

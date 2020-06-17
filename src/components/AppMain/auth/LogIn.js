@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.error.main
   },
   submitBtn: {
-    color: '#FFF',
+    color: theme.palette.white,
     fontSize: '1.3rem',
     padding: theme.spacing(1, 4)
   },

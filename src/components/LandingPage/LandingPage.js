@@ -21,7 +21,7 @@ import Footer from './Footer';
 const useStyles = makeStyles(theme => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
-    color: '#FFF',
+    color: theme.palette.white
   }
 }));
 

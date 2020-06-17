@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
     position: 'relative'
   },
   arrowBackLink: {
-    backgroundColor: '#8080802b',
+    backgroundColor: theme.palette.arrowBackLinkBgrColor,
     marginBottom: theme.spacing(1),
     left: '50%',
     transform: 'translateX(-50%)',
@@ -44,12 +44,12 @@ const useStyles = makeStyles(theme => ({
       transform: 'translateX(0)',
     },
     '&:hover': {
-      backgroundColor: 'rgb(0, 0, 0, 0.15)',
+      backgroundColor: theme.palette.arrowBackLinkHoverBgrColor,
       transition: '0.3s'
     }
   },
   title: {
-    fontFamily: '"Charmonman", cursive',
+    fontFamily: theme.palette.fontFamilyAlt,
     padding: '1.3rem',
     color: theme.palette.primary.main
   },

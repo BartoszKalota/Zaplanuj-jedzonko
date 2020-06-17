@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   userSection: {
     fontSize: '1.3rem',
     textTransform: 'capitalize',
-    color: '#FFF'
+    color: theme.palette.white
   },
   userAvatar: {
     fontSize: '3rem',
@@ -36,11 +36,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const StyledMenu = withStyles({   // te style dla menu wzięte z szablonu material-ui
+const StyledMenu = withStyles(theme => ({   // te style dla menu wzięte z szablonu material-ui
   paper: {
-    border: '1px solid #d3d4d5'
+    border: `1px solid ${theme.palette.accountMenuBorderColor}`
   }
-})(props => (
+}))(props => (
   <Menu
     elevation={0}
     getContentAnchorEl={null}

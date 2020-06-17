@@ -92,7 +92,7 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 'bold',
     lineHeight: '1.8rem',
     textTransform: 'uppercase',
-    borderTop: '1px solid rgba(0, 0, 0, 0.12)',
+    borderTop: `1px solid ${theme.palette.tableHeaderBorder}`,
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(1, 2)
   },

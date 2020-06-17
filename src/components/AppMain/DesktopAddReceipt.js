@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
   },
   button: {
     fontWeight: 'bold',
-    color: '#FFF'
+    color: theme.palette.white
   },
   outlinedInput: {
     width: '100%',

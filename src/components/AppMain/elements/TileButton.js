@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
     textTransform: 'lowercase',
     border: `2px solid ${theme.palette.success.main}`,
     '&:hover': {
-      backgroundColor: '#a1a19433'
+      backgroundColor: theme.palette.tileButtonBgrColor
     },
     '& span': {
       flexDirection: 'column'

@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
     width: '60%',
     minWidth: 223,
     maxHeight: 56,
-    backgroundColor: '#FFF',
+    backgroundColor: theme.palette.white,
     borderRadius: 4,
     marginRight: 2,
     '@media (max-width:690px)': {

@@ -96,10 +96,10 @@ const useStyles = makeStyles(theme => ({
       fontSize: '0.95rem'
     },
     '&:nth-child(2n+1)': {
-      backgroundColor: 'rgba(0, 0, 0, 0.04)'
+      backgroundColor: theme.palette.tableRowDark
     },
     '&:hover': {
-      backgroundColor: 'rgba(0, 0, 0, 0.08)'
+      backgroundColor: theme.palette.tableRowHover
     }
   }
 }));
