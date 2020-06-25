@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import { withFirebaseHOC } from '../../config/Firebase';
+import { withFirebase } from '../../config/Firebase';
 import { makeStyles } from '@material-ui/core/styles';
 import { Autocomplete } from '@material-ui/lab';
 import {
@@ -157,13 +157,12 @@ const DesktopEditSchedule = ({ firebase }) => {
     { id: 'sun', label: 'niedziela' }
   ];
   // Przepisy (dane z Firebase)
-  const userId = firebase.auth().currentUser.uid;
   useEffect(() => {
     setIsLoading(true);
     const array = [];
-    firebase.firestore()
+    firebase.db
       .collection('users')
-      .doc(userId)
+      .doc(firebase.user())
       .collection('receipts')
       .get()
       .then(snapshot => {
@@ -185,9 +184,9 @@ const DesktopEditSchedule = ({ firebase }) => {
   // Pobranie danych (z Firebase) do formularza
   useEffect(() => {
     setIsLoading(true);
-    firebase.firestore()
+    firebase.db
       .collection('users')
-      .doc(userId)
+      .doc(firebase.user())
       .collection('schedules')
       .doc(clipboardFirebaseId)
       .get()
@@ -267,9 +266,9 @@ const DesktopEditSchedule = ({ firebase }) => {
     if (isValidated) {
       const { name, descr, weekNum, schedule } = values;
       setIsLoading(true);
-      firebase.firestore()
+      firebase.db
         .collection('users')
-        .doc(userId)
+        .doc(firebase.user())
         .collection('schedules')
         .doc(clipboardFirebaseId)
         .update({ name, descr, weekNum, schedule })
@@ -462,4 +461,4 @@ const DesktopEditSchedule = ({ firebase }) => {
   );
 }
  
-export default withFirebaseHOC(DesktopEditSchedule);
+export default withFirebase(DesktopEditSchedule);

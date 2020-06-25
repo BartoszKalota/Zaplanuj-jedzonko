@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { withFirebaseHOC } from '../../config/Firebase';
+import { withFirebase } from '../../config/Firebase';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 
@@ -34,10 +34,9 @@ const DesktopMain = ({ firebase }) => {
   const handleOnRouteToAddSchedule = () => setDesktopMode(3);
 
   useEffect(() => {
-    const userId = firebase.auth().currentUser.uid;
-    firebase.firestore()
+    firebase.db
       .collection('users')
-      .doc(userId)
+      .doc(firebase.user())
       .collection('receipts')
       .get()
       .then(snapshot => {
@@ -88,4 +87,4 @@ const DesktopMain = ({ firebase }) => {
   );
 }
  
-export default withFirebaseHOC(DesktopMain);
+export default withFirebase(DesktopMain);

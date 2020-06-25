@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { withFirebaseHOC } from '../../../config/Firebase';
+import { withFirebase } from '../../../config/Firebase';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Button,
@@ -58,8 +58,8 @@ const ForgotPwd = ({ firebase }) => {
     }
     if (email && !error) {
       setIsPending(true);
-      firebase.auth()
-        .sendPasswordResetEmail(email)
+      firebase
+        .doSendPasswordResetEmail(email)
         .then(() => {
           setEmail('');
           setIsPending(false);
@@ -128,4 +128,4 @@ const ForgotPwd = ({ firebase }) => {
   );
 }
  
-export default withFirebaseHOC(ForgotPwd);
+export default withFirebase(ForgotPwd);

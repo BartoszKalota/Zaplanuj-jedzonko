@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import { withFirebaseHOC } from '../../config/Firebase';
+import { withFirebase } from '../../config/Firebase';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Divider,
@@ -224,10 +224,9 @@ const DesktopAddReceipt = ({ firebase }) => {
     if (isValidated) {
       const { name, descr, instr, ingred } = values;
       setIsLoading(true);
-      const userId = firebase.auth().currentUser.uid;
-      firebase.firestore()
+      firebase.db
         .collection('users')
-        .doc(userId)
+        .doc(firebase.user())
         .collection('receipts')
         .doc()
         .set({ name, descr, instr, ingred })
@@ -404,4 +403,4 @@ const DesktopAddReceipt = ({ firebase }) => {
   );
 }
  
-export default withFirebaseHOC(DesktopAddReceipt);
+export default withFirebase(DesktopAddReceipt);

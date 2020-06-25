@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
-import { withFirebaseHOC } from '../../config/Firebase';
+import { withFirebase } from '../../config/Firebase';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Button,
@@ -170,13 +170,12 @@ const Schedule = ({ firebase }) => {
   const { setDesktopMode } = useContext(DesktopSwitcher);
 
   // Wiersze (dane z Firebase)
-  const userId = firebase.auth().currentUser.uid;
   useEffect(() => {
     setIsLoading(true);
     const array = [];
-    firebase.firestore()
+    firebase.db
       .collection('users')
-      .doc(userId)
+      .doc(firebase.user())
       .collection('schedules')
       .get()
       .then(snapshot => {
@@ -207,9 +206,9 @@ const Schedule = ({ firebase }) => {
     // Pobranie wszystkich planów w celu wykonania selekcji
     setIsLoading(true);
     const array = [];
-    firebase.firestore()
+    firebase.db
       .collection('users')
-      .doc(userId)
+      .doc(firebase.user())
       .collection('schedules')
       .get()
       .then(snapshot => {
@@ -259,9 +258,9 @@ const Schedule = ({ firebase }) => {
   };
   const handleOnDeleteReceipt = (firebaseId, rowId) => {
     setIsLoading(true);
-    firebase.firestore()
+    firebase.db
       .collection('users')
-      .doc(userId)
+      .doc(firebase.user())
       .collection('schedules')
       .doc(firebaseId)
       .delete()
@@ -283,9 +282,9 @@ const Schedule = ({ firebase }) => {
   };
   const handleOnDuplicateReceipt = (firebaseId) => {
     setIsLoading(true);
-    const schedulesRef = firebase.firestore()
+    const schedulesRef = firebase.db
       .collection('users')
-      .doc(userId)
+      .doc(firebase.user())
       .collection('schedules');
     // Pobranie pełnych danych do skopiowania
     schedulesRef
@@ -344,9 +343,9 @@ const Schedule = ({ firebase }) => {
   const handleOnPrintReceipt = (firebaseId) => {
     setIsLoading(true);
     // Pobranie pełnych danych do druku
-    firebase.firestore()
+    firebase.db
       .collection('users')
-      .doc(userId)
+      .doc(firebase.user())
       .collection('schedules')
       .doc(firebaseId)
       .get()
@@ -566,4 +565,4 @@ const Schedule = ({ firebase }) => {
   );
 }
  
-export default withFirebaseHOC(Schedule);
+export default withFirebase(Schedule);

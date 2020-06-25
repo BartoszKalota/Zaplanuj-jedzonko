@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
-import { withFirebaseHOC } from '../../config/Firebase';
+import { withFirebase } from '../../config/Firebase';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Button,
@@ -169,13 +169,12 @@ const Receipt = ({ firebase }) => {
   const { setDesktopMode } = useContext(DesktopSwitcher);
 
   // Wiersze (dane z Firebase)
-  const userId = firebase.auth().currentUser.uid;
   useEffect(() => {
     setIsLoading(true);
     const array = [];
-    firebase.firestore()
+    firebase.db
       .collection('users')
-      .doc(userId)
+      .doc(firebase.user())
       .collection('receipts')
       .get()
       .then(snapshot => {
@@ -205,9 +204,9 @@ const Receipt = ({ firebase }) => {
     // Pobranie wszystkich przepisów w celu wykonania selekcji
     setIsLoading(true);
     const array = [];
-    firebase.firestore()
+    firebase.db
       .collection('users')
-      .doc(userId)
+      .doc(firebase.user())
       .collection('receipts')
       .get()
       .then(snapshot => {
@@ -254,9 +253,9 @@ const Receipt = ({ firebase }) => {
   };
   const handleOnDeleteReceipt = (firebaseId, rowId) => {
     setIsLoading(true);
-    firebase.firestore()
+    firebase.db
       .collection('users')
-      .doc(userId)
+      .doc(firebase.user())
       .collection('receipts')
       .doc(firebaseId)
       .delete()
@@ -278,9 +277,9 @@ const Receipt = ({ firebase }) => {
   };
   const handleOnDuplicateReceipt = (firebaseId) => {
     setIsLoading(true);
-    const receiptsRef = firebase.firestore()
+    const receiptsRef = firebase.db
       .collection('users')
-      .doc(userId)
+      .doc(firebase.user())
       .collection('receipts');
     // Pobranie pełnych danych do skopiowania
     receiptsRef
@@ -338,9 +337,9 @@ const Receipt = ({ firebase }) => {
   const handleOnPrintReceipt = (firebaseId) => {
     setIsLoading(true);
     // Pobranie pełnych danych do druku
-    firebase.firestore()
+    firebase.db
       .collection('users')
-      .doc(userId)
+      .doc(firebase.user())
       .collection('receipts')
       .doc(firebaseId)
       .get()
@@ -498,4 +497,4 @@ const Receipt = ({ firebase }) => {
   );
 };
 
-export default withFirebaseHOC(Receipt);
+export default withFirebase(Receipt);

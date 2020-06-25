@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import { withFirebaseHOC } from '../../config/Firebase';
+import { withFirebase } from '../../config/Firebase';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Divider,
@@ -113,10 +113,9 @@ const DesktopEditReceipt = ({ firebase }) => {
   // Pobranie danych (z Firebase) do formularza
   useEffect(() => {
     setIsLoading(true);
-    const userId = firebase.auth().currentUser.uid;
-    firebase.firestore()
+    firebase.db
       .collection('users')
-      .doc(userId)
+      .doc(firebase.user())
       .collection('receipts')
       .doc(clipboardFirebaseId)
       .get()
@@ -254,10 +253,9 @@ const DesktopEditReceipt = ({ firebase }) => {
     if (isValidated) {
       const { name, descr, instr, ingred } = values;
       setIsLoading(true);
-      const userId = firebase.auth().currentUser.uid;
-      firebase.firestore()
+      firebase.db
         .collection('users')
-        .doc(userId)
+        .doc(firebase.user())
         .collection('receipts')
         .doc(clipboardFirebaseId)
         .update({ name, descr, instr, ingred })
@@ -438,4 +436,4 @@ const DesktopEditReceipt = ({ firebase }) => {
   );
 }
  
-export default withFirebaseHOC(DesktopEditReceipt);
+export default withFirebase(DesktopEditReceipt);

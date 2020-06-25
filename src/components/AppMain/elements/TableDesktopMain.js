@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { withFirebaseHOC } from '../../../config/Firebase';
+import { withFirebase } from '../../../config/Firebase';
 import { makeStyles } from '@material-ui/core/styles';
 import { Pagination } from '@material-ui/lab';
 import { 
@@ -107,13 +107,12 @@ const TableDesktopMain = ({ firebase }) => {
   };
 
   // Zbiór planów (dane z Firebase) + Przygotowanie wierszy danego planu
-  const userId = firebase.auth().currentUser.uid;
   useEffect(() => {
     setIsLoading(true);
     const schedules = [];
-    firebase.firestore()
+    firebase.db
       .collection('users')
-      .doc(userId)
+      .doc(firebase.user())
       .collection('schedules')
       .get()
       .then(snapshot => {
@@ -212,4 +211,4 @@ const TableDesktopMain = ({ firebase }) => {
   );
 };
  
-export default withFirebaseHOC(TableDesktopMain);
+export default withFirebase(TableDesktopMain);

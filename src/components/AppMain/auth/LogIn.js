@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { withFirebaseHOC } from '../../../config/Firebase';
+import { withFirebase } from '../../../config/Firebase';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Button,
@@ -109,8 +109,8 @@ const LogIn = ({ firebase }) => {
     const isValidated = validateInputs();
     if (isValidated) {
       setIsPending(true);
-      firebase.auth()
-        .signInWithEmailAndPassword(values.email, values.password)
+      firebase
+        .doSignInWithEmailAndPassword(values.email, values.password)
         .then(() => {
           setValues({ ...valuesInitialState });
           setErrors({ ...errorsInitialState });
@@ -214,4 +214,4 @@ const LogIn = ({ firebase }) => {
   );
 }
  
-export default withFirebaseHOC(LogIn);
+export default withFirebase(LogIn);
