@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import { withFirebaseHOC } from '../../config/Firebase';
+import { withFirebase } from '../../config/Firebase';
 import { makeStyles } from '@material-ui/core/styles';
 import { Autocomplete } from '@material-ui/lab';
 import {
@@ -94,7 +94,7 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 'bold',
     lineHeight: '1.8rem',
     textTransform: 'uppercase',
-    borderTop: '1px solid rgba(0, 0, 0, 0.12)',
+    borderTop: `1px solid ${theme.palette.tableHeaderBorder}`,
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(1, 2)
   },
@@ -157,13 +157,12 @@ const DesktopEditSchedule = ({ firebase }) => {
     { id: 'sun', label: 'niedziela' }
   ];
   // Przepisy (dane z Firebase)
-  const userId = firebase.auth().currentUser.uid;
   useEffect(() => {
     setIsLoading(true);
     const array = [];
-    firebase.firestore()
+    firebase.db
       .collection('users')
-      .doc(userId)
+      .doc(firebase.user())
       .collection('receipts')
       .get()
       .then(snapshot => {
@@ -181,13 +180,13 @@ const DesktopEditSchedule = ({ firebase }) => {
         alert('Błąd połączenia! Zajrzyj do konsoli.');
         setIsLoading(false);
       });
-  }, [firebase, userId, setIsLoading]);
+  }, []);
   // Pobranie danych (z Firebase) do formularza
   useEffect(() => {
     setIsLoading(true);
-    firebase.firestore()
+    firebase.db
       .collection('users')
-      .doc(userId)
+      .doc(firebase.user())
       .collection('schedules')
       .doc(clipboardFirebaseId)
       .get()
@@ -206,7 +205,7 @@ const DesktopEditSchedule = ({ firebase }) => {
         alert('Błąd połączenia! Zajrzyj do konsoli.');
         setIsLoading(false);
       });
-  }, [firebase, userId, clipboardFirebaseId, setIsLoading]);
+  }, []);
 
   const handleOnChange = ({target: {name, value}}) => {
     setValues({
@@ -267,9 +266,9 @@ const DesktopEditSchedule = ({ firebase }) => {
     if (isValidated) {
       const { name, descr, weekNum, schedule } = values;
       setIsLoading(true);
-      firebase.firestore()
+      firebase.db
         .collection('users')
-        .doc(userId)
+        .doc(firebase.user())
         .collection('schedules')
         .doc(clipboardFirebaseId)
         .update({ name, descr, weekNum, schedule })
@@ -462,4 +461,4 @@ const DesktopEditSchedule = ({ firebase }) => {
   );
 }
  
-export default withFirebaseHOC(DesktopEditSchedule);
+export default withFirebase(DesktopEditSchedule);

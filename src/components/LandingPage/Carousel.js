@@ -8,7 +8,7 @@ import img3 from '../../assets/carousel-bg3.jpg';
 
 const CAROUSEL_ARROW = 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Chevron_right_font_awesome.svg/768px-Chevron_right_font_awesome.svg.png';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   carouselSection: {
     marginTop: 75,
     '@media (min-width:1252px)': {
@@ -22,7 +22,7 @@ const useStyles = makeStyles({
       marginLeft: 10,
       marginRight: 10,
       '&.active': {
-        backgroundColor: '#0000057d'
+        backgroundColor: theme.palette.carouselActiveDotBgrColor
       }
     },
     '& .carousel-control-next-icon, & .carousel-control-prev-icon': {
@@ -63,7 +63,7 @@ const useStyles = makeStyles({
   captionDescr: {
     fontSize: '1.3rem'
   }
-});
+}));
 
 const CarouselSection = () => {
   const classes = useStyles();

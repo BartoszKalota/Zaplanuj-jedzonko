@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { withFirebaseHOC } from '../../../config/Firebase';
+import { withFirebase } from '../../../config/Firebase';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Button,
@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.error.main
   },
   submitBtn: {
-    color: '#FFF',
+    color: theme.palette.white,
     fontSize: '1.3rem',
     padding: theme.spacing(1, 4)
   }
@@ -58,8 +58,8 @@ const ForgotPwd = ({ firebase }) => {
     }
     if (email && !error) {
       setIsPending(true);
-      firebase.auth()
-        .sendPasswordResetEmail(email)
+      firebase
+        .doSendPasswordResetEmail(email)
         .then(() => {
           setEmail('');
           setIsPending(false);
@@ -128,4 +128,4 @@ const ForgotPwd = ({ firebase }) => {
   );
 }
  
-export default withFirebaseHOC(ForgotPwd);
+export default withFirebase(ForgotPwd);

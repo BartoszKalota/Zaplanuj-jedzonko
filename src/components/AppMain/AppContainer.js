@@ -69,12 +69,12 @@ const useStyles = makeStyles(theme => ({
   title: {
     width: 255,   // przy domyślnej (mniejszej) szerokości, końcowe 'o' było przycięte 
     padding: '1.3rem 0',
-    fontFamily: '"Charmonman", cursive',
+    fontFamily: theme.palette.fontFamilyAlt,
     fontSize: '2rem',
     display: 'flex',
     alignItems: 'center',
     '& a': {
-      color: '#FFF'
+      color: theme.palette.white
     }
   },
   titleColor: {
@@ -122,7 +122,7 @@ const useStyles = makeStyles(theme => ({
       transition: '0.1s',
       '& div': {
         '& span': {
-          color: '#FFF',
+          color: theme.palette.white,
           fontWeight: 'bold',
           transition: '0.1s'
         }
@@ -132,7 +132,7 @@ const useStyles = makeStyles(theme => ({
   listItem: {
     height: 90,
     padding: theme.spacing(0, 3),
-    color: '#FFF',
+    color: theme.palette.white,
     fontSize: '1.3rem'
   },
   listItemChevron: {
@@ -155,7 +155,7 @@ const useStyles = makeStyles(theme => ({
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
-    color: '#FFF',
+    color: theme.palette.white,
   }
 }));
 
@@ -172,7 +172,7 @@ const AppContainer = () => {
   useEffect(() => {
     document.title = 'Zaplanuj Jedzonko - App';
     return () => setDesktopMode(1); // po wylogowaniu i ponownym zalogowaniu, ustawi się domyślny ekran pulpitu
-  }, [setDesktopMode]);
+  }, []);
 
   return (
     // Brak onLoad={handleOnContentLoaded}, bo zarządzanie załadowaniem odbywa się z poziomu komponentu UserInfo

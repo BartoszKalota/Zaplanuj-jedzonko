@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { withFirebaseHOC } from '../../../config/Firebase';
+import { withFirebase } from '../../../config/Firebase';
 import {
   Avatar,
   Button,
@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   userSection: {
     fontSize: '1.3rem',
     textTransform: 'capitalize',
-    color: '#FFF'
+    color: theme.palette.white
   },
   userAvatar: {
     fontSize: '3rem',
@@ -36,11 +36,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const StyledMenu = withStyles({   // te style dla menu wzięte z szablonu material-ui
+const StyledMenu = withStyles(theme => ({   // te style dla menu wzięte z szablonu material-ui
   paper: {
-    border: '1px solid #d3d4d5'
+    border: `1px solid ${theme.palette.accountMenuBorderColor}`
   }
-})(props => (
+}))(props => (
   <Menu
     elevation={0}
     getContentAnchorEl={null}
@@ -72,7 +72,7 @@ const UserInfo = ({ firebase }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const { setIsLoading } = useContext(IsLoadingContext);
   // Bieżący awatar użytkownika pobrany z Firebase
-  const USER_FIREBASE_AVATAR = firebase.auth().currentUser?.photoURL; // bez '?' wykrzacza błąd podczas LogOut, że photoURL stanowi null
+  const USER_FIREBASE_AVATAR = firebase.auth.currentUser?.photoURL; // bez '?' wykrzacza błąd podczas LogOut, że photoURL stanowi null
   const [avatarURL, setAvatarURL] = useState(USER_FIREBASE_AVATAR);
 
   const handleOnClick = ({ currentTarget }) => setAnchorEl(currentTarget);
@@ -81,8 +81,8 @@ const UserInfo = ({ firebase }) => {
     setAnchorEl(null);
     // Wysłanie awatara do Firebase
     const file = target.files[0];
-    const userId = firebase.auth().currentUser.uid;
-    const storage = firebase.storage();
+    const userId = firebase.user();
+    const storage = firebase.storage;
     const uploadTask = storage.ref(`${userId}/profilePicture/${file.name}`).put(file);  // dotąd wystarczy, aby wysłać plik
     uploadTask.on('state_changed',    // postęp wysyłania awatara
       (snapshot) => {
@@ -105,7 +105,7 @@ const UserInfo = ({ firebase }) => {
   const handleOnRemoveAvatar = () => {
     setAnchorEl(null);
     setIsLoading(true);
-    const currentUser = firebase.auth().currentUser;
+    const currentUser = firebase.auth.currentUser;
     // Ekstrakcja nazwy pliku awatara z URLa Firebase, żeby później podać właściwą nazwę pliku do usunięcia
     const photoURL = currentUser.photoURL;
     const startSliceIndicator = 'profilePicture%2F';
@@ -115,15 +115,15 @@ const UserInfo = ({ firebase }) => {
     const avatarFileName = photoURL.slice(indexStartSlice, indexEndSlice);
     //
     const userId = currentUser.uid;
-    firebase.storage().ref(`${userId}/profilePicture`).child(avatarFileName).delete()
+    firebase.storage.ref(`${userId}/profilePicture`).child(avatarFileName).delete()
       .then(() => setAvatarURL(null))
       .catch(err => {
         console.warn('Błąd usunięcia awatara:', err);
       });
   };
   const handleOnLogOut = () => {
-    firebase.auth()
-      .signOut()
+    firebase
+      .doSignOut()
       .then(() => {
         setAnchorEl(null);
         setAvatarURL('')
@@ -138,14 +138,14 @@ const UserInfo = ({ firebase }) => {
 
   // Aktualizacja awatara w profilu użytkownika na Firebase na podstawie state'a
   useEffect(() => {
-    if (firebase.auth().currentUser) {  // bez tego warunku wykrzacza błąd w konsoli po wylogowaniu
-      firebase.auth().currentUser.updateProfile({
+    if (firebase.auth.currentUser) {  // bez tego warunku wykrzacza błąd w konsoli po wylogowaniu
+      firebase.auth.currentUser.updateProfile({
         photoURL: avatarURL
       })
         .then(() => setIsLoading(false));
     }
     return () => setIsLoading(true);  // dzięki temu, po ponownym uruchomieniu aplikacji, przywracane jest uruchomienie kręciołka ładowania
-  }, [avatarURL, firebase, setIsLoading]);
+  }, [avatarURL]);
 
   const avatarMenuItem = (
     avatarURL ? (
@@ -190,7 +190,7 @@ const UserInfo = ({ firebase }) => {
         className={classes.userSection}
       >
         {/* Bez '?' wykrzacza błąd podczas LogOut, że displayName stanowi null */}
-        {firebase.auth().currentUser?.displayName}
+        {firebase.auth.currentUser?.displayName}
         {avatarURL ? (
           <Avatar
             alt="Avatar uploaded by user"
@@ -226,4 +226,4 @@ const UserInfo = ({ firebase }) => {
   );
 }
  
-export default withFirebaseHOC(UserInfo);
+export default withFirebase(UserInfo);

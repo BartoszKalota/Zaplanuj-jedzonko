@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { withFirebaseHOC } from '../../../config/Firebase';
+import { withFirebase } from '../../../config/Firebase';
 import { makeStyles } from '@material-ui/core/styles';
 import { Pagination } from '@material-ui/lab';
 import { 
@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 'bold',
     lineHeight: '1.8rem',
     textTransform: 'uppercase',
-    borderTop: '1px solid rgba(0, 0, 0, 0.12)',
+    borderTop: `1px solid ${theme.palette.tableHeaderBorder}`,
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(1, 2),
     [theme.breakpoints.up('lg')]: {
@@ -53,10 +53,10 @@ const useStyles = makeStyles(theme => ({
       fontSize: '0.95rem'
     },
     '&:nth-child(2n+1)': {
-      backgroundColor: 'rgba(0, 0, 0, 0.04)'
+      backgroundColor: theme.palette.tableRowDark
     },
     '&:hover': {
-      backgroundColor: 'rgba(0, 0, 0, 0.08)'
+      backgroundColor: theme.palette.tableRowHover
     }
   },
   pagination: {
@@ -107,13 +107,12 @@ const TableDesktopMain = ({ firebase }) => {
   };
 
   // Zbiór planów (dane z Firebase) + Przygotowanie wierszy danego planu
-  const userId = firebase.auth().currentUser.uid;
   useEffect(() => {
     setIsLoading(true);
     const schedules = [];
-    firebase.firestore()
+    firebase.db
       .collection('users')
-      .doc(userId)
+      .doc(firebase.user())
       .collection('schedules')
       .get()
       .then(snapshot => {
@@ -141,7 +140,7 @@ const TableDesktopMain = ({ firebase }) => {
         alert('Błąd połączenia! Zajrzyj do konsoli.');
         setIsLoading(false);
       });
-  }, [firebase, userId, setIsLoading, setSchedulesNum]);
+  }, []);
 
   const handleOnScheduleChange = (e, page) => {
     e.preventDefault();
@@ -212,4 +211,4 @@ const TableDesktopMain = ({ firebase }) => {
   );
 };
  
-export default withFirebaseHOC(TableDesktopMain);
+export default withFirebase(TableDesktopMain);

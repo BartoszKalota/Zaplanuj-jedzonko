@@ -54,7 +54,7 @@ somelink
 # Information
 * This is the individual final project of the Coders Lab course: 'JavaScript Developer: React'.
 * This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-* Font-end was created with React and back-end is handled by Firebase.
+* Front-end was created with React and back-end is handled by Firebase.
 * For more details see the 'Technologies' section.
 
 # Technologies

@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
     transform: 'scale(0.8)'
   },
   input: {
-    backgroundColor: '#FFF',
+    backgroundColor: theme.palette.white,
     borderRadius: 4,
     marginRight: 2
   },
@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
   },
   icon: {
     fontSize: '2.5rem',
-    color: '#FFF',
+    color: theme.palette.white,
     '&:hover': {
       color: theme.palette.secondary.main,
       transition: '0.3s'
@@ -119,7 +119,7 @@ const Contact = () => {
               variant="contained"
               color="secondary"
               type="submit"
-              disabled={isSubmitted}
+              disabled={isPending || isSubmitted}
               className={classes.btn}
               style={{ position: 'relative' }}
             >

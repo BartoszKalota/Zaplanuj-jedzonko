@@ -25,7 +25,7 @@ const AlertInfo = ({ receiptsNum }) => {
       setDisplayValue(open)
     }, 500);
     return () => clearTimeout(timeoutId);
-  }, [open]);
+  }, []);
 
   let wordEnding = receiptsNum === 1 ? 's' : 'sy';
   if (receiptsNum > 4) {

@@ -1,5 +1,5 @@
 import React, { createContext, useState } from 'react';
-import { withFirebaseHOC } from '../Firebase';
+import { withFirebase } from '../Firebase';
 
 export const NewsletterContext = createContext();
 
@@ -8,8 +8,9 @@ const NewsletterContextProvider = ({ firebase, children }) => {
   const [isPending, setIsPending] = useState(false);
 
   const sendToFirebase = (email) => {
+    console.log(firebase)
     setIsPending(true);
-    firebase.firestore()
+    firebase.db
       .collection('newsletter')
       .add({
         email
@@ -31,4 +32,4 @@ const NewsletterContextProvider = ({ firebase, children }) => {
   );
 }
 
-export default withFirebaseHOC(NewsletterContextProvider);
+export default withFirebase(NewsletterContextProvider);

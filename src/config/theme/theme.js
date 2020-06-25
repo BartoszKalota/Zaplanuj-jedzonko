@@ -2,6 +2,12 @@ import { createMuiTheme } from '@material-ui/core/styles';
 
 const theme = createMuiTheme({
   palette: {
+    accountMenuBorderColor: '#d3d4d5',
+    arrowBackLinkBgrColor: '#8080802b',
+    arrowBackLinkHoverBgrColor: 'rgb(0, 0, 0, 0.15)',
+    carouselActiveDotBgrColor: '#0000057d',
+    fontFamilyAlt: '"Charmonman", cursive',
+    footerBgrColor: '#383838',
     primary: {
       main: '#4a4a49'       // nagłówek, kolor tekstu w kolumnach
     },
@@ -24,7 +30,12 @@ const theme = createMuiTheme({
     },
     success: {
       main: '#468966'
-    }
+    },
+    tableHeaderBorder: 'rgba(0, 0, 0, 0.12)',
+    tableRowDark: 'rgba(0, 0, 0, 0.04)',
+    tableRowHover: 'rgba(0, 0, 0, 0.08)',
+    tileButtonBgrColor: '#a1a19433',
+    white: '#FFF'
   },
   typography: {
     fontFamily: 'Open Sans'
@@ -32,12 +43,3 @@ const theme = createMuiTheme({
 });
 
 export default theme;
-
-export const globalStyle = {
-  '@global': {
-    a: {
-      color: 'inherit', // !important zaburzało działanie activeClassName w navbarze aplikacji
-      textDecoration: [['none'], '!important']
-    }
-  }
-};

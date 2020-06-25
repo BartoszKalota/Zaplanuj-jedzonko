@@ -18,10 +18,10 @@ const useStyles = makeStyles(theme => ({
     padding: 0,
     marginBottom: '1rem',
     '& > div:nth-child(2n+1)': {
-      backgroundColor: 'rgba(0, 0, 0, 0.04)'
+      backgroundColor: theme.palette.tableRowDark
     },
     '& > div:hover': {
-      backgroundColor: 'rgba(0, 0, 0, 0.08)'
+      backgroundColor: theme.palette.tableRowHover
     }
   },
   dataListItem: {
