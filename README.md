@@ -4,7 +4,7 @@ The project includes: (1) an application enabling management of recipes and nutr
 ![Project screenshot](/src/assets/project_screen.jpg)
 
 # Live demo
-somelink
+https://zaplanuj-jedzonko.netlify.app/
 
 # Features
 ## Application
