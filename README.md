@@ -1,5 +1,5 @@
 # 'Zaplanuj Jedzonko' - application and landing page
-The project includes: (1) an application enabling management of recipes and nutrition schedules for registered users (on the screen below) and (2) a responsive one-page website encouraging the use of the app. It is the individual final project of the Coders Lab course.
+The project includes: (1) an application enabling management of recipes and nutrition schedules for registered users and (2) a responsive one-page website encouraging the use of the app. It is the individual final project of the Coders Lab course.
 
 # Live demo
 https://zaplanuj-jedzonko.netlify.app/
